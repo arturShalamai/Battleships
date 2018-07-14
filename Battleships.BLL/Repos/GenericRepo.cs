@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -6,39 +7,49 @@ using System.Threading.Tasks;
 
 namespace Battleships.BLL.Repos
 {
-    class GenericRepo<T> : IRepository<T>
+    class GenericRepo<T> : IRepository<T> where T : class
     {
-        public Task AddAsync(T entity)
+        private readonly BattleshipsContext _context;
+
+        public GenericRepo(BattleshipsContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+        }
+
+        public async Task<List<T>> AllAsync()
+        {
+            return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task DeleteManyAsync(Expression<Func<T, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<T>> AllAsync()
+        public async Task DeleteOneAsync(Expression<Func<T, bool>> filter)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Set<T>().FirstOrDefaultAsync(filter);
+            if (entity != null) { _context.Set<T>().Remove(entity); }
+            else { throw new Exception("Error. Not found!"); }
         }
 
-        public Task DeleteManyAsync(Expression<Func<T, bool>> filter)
+        public async Task<T> SingleAsync(Expression<Func<T, bool>> filter)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteOneAsync(Expression<Func<T, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> SingleAsync(Expression<Func<T, bool>> filter)
-        {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FirstOrDefaultAsync(filter);
         }
 
         public Task UpdateOneAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(entity);
+            return Task.CompletedTask;
         }
 
-        public Task<List<T>> WhereAsync(Expression<Func<T, bool>> filter)
+        public async Task<List<T>> WhereAsync(Expression<Func<T, bool>> filter)
         {
             throw new NotImplementedException();
         }
