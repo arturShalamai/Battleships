@@ -28,6 +28,9 @@ namespace Battleships.DAL
         public bool Winner { get; set; }
 
         public GameInfo GameInfo { get; set; }
+
+        public Player FirtsPlayer { get; set; }
+        public Player LastPlayer { get; set; }
     }
 
     public enum GameStatuses
