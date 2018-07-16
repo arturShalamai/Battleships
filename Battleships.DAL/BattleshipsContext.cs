@@ -25,6 +25,8 @@ namespace Battleships.DAL
 
             modelBuilder.ApplyConfiguration<GameInfo>(new GameInfoConfigurations());
 
+            modelBuilder.ApplyConfiguration<Game>(new GameConfigurations());
+
             base.OnModelCreating(modelBuilder); 
         }
     }

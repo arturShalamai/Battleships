@@ -13,16 +13,9 @@ namespace Battleships.BLL
         private IRepository<Game> _gameRepo;
         private IRepository<GameInfo> _gameInfo;
 
-        public IRepository<Player> PlayerRepo
-        {
-            get
-            {
-                if (_playerRepo == null) { _playerRepo = new GenericRepo<Player>(_context); }
-                return _playerRepo;
-            }
-        }
-        public IRepository<Game> GameRepo { get => GameRepo ?? new GenericRepo<Game>(_context); }
-        public IRepository<GameInfo> GameInfo { get => GameInfo ?? new GenericRepo<GameInfo>(_context); }
+        public IRepository<Player> PlayerRepo { get => _playerRepo ?? new GenericRepo<Player>(_context); }
+        public IRepository<Game> GameRepo { get => _gameRepo ?? new GenericRepo<Game>(_context); }
+        public IRepository<GameInfo> GameInfo { get => _gameInfo ?? new GenericRepo<GameInfo>(_context); }
 
         private readonly BattleshipsContext _context;
 

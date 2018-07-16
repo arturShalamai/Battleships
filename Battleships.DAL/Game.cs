@@ -7,6 +7,28 @@ namespace Battleships.DAL
 {
     public class Game
     {
+        public Game()
+        {
+            Status = GameStatuses.Started;
+            StartDate = DateTime.Now;
+            GameInfo = new GameInfo();
+            PlayersInfo = new List<GamePlayer>();
+        }
+
+        public Game(Player player)
+        {
+            Status = GameStatuses.Started;
+            StartDate = DateTime.Now;
+            GameInfo = new GameInfo();
+            PlayersInfo = new List<GamePlayer>
+            {
+                new GamePlayer()
+                {
+                    Player = player
+                }
+            };
+        }
+
         [Key]
         public int Id { get; set; }
 
