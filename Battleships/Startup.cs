@@ -30,8 +30,8 @@ namespace Battleships
 
             services.AddDbContext<BattleshipsContext>(opts =>
             {
-                opts.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"), config =>
-                                                                                                        config.MigrationsAssembly("Battleships.Migrations"));
+                opts.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"), conf => 
+                                                                                                      conf.MigrationsAssembly("Battleships.Migrations"));
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

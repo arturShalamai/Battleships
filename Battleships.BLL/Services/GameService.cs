@@ -14,7 +14,7 @@ namespace Battleships.BLL.Services
             _unit = unit;
         }
 
-        public async Task<int> StartGameAsync()
+        public async Task<Guid> StartGameAsync()
         {
             var player = await _unit.PlayerRepo.SingleAsync(_ => true);
             var game = new DAL.Game(player);

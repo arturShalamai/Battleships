@@ -10,8 +10,10 @@ using System;
 
 namespace Battleships.Migrations.Migrations
 {
+    public enum SqlServerValueGenerationStrategy { IdentityColumn, SequenceHiLo } 
+
     [DbContext(typeof(BattleshipsContext))]
-    [Migration("20180716071322_Init")]
+    [Migration("20180716095619_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +25,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("EndDate");
@@ -41,7 +43,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GameInfo", b =>
                 {
-                    b.Property<int>("GameId");
+                    b.Property<Guid>("GameId");
 
                     b.Property<string>("FirstUserField");
 
@@ -56,7 +58,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GamePlayer", b =>
                 {
-                    b.Property<int>("GameId");
+                    b.Property<Guid>("GameId");
 
                     b.Property<Guid>("PlayerId");
 

@@ -35,13 +35,13 @@ namespace Battleships.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //await _playerSvc.AddPlayer(new DAL.Player()
-            //{
-            //    FirstName = "Player8",
-            //    LastName = "Fake Player8",
-            //    NickName = "Player8",
-            //    DoB = DateTime.Now,
-            //});
+            await _playerSvc.AddPlayer(new DAL.Player()
+            {
+                FirstName = "Player8",
+                LastName = "Fake Player8",
+                NickName = "Player8",
+                DoB = DateTime.Now,
+            });
 
             //await _playerSvc.AddPlayer(new DAL.Player()
             //{

@@ -22,7 +22,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("EndDate");
@@ -40,7 +40,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GameInfo", b =>
                 {
-                    b.Property<int>("GameId");
+                    b.Property<Guid>("GameId");
 
                     b.Property<string>("FirstUserField");
 
@@ -55,7 +55,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GamePlayer", b =>
                 {
-                    b.Property<int>("GameId");
+                    b.Property<Guid>("GameId");
 
                     b.Property<Guid>("PlayerId");
 

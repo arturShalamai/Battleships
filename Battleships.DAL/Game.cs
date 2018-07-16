@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Battleships.DAL
@@ -9,6 +10,7 @@ namespace Battleships.DAL
     {
         public Game()
         {
+            Id = Guid.NewGuid();
             Status = GameStatuses.Started;
             StartDate = DateTime.Now;
             GameInfo = new GameInfo();
@@ -17,6 +19,7 @@ namespace Battleships.DAL
 
         public Game(Player player)
         {
+            Id = Guid.NewGuid();
             Status = GameStatuses.Started;
             StartDate = DateTime.Now;
             GameInfo = new GameInfo();
@@ -30,7 +33,8 @@ namespace Battleships.DAL
         }
 
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
 
         [Required]
         public GameStatuses Status { get; set; }

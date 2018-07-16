@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace Battleships.Migrations.Migrations
 {
-    public enum SqlServerValueGenerationStrategy { IdentityColumn, SequenceHiLo }
-
     public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +12,7 @@ namespace Battleships.Migrations.Migrations
                 name: "Games",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false),
@@ -47,7 +43,7 @@ namespace Battleships.Migrations.Migrations
                 name: "GamesInfo",
                 columns: table => new
                 {
-                    GameId = table.Column<int>(nullable: false),
+                    GameId = table.Column<Guid>(nullable: false),
                     FirstUserField = table.Column<string>(nullable: true),
                     SecondUserField = table.Column<string>(nullable: true),
                     Turn = table.Column<bool>(nullable: false)
@@ -67,7 +63,7 @@ namespace Battleships.Migrations.Migrations
                 name: "GamePlayer",
                 columns: table => new
                 {
-                    GameId = table.Column<int>(nullable: false),
+                    GameId = table.Column<Guid>(nullable: false),
                     PlayerId = table.Column<Guid>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                 },
