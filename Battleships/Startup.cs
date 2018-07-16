@@ -34,6 +34,8 @@ namespace Battleships
                                                                                                       conf.MigrationsAssembly("Battleships.Migrations"));
             });
 
+            services.AddSignalR();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
