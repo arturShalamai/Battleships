@@ -7,6 +7,12 @@ namespace Battleships.DAL
 {
     public class Player
     {
+        public Player()
+        {
+            Id = Guid.NewGuid();
+            GamesInfo = new List<GamePlayer>();
+        }
+
         [Key]
         public Guid Id { get; set; }
 

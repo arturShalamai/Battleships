@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,14 +30,12 @@ namespace Battleships.BLL.Repos
 
         public async Task DeleteManyAsync(Expression<Func<T, bool>> filter)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public async Task DeleteOneAsync(Expression<Func<T, bool>> filter)
+        public async Task DeleteOneAsync(T entity)
         {
-            var entity = await _context.Set<T>().FirstOrDefaultAsync(filter);
             if (entity != null) { _context.Set<T>().Remove(entity); }
-            else { throw new Exception("Error. Not found!"); }
         }
 
         public async Task<T> SingleAsync(Expression<Func<T, bool>> filter)
@@ -52,7 +51,7 @@ namespace Battleships.BLL.Repos
 
         public async Task<List<T>> WhereAsync(Expression<Func<T, bool>> filter)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().Where(filter).ToListAsync();
         }
     }
 }

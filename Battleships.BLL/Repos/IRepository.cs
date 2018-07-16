@@ -20,7 +20,7 @@ namespace Battleships.BLL.Repos
 
         //Task UpdateManyAsync(T entity);
 
-        Task DeleteOneAsync(Expression<Func<T, bool>> filter);
+        Task DeleteOneAsync(T entity);
 
         Task DeleteManyAsync(Expression<Func<T, bool>> filter);
 

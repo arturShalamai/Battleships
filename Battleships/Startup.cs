@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Battleships.BLL;
+using Battleships.BLL.Services;
 using Battleships.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,10 @@ namespace Battleships
                 opts.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"), config =>
                                                                                                         config.MigrationsAssembly("Battleships.Migrations"));
             });
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPlayerService, PlayerService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
