@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships", "Battleships\Battleships.csproj", "{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships", "Battleships\Battleships.csproj", "{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.DAL", "Battleships.DAL\Battleships.DAL.csproj", "{457B58C7-0BBA-496D-A0F0-CB8C759C4310}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.DAL", "Battleships.DAL\Battleships.DAL.csproj", "{457B58C7-0BBA-496D-A0F0-CB8C759C4310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.BLL", "Battleships.BLL\Battleships.BLL.csproj", "{4C36F868-EBC8-46E5-B1FB-4E140D2D4CC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.BLL", "Battleships.BLL\Battleships.BLL.csproj", "{4C36F868-EBC8-46E5-B1FB-4E140D2D4CC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Migrations", "Battleships.Migrations\Battleships.Migrations.csproj", "{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{4C36F868-EBC8-46E5-B1FB-4E140D2D4CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C36F868-EBC8-46E5-B1FB-4E140D2D4CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C36F868-EBC8-46E5-B1FB-4E140D2D4CC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

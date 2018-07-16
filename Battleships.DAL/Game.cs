@@ -8,13 +8,7 @@ namespace Battleships.DAL
     public class Game
     {
         [Key]
-        public Guid Id { get; set; }
-
-        [Required]
-        public Guid FirstUserId { get; set; }
-
-        [Required]
-        public Guid SecondUserId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public GameStatuses Status { get; set; }
@@ -29,8 +23,7 @@ namespace Battleships.DAL
 
         public GameInfo GameInfo { get; set; }
 
-        public Player FirtsPlayer { get; set; }
-        public Player LastPlayer { get; set; }
+        public List<GamePlayer> PlayersInfo { get; set; }
     }
 
     public enum GameStatuses

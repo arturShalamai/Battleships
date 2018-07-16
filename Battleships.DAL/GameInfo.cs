@@ -7,7 +7,7 @@ namespace Battleships.DAL
 {
     public class GameInfo
     {
-        public Guid GameId { get; set; }
+        public int GameId { get; set; }
 
         public string FirstUserField { get; set; }
 

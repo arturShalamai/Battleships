@@ -23,6 +23,6 @@ namespace Battleships.DAL
 
         public double Score { get; set; }
 
-        public List<Game> Games { get; set; }
+        public List<GamePlayer> GamesInfo { get; set; }
     }
 }

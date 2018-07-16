@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Battleships.BLL;
+using Battleships.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +26,12 @@ namespace Battleships
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<BattleshipsContext>(opts =>
+            {
+                opts.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"), config =>
+                                                                                                        config.MigrationsAssembly("Battleships.Migrations"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
