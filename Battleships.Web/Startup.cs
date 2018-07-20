@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Battleships.BLL;
 using Battleships.BLL.Services;
+using Battleships.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -25,6 +26,14 @@ namespace Battleships.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("Cookies")
+            .AddIdentityAuthorization();
 
             //services.AddSignalR();
 
@@ -50,6 +59,8 @@ namespace Battleships.Web
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

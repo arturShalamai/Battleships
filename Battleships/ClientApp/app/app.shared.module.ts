@@ -1,3 +1,4 @@
+import { GameDashboardComponent } from './components/game-dashboard/game-dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +17,8 @@ import { CounterComponent } from './components/counter/counter.component';
         NavMenuComponent,
         CounterComponent,
         FetchDataComponent,
-        HomeComponent
+        HomeComponent,
+        GameDashboardComponent
     ],
     imports: [
         CommonModule,
@@ -27,6 +29,7 @@ import { CounterComponent } from './components/counter/counter.component';
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'game/:id', component: GameDashboardComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]
