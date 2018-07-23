@@ -3,7 +3,7 @@ import { OnInit } from "../../../../node_modules/@angular/core";
 import { ActivatedRoute } from "../../../../node_modules/@angular/router";
 
 @Component({
-  selector: "fetchdata",
+  selector: "game-dashboard",
   templateUrl: "./game-dashboard.component.html"
 })
 export class GameDashboardComponent implements OnInit {

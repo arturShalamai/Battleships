@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { GameDashboardComponent } from './components/game-dashboard/game-dashboard.component';
+import { SignalRGameService } from './components/signalr-game-service/signalrGameService';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { GameDashboardComponent } from './components/game-dashboard/game-dashboa
             { path: 'game/:id', component: GameDashboardComponent },
             { path: '**', redirectTo: 'home' }
         ])
-    ]
+    ],
+    providers: [SignalRGameService]
 })
 export class AppModuleShared {
 }

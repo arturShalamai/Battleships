@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Battleships.BLL;
 using Battleships.BLL.Services;
 using Battleships.Web.Extensions;
+using Battleships.Web.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -35,7 +36,14 @@ namespace Battleships.Web
             .AddCookie("Cookies")
             .AddIdentityAuthorization();
 
-            //services.AddSignalR();
+            services.AddCors(opts =>
+            {
+                opts.AddPolicy("AllowAll", conf => conf.AllowAnyOrigin()
+                                                        .AllowAnyHeader()
+                                                        .AllowAnyMethod());
+            });
+
+            services.AddSignalR();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPlayerService, PlayerService>();
@@ -61,6 +69,10 @@ namespace Battleships.Web
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseCors("AllowAll");
+
+            app.UseSignalR(x => x.MapHub<GameHub>("/hubs/game"));
 
             app.UseMvc(routes =>
             {
