@@ -23,6 +23,7 @@ namespace Battleships.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("{id}")]
         public async Task StartGame(string id)
         {

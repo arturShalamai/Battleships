@@ -6,6 +6,7 @@ using Battleships.BLL;
 using Battleships.BLL.Services;
 using Battleships.Web.Extensions;
 using Battleships.Web.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -73,6 +74,13 @@ namespace Battleships.Web
             app.UseCors("AllowAll");
 
             app.UseSignalR(x => x.MapHub<GameHub>("/hubs/game"));
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            {
+                Audience = "http://localhost:5001/",
+                Authority = "https://localhost:44362/",
+                AutomaticAuthenticate = true
+            };
 
             app.UseMvc(routes =>
             {
