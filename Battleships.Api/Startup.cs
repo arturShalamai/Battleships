@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Battleships.Api
 {
@@ -25,6 +26,32 @@ namespace Battleships.Api
         {
             services.AddMvc();
 
+            services.AddAuthentication()
+                .AddOpenIdConnect("oidc", "OpenID Connect", options =>
+             {
+                 options.SignInScheme = "idsrv.external";
+                 options.SignOutScheme = "idsrv";
+
+                 options.Authority = "https://localhost:44362/";
+                 options.ClientId = "implicit";
+
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     //NameClaimType = "name",
+                     //RoleClaimType = "role"
+                 };
+             });
+
+            //services.AddAuthentication("Bearer")
+            //    .AddIdentityServerAuthentication(options =>
+            //    {
+            //          // SET THIS TO true IN PRODUCTION!
+            //          options.RequireHttpsMetadata = false;
+
+            //        options.Authority = "https://localhost:44362";
+            //        options.ApiName = $"Games.Battleships";
+            //    });
+
             services.AddCors(conf =>
             {
                 conf.AddPolicy("AllowAll", opts => opts.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
@@ -38,6 +65,8 @@ namespace Battleships.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
 
             app.UseCors("AllowAll");
 
