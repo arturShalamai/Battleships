@@ -75,12 +75,12 @@ namespace Battleships.Web
 
             app.UseSignalR(x => x.MapHub<GameHub>("/hubs/game"));
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions()
-            {
-                Audience = "http://localhost:5001/",
-                Authority = "https://localhost:44362/",
-                AutomaticAuthenticate = true
-            };
+            //app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            //{
+            //    Audience = "http://localhost:5001/",
+            //    Authority = "https://localhost:44362/",
+            //    AutomaticAuthenticate = true
+            //});
 
             app.UseMvc(routes =>
             {
