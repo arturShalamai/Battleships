@@ -24,6 +24,11 @@ namespace Battleships.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddCors(conf =>
+            {
+                conf.AddPolicy("AllowAll", opts => opts.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +38,8 @@ namespace Battleships.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowAll");
 
             app.UseMvc();
         }
