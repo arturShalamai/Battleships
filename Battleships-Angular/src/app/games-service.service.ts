@@ -8,7 +8,6 @@ import { HttpClient } from '../../node_modules/@angular/common/http';
 export class GamesService {
 
   constructor(private client : HttpClient) {
-      debugger;
       client.get('https://localhost:44310/api/values').subscribe(res => console.log(`[Games Service] : ${res}`));
 
    }
