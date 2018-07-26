@@ -3,15 +3,36 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships", "Battleships\Battleships.csproj", "{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.DAL", "Battleships.DAL\Battleships.DAL.csproj", "{457B58C7-0BBA-496D-A0F0-CB8C759C4310}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.BLL", "Battleships.BLL\Battleships.BLL.csproj", "{4C36F868-EBC8-46E5-B1FB-4E140D2D4CC3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.Migrations", "Battleships.Migrations\Battleships.Migrations.csproj", "{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApi", "TestApi\TestApi.csproj", "{AE97BDA9-995F-4F43-B4FD-F494A067204E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleships.Web", "Battleships.Web\Battleships.Web.csproj", "{5647527F-FCF6-46DE-8574-B6EE60CDF11C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships.Api", "Battleships.Api\Battleships.Api.csproj", "{D16FB965-642F-4B23-A37E-0EC69D722339}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Battleships-Angular", "Battleships-Angular\", "{B1F13296-A31E-4166-992E-8CF837DFA0D2}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_52557"
+		Debug.AspNetCompiler.PhysicalPath = "Battleships-Angular\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52557\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_52557"
+		Release.AspNetCompiler.PhysicalPath = "Battleships-Angular\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52557\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "52557"
+		SlnRelativePath = "Battleships-Angular\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +40,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCA44C6E-6DB5-4C45-9BA0-B46B50494357}.Release|Any CPU.Build.0 = Release|Any CPU
 		{457B58C7-0BBA-496D-A0F0-CB8C759C4310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{457B58C7-0BBA-496D-A0F0-CB8C759C4310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{457B58C7-0BBA-496D-A0F0-CB8C759C4310}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,10 +52,18 @@ Global
 		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFF9339E-7015-4F89-BB22-D39EFF21CC8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE97BDA9-995F-4F43-B4FD-F494A067204E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE97BDA9-995F-4F43-B4FD-F494A067204E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE97BDA9-995F-4F43-B4FD-F494A067204E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE97BDA9-995F-4F43-B4FD-F494A067204E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5647527F-FCF6-46DE-8574-B6EE60CDF11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5647527F-FCF6-46DE-8574-B6EE60CDF11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5647527F-FCF6-46DE-8574-B6EE60CDF11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5647527F-FCF6-46DE-8574-B6EE60CDF11C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16FB965-642F-4B23-A37E-0EC69D722339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16FB965-642F-4B23-A37E-0EC69D722339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16FB965-642F-4B23-A37E-0EC69D722339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16FB965-642F-4B23-A37E-0EC69D722339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F13296-A31E-4166-992E-8CF837DFA0D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F13296-A31E-4166-992E-8CF837DFA0D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F13296-A31E-4166-992E-8CF837DFA0D2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F13296-A31E-4166-992E-8CF837DFA0D2}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
