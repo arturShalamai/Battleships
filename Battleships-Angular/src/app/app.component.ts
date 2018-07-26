@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     // Config Info = https://www.softwarearchitekt.at/post/2016/07/03/authentication-in-angular-2-with-oauth2-oidc-and-guards-for-the-newest-new-router-english-version.aspx
 
     this.oauthService.configure({
-      clientId: "ng",
+      clientId: "a7f36d6c-3502-4cac-8236-a8fd98c97e5a",
       issuer: "https://localhost:44362",
       oidc: true,
       redirectUri: window.location.origin,

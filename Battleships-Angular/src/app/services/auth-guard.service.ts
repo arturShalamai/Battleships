@@ -5,7 +5,8 @@ import {
   Route,
   Router,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot
+  RouterStateSnapshot,
+  RouterModule
 } from "@angular/router";
 import { OAuthService } from "../../../node_modules/angular-oauth2-oidc";
 
@@ -13,21 +14,23 @@ import { OAuthService } from "../../../node_modules/angular-oauth2-oidc";
   providedIn: "root"
 })
 export class AuthGuardService implements CanLoad, CanActivate {
-  constructor(private oauthSvc: OAuthService) {}
+  constructor(private oauthSvc: OAuthService, private route:Route) {}
 
   canActivate(): boolean {
     debugger;
-    let hasIdToken = this.oauthSvc.hasValidIdToken();
-    let hasAccessToken = this.oauthSvc.hasValidAccessToken();
-
-    return hasIdToken && hasAccessToken;
+    if(this.oauthSvc.hasValidAccessToken()){
+      return true;
+    }
+    // this.route.redirectTo('/home');
+    return false;
   }
 
   canLoad(): boolean {
     debugger;
-    let hasIdToken = this.oauthSvc.hasValidIdToken();
-    let hasAccessToken = this.oauthSvc.hasValidAccessToken();
-
-    return hasIdToken && hasAccessToken;
+    debugger;
+    if(this.oauthSvc.hasValidAccessToken()){
+      return true;
+    }
+    return false;
   }
 }
