@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +17,29 @@ namespace Battleships.Api.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(new string[] { "value1", "value2" });
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string  Get(int id)
         {
+            //var disco = await DiscoveryClient.GetAsync("https://localhost:44362");
+
+            //var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
+            //var tokenResponse = await tokenClient.RequestClientCredentialsAsync("Platform.ProfileService");
+
+            //var client = new HttpClient();
+            //client.SetBearerToken(tokenResponse.AccessToken);
+
+            //var resp = client.GetStringAsync("https://");
+
             return "value";
         }
+
+
 
         // POST api/values
         [HttpPost]

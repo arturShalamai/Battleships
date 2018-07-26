@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,42 +35,6 @@ namespace Battleships.Api
                 conf.Authority = "https://localhost:44362";
                 conf.Audience = "https://localhost:44362/resources";
             });
-
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultScheme = "Cookies";
-            //    options.DefaultChallengeScheme = "oidc";
-            //})
-            //.AddCookie("Cookies")
-            //.AddOpenIdConnect("oidc", "OpenID Connect", options =>
-            //{
-            //    options.SignInScheme = "idsrv.external";
-            //    options.SignOutScheme = "idsrv";
-
-            //    options.Authority = "https://localhost:44362/";
-            //    options.ClientId = "26fad7e9-995c-4b6b-9d16-cc2ca93d19cf";
-
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        //NameClaimType = "name",
-            //        //RoleClaimType = "role"
-            //    };
-            //});
-            //.AddJwtBearer(conf =>
-            //{
-            //    conf.Audience = "http://localhost:44362";
-            //    conf.Audience = "a7f36d6c-3502-4cac-8236-a8fd98c97e5a";
-            //});
-
-            //services.AddAuthentication("Bearer")
-            //    .AddIdentityServerAuthentication(options =>
-            //    {
-            //        // SET THIS TO true IN PRODUCTION!
-            //        options.RequireHttpsMetadata = false;
-
-            //        options.Authority = "https://localhost:44362";
-            //        options.ApiName = $"Games.Battleships";
-            //    });
 
             services.AddCors(conf =>
             {

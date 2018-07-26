@@ -57,3 +57,7 @@ export class AppComponent implements OnInit {
     this.oauthService.logOut();
   }
 }
+
+
+//ClientId client-12068b21-d0f0-41e4-b030-664349a9720d
+//ClientSecret secret-470e5043-8a56-4041-af1d-d23231db9690
