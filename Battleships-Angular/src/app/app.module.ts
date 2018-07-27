@@ -8,6 +8,8 @@ import { StartGameComponent } from './start-game/start-game.component';
 import {OAuthModule} from 'angular-oauth2-oidc';
 import { HttpModule } from '../../node_modules/@angular/http';
 import { Routes, RouterModule } from '../../node_modules/@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -18,9 +20,11 @@ import { Routes, RouterModule } from '../../node_modules/@angular/router';
     BrowserModule,
     HttpClientModule,
     HttpModule,
+    MaterialModule,
     RouterModule.forRoot([
       {path : 'start-game', component: StartGameComponent, canActivate: [AuthGuardService]}
     ]),
+    BrowserAnimationsModule,
     OAuthModule.forRoot()
   ],
   providers: [],

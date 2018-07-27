@@ -14,7 +14,7 @@ import { OAuthService } from "../../../node_modules/angular-oauth2-oidc";
   providedIn: "root"
 })
 export class AuthGuardService implements CanLoad, CanActivate {
-  constructor(private oauthSvc: OAuthService, private route:Route) {}
+  constructor(private oauthSvc: OAuthService) {}
 
   canActivate(): boolean {
     debugger;
