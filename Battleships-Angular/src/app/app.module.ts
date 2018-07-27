@@ -19,7 +19,8 @@ import { Routes, RouterModule } from '../../node_modules/@angular/router';
     HttpClientModule,
     HttpModule,
     RouterModule.forRoot([
-      {path : 'start-game', component: StartGameComponent, canActivate: [AuthGuardService]}
+      {path : 'start-game', component: StartGameComponent, canActivate: [AuthGuardService]},
+      {path : '*', component: StartGameComponent}
     ]),
     OAuthModule.forRoot()
   ],

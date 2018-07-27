@@ -8,16 +8,15 @@ import {
   RouterStateSnapshot,
   RouterModule
 } from "@angular/router";
-import { OAuthService } from "../../../node_modules/angular-oauth2-oidc";
+import { OAuthService } from "angular-oauth2-oidc";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthGuardService implements CanLoad, CanActivate {
-  constructor(private oauthSvc: OAuthService, private route:Route) {}
+  constructor(private oauthSvc: OAuthService) {}
 
   canActivate(): boolean {
-    debugger;
     if(this.oauthSvc.hasValidAccessToken()){
       return true;
     }
