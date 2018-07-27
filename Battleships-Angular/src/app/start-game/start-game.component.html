@@ -1,6 +1,46 @@
 <!-- <img [src]="bgImage" alt=""> -->
-<div class="bg" [style.background-image]="'url(../'+ bgImage + ')'">
-<p>
-  start-game works!
-</p>
+<div class="start-game-component" [style.background-image]="'url(../'+ bgImage + ')'">
+  <!-- <div class="test">
+    <button mat-raised-button>Basic</button>
+    <button mat-raised-button color="primary">Primary</button>
+    <button mat-raised-button color="accent">Accent</button>
+    <button mat-raised-button color="warn">Warn</button>
+    <button mat-raised-button disabled>Disabled</button>
+    <a mat-raised-button routerLink=".">Link</a>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Favorite food">
+      </mat-form-field>
+    </form>
+  </div> 
+  <p>
+    start-game works!
+  </p> -->
+
+  <mat-card class="start-game-form">
+    <mat-card-subtitle>Login / Register <small class="label-signup">sign up</small></mat-card-subtitle>
+    <mat-card-content>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Login">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <input matInput type="password" placeholder="Passowrd">
+      </mat-form-field>
+      <br>
+        <button mat-raised-button color="primary" class="button-register">Login</button>
+      <mat-form-field class="example-full-width" *ngIf="false">
+        <input matInput placeholder="Game Id">
+      </mat-form-field>
+      <div class="socials">
+        <img src="../../assets/images/socials/transer.png" alt="">
+        <img src="../../assets/images/home/gmail.png" alt="">
+        <img src="../../assets/images/socials/twitter.png" alt="">
+        <img src="../../assets/images/socials/microsoft.png" alt="">
+        <img src="../../assets/images/socials/origin.png"alt="">
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+
 </div>

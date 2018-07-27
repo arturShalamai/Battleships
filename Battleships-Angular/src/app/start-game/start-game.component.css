@@ -1,10 +1,62 @@
-.bg{
+.start-game-component {
+    width: 100%;
+    min-height: 100%;
+    z-index: -30;
     background-size: cover;
     background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     background-attachment: fixed;
+    /* filter: blur(1.5px); */
+}
+
+.start-game-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(3px 3px 24px);
+}
+
+mat-card-subtitle .label-signup {
+    float: right;
+    color: #3f51b5;
+}
+
+mat-card-subtitle .label-signup:hover {
+    cursor: pointer;
+}
+
+.start-game-form mat-content {
+    width: 268px;
+    display: flex;
+    flex-direction: column;
+}
+
+.example-full-width {
+    width: 268px;
+}
+
+.start-game-form input {
+    width: 100%;
+}
+
+.button-register {
+    width: 268px;
+    margin: 10px 0px;
+}
+
+.socials {
+    display: flex;
+    margin-top: 5px;
+    justify-content: space-around;
+}
+
+.socials img {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.3s;
+}
+
+.socials img:hover{
+    cursor: pointer;
+    transform: translateY(-3px);
 }
