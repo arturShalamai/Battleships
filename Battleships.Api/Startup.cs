@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,31 +29,12 @@ namespace Battleships.Api
         {
             services.AddMvc();
 
-            services.AddAuthentication()
-                .AddOpenIdConnect("oidc", "OpenID Connect", options =>
-             {
-                 options.SignInScheme = "idsrv.external";
-                 options.SignOutScheme = "idsrv";
-
-                 options.Authority = "https://localhost:44362/";
-                 options.ClientId = "implicit";
-
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     //NameClaimType = "name",
-                     //RoleClaimType = "role"
-                 };
-             });
-
-            //services.AddAuthentication("Bearer")
-            //    .AddIdentityServerAuthentication(options =>
-            //    {
-            //          // SET THIS TO true IN PRODUCTION!
-            //          options.RequireHttpsMetadata = false;
-
-            //        options.Authority = "https://localhost:44362";
-            //        options.ApiName = $"Games.Battleships";
-            //    });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(conf =>
+            {
+                conf.Authority = "https://localhost:44362";
+                conf.Audience = "https://localhost:44362/resources";
+            });
 
             services.AddCors(conf =>
             {
