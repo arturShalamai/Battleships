@@ -10,17 +10,13 @@ import { StartGameComponent } from './start-game/start-game.component';
 import {OAuthModule} from 'angular-oauth2-oidc';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
-import { GameDashboardComponent } from './game-dashboard/game-dashboard.component';
-import { CommonModule } from '../../node_modules/@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StartGameComponent,
-    GameDashboardComponent
+    StartGameComponent
   ],
   imports: [
-    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -31,11 +27,10 @@ import { CommonModule } from '../../node_modules/@angular/common';
     MatProgressBarModule,
     MatCardModule,
     RouterModule.forRoot([
-      {path : 'game/play', component: GameDashboardComponent},
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
     ]),
-    OAuthModule.forRoot(),
+    OAuthModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
