@@ -1,6 +1,6 @@
 import { MatButtonModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuardService } from './services/Auth/auth-guard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
@@ -11,7 +11,7 @@ import {OAuthModule} from 'angular-oauth2-oidc';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 import { GameDashboardComponent } from './game-dashboard/game-dashboard.component';
-import { CommonModule } from '../../node_modules/@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { MaterialModule } from './material/material.module';
 

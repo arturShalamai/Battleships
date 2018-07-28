@@ -1,6 +1,6 @@
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '../../../node_modules/@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
