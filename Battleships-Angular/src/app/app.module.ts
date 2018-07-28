@@ -13,6 +13,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { GameDashboardComponent } from './game-dashboard/game-dashboard.component';
 import { CommonModule } from '../../node_modules/@angular/common';
 
+import { MaterialModule } from './material/material.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,12 +32,14 @@ import { CommonModule } from '../../node_modules/@angular/common';
     MatInputModule,
     MatProgressBarModule,
     MatCardModule,
+    MaterialModule,
     RouterModule.forRoot([
       {path : 'game/play', component: GameDashboardComponent},
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
     ]),
-    OAuthModule.forRoot(),
+    BrowserAnimationsModule,
+    OAuthModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
