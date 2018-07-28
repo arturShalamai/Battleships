@@ -1,4 +1,5 @@
 import { MatButtonModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AuthGuardService } from './services/auth-guard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -17,6 +18,7 @@ import { Routes, RouterModule } from '@angular/router';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     HttpModule,
     MatButtonModule,
@@ -25,8 +27,8 @@ import { Routes, RouterModule } from '@angular/router';
     MatProgressBarModule,
     MatCardModule,
     RouterModule.forRoot([
-      {path : 'start-game', component: StartGameComponent, canActivate: [AuthGuardService]},
-      {path : '*', component: StartGameComponent}
+      {path : '*', component: StartGameComponent},
+      {path : '', component: StartGameComponent},
     ]),
     OAuthModule.forRoot()
   ],
