@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Battleships.Api.Hubs;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,9 +37,14 @@ namespace Battleships.Api
                 conf.Audience = "https://localhost:44362/resources";
             });
 
+            services.AddSignalR();
+
             services.AddCors(conf =>
             {
-                conf.AddPolicy("AllowAll", opts => opts.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+                conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin()
+                                                        .AllowAnyMethod()
+                                                        .AllowAnyHeader()
+                                                        .AllowCredentials());
             });
         }
 
@@ -53,6 +59,8 @@ namespace Battleships.Api
             app.UseAuthentication();
 
             app.UseCors("AllowAll");
+
+            app.UseSignalR(conf => conf.MapHub<GameHub>("/hub/games"));
 
             app.UseMvc();
         }

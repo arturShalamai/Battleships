@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+//using Microsoft.AspNetCore.SignalR;
 
 namespace Battleships.Web.Controllers
 {

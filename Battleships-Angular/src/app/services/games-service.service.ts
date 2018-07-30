@@ -12,7 +12,7 @@ export class GamesService {
     let headers = new HttpHeaders().set("Authorization", `Bearer ${oauthSvc.getAccessToken()}`);
     console.log(oauthSvc.getAccessToken());
     // headers.set("TestHeader", `Hello ${oauthSvc.getIdToken()}`);
-    client.get('https://localhost:44310/api/values/1', { headers: {"Authorization": `Bearer ${oauthSvc.getAccessToken()}`}, responseType:"text"}).subscribe(res => console.log(`[Games Service] : ${res}`));
+    client.get('https://localhost:44310/api/values', { headers: {"Authorization": `Bearer ${oauthSvc.getAccessToken()}`}, responseType:"text"}).subscribe(res => console.log(`[Games Service] : ${res}`));
    }
 
 getValues() : void{

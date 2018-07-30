@@ -1,4 +1,6 @@
+import { GameDashboardService } from './../services/GameDashboard/game-dashboard.service';
 import { Component, OnInit } from '@angular/core';
+import { HubConnectionBuilder } from '@aspnet/signalr';
 
 @Component({
   selector: 'app-game-dashboard',
@@ -7,16 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameDashboardComponent implements OnInit {
 
-  fieldOne: boolean[][] = [[true, false, false, false, true, null],
-                           [true, false, false, false, true, null],
-                           [true, false, false, false, true, null],
-                           [true, false, false, false, true, null],
-                           [true, false, false, false, true, null],
-                           [true, false, false, false, true, null],
-                           [true, false, false, false, true, null],
+  fieldOne: boolean[][] = [[null, null, null, null, null, null],
+                           [null, null, null, null, null, null],
+                           [null, null, null, null, null, null],
+                           [null, null, null, null, null, null],
+                           [null, null, null, null, null, null],
+                           [null, null, null, null, null, null],
+                           [null, null, null, null, null, null],
                           ];
                           
-  constructor() { }
+  constructor(private gameSvc:GameDashboardService) { 
+  }
 
   ngOnInit() {
   }

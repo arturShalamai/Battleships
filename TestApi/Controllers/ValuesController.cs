@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TestApi.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class ValuesController : Controller
     {
         // GET api/values

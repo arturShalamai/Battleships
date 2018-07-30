@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Battleships.Api.Hubs;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Battleships.Api.Controllers
 {
+    [Authorize]
     [EnableCors("AllowAll")]
     [Route("api/[controller]")]
-    [Authorize]
     public class ValuesController : Controller
     {
+        private readonly IHubContext<GameHub, IGameHub> _gameHub;
+
         // GET api/values
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            //await _gameHub.Clients.All.MakeTurn(25);
             return Ok(new string[] { "value1", "value2" });
         }
 
