@@ -1,0 +1,15 @@
+<p>
+  game-dashboard works!
+</p>
+
+
+<div class="playerBoard">
+  <table class="board">
+    <div></div>
+    <tr *ngFor='let row of fieldOne'>
+      <td *ngFor='let item of row'>
+        <span>{{item == null? "" : item==true? "🔥" : "🗙"}}</span>
+      </td>
+    </tr>  
+  </table>
+</div>
