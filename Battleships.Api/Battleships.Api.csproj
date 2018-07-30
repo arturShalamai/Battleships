@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>af9d36c5-a618-49c6-91ff-f6a1ec490600</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +13,17 @@
     <PackageReference Include="IdentityModel" Version="3.8.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Battleships.BLL\Battleships.BLL.csproj" />
+    <ProjectReference Include="..\Battleships.DAL\Battleships.DAL.csproj" />
+    <ProjectReference Include="..\Battleships.Migrations\Battleships.Migrations.csproj" />
   </ItemGroup>
 
 </Project>

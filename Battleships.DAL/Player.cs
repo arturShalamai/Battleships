@@ -22,12 +22,11 @@ namespace Battleships.DAL
         public string LastName { get; set; }
 
         [Required]
-        public DateTime DoB { get; set; }
-
-        [Required]
         public string NickName { get; set; }
 
         public double Score { get; set; }
+
+        public PlayerCredentials Credentials { get; set; }
 
         public List<GamePlayer> GamesInfo { get; set; }
     }

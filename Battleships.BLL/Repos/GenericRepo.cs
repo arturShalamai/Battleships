@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.BLL.Repos
 {
-    class GenericRepo<T> : IRepository<T> where T : class
+    public class GenericRepo<T> : IRepository<T> where T : class
     {
         private readonly BattleshipsContext _context;
 

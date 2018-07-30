@@ -21,11 +21,6 @@ namespace Battleships.BLL.Services
             return await _unit.PlayerRepo.SingleAsync(filter);
         }
 
-        public async Task AddPlayer(Player newPlayer)
-        {
-            await _unit.PlayerRepo.AddAsync(newPlayer);
-            await _unit.SaveAsync();
-        }
 
         public async Task Updatelayer(Player player)
         {
@@ -43,6 +38,12 @@ namespace Battleships.BLL.Services
         {
             await _unit.PlayerRepo.DeleteOneAsync(player);
             _unit.SaveAsync();
+        }
+
+        public async Task RegisterPlayer(Player newPlayer)
+        {
+            await _unit.PlayerRepo.AddAsync(newPlayer);
+            await _unit.SaveAsync();
         }
     }
 }
