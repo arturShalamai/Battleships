@@ -72,10 +72,7 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.Player", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DoB");
+                    b.Property<Guid>("Id");
 
                     b.Property<string>("FirstName")
                         .IsRequired();
@@ -90,6 +87,23 @@ namespace Battleships.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("Battleships.DAL.PlayerCredentials", b =>
+                {
+                    b.Property<Guid>("PlayerId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.HasKey("PlayerId");
+
+                    b.ToTable("Credentials");
                 });
 
             modelBuilder.Entity("Battleships.DAL.GameInfo", b =>
@@ -110,6 +124,14 @@ namespace Battleships.Migrations.Migrations
                     b.HasOne("Battleships.DAL.Player", "Player")
                         .WithMany("GamesInfo")
                         .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Battleships.DAL.Player", b =>
+                {
+                    b.HasOne("Battleships.DAL.PlayerCredentials", "Credentials")
+                        .WithOne("Player")
+                        .HasForeignKey("Battleships.DAL.Player", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

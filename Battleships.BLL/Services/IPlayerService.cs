@@ -7,7 +7,7 @@ namespace Battleships.BLL.Services
 {
     public interface IPlayerService
     {
-        Task AddPlayer(Player newPlayer);
+        Task RegisterPlayer(Player newPlayer);
         Task BanPlayer(Guid playerId);
         Task<Player> GetPlayer(Expression<Func<Player, bool>> filter);
         Task Removelayer(Player player);

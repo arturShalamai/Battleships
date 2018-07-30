@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,12 @@ namespace Battleships.BLL.Services
         public GameService(IUnitOfWork unit)
         {
             _unit = unit;
+        }
+
+        public async Task<List<Guid>> GetAllGames()
+        {
+            var games = await _unit.GameRepo.AllAsync();
+            return games.Select(g => g.Id).ToList();
         }
 
         public async Task<Guid> StartGameAsync()

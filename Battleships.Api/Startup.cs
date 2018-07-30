@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Battleships.Api.Hubs;
+using Battleships.BLL;
+using Battleships.BLL.Repos;
+using Battleships.BLL.Services;
+using Battleships.DAL;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +33,12 @@ namespace Battleships.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            RegisterDependencies(services);
+
+            services.AddDbContext<BattleshipsContext>(conf => 
+                            conf.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"),
+                                              opts => opts.MigrationsAssembly("Battleships.Migrations")));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(conf =>
@@ -63,6 +73,14 @@ namespace Battleships.Api
             app.UseSignalR(conf => conf.MapHub<GameHub>("/hub/games"));
 
             app.UseMvc();
+        }
+
+        public void RegisterDependencies(IServiceCollection services)
+        {
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepo<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPlayerService, PlayerService>();
+            services.AddScoped<IGameService, GameService>();
         }
     }
 }

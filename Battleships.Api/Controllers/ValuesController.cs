@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using Battleships.Api.Hubs;
+
+using Battleships.BLL.Services;
+
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -17,13 +21,30 @@ namespace Battleships.Api.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+
         private readonly IHubContext<GameHub, IGameHub> _gameHub;
+
+        private readonly IPlayerService _playerSvc;
+        private readonly IGameService _gameSvc;
+
+        public ValuesController(IGameService gameSvc, IPlayerService playerSvc)
+        {
+            _gameSvc = gameSvc;
+            _playerSvc = playerSvc;
+        }
 
         // GET api/values
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
+
             //await _gameHub.Clients.All.MakeTurn(25);
+
+            _playerSvc.RegisterPlayer(new DAL.Player() { FirstName = "Artur", LastName = "Shalamai", NickName = "Artur", Score = 25, Credentials = new DAL.PlayerCredentials() { Email = "Artur@mgail.com", Password = "testPassword" } });
+            var games = _gameSvc.GetAllGames();
+            //await _gameSvc.StartGameAsync();
+
             return Ok(new string[] { "value1", "value2" });
         }
 

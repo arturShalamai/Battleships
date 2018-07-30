@@ -4,10 +4,25 @@ using System.Collections.Generic;
 
 namespace Battleships.Migrations.Migrations
 {
+    public enum SqlServerValueGenerationStrategy { IdentityColumn, SequenceHiLo }
+
     public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Credentials",
+                columns: table => new
+                {
+                    PlayerId = table.Column<Guid>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(maxLength: 15, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Credentials", x => x.PlayerId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
@@ -28,7 +43,6 @@ namespace Battleships.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    DoB = table.Column<DateTime>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: true),
                     NickName = table.Column<string>(nullable: false),
@@ -37,6 +51,12 @@ namespace Battleships.Migrations.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Players_Credentials_Id",
+                        column: x => x.Id,
+                        principalTable: "Credentials",
+                        principalColumn: "PlayerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,6 +124,9 @@ namespace Battleships.Migrations.Migrations
 
             migrationBuilder.DropTable(
                 name: "Games");
+
+            migrationBuilder.DropTable(
+                name: "Credentials");
         }
     }
 }
