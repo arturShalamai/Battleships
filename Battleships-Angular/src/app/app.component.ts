@@ -1,6 +1,6 @@
-import { GamesService } from "./games-service.service";
 import { Component, OnInit } from "@angular/core";
 import { OAuthService, JwksValidationHandler } from "angular-oauth2-oidc";
+import { GamesService } from "./services/games-service.service";
 
 @Component({
   selector: "app-root",
