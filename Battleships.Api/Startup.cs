@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Battleships.Api.Hubs;
+using Battleships.DAL;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +32,12 @@ namespace Battleships.Api
         {
             services.AddMvc();
 
+            services.AddDbContext<BattleshipsContext>(opts =>
+            {
+                opts.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"), config =>
+                                                                                                        config.MigrationsAssembly("Battleships.Migrations"));
+            });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(conf =>
             {
@@ -36,9 +45,14 @@ namespace Battleships.Api
                 conf.Audience = "https://localhost:44362/resources";
             });
 
+            services.AddSignalR();
+
             services.AddCors(conf =>
             {
-                conf.AddPolicy("AllowAll", opts => opts.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+                conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin()
+                                                        .AllowAnyMethod()
+                                                        .AllowAnyHeader()
+                                                        .AllowCredentials());
             });
         }
 
@@ -53,6 +67,8 @@ namespace Battleships.Api
             app.UseAuthentication();
 
             app.UseCors("AllowAll");
+
+            app.UseSignalR(conf => conf.MapHub<GameHub>("/hub/games"));
 
             app.UseMvc();
         }
