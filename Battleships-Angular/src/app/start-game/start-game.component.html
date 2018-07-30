@@ -18,8 +18,10 @@
   </p> -->
 
   <mat-card class="start-game-form">
-    <mat-card-subtitle>Login / Register <small class="label-signup">sign up</small></mat-card-subtitle>
-    <mat-card-content>
+    <mat-card-subtitle>Login / Register
+      <small class="label-signup">sign up</small>
+    </mat-card-subtitle>
+    <mat-card-content *ngIf="!checkAuth()">
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Login">
       </mat-form-field>
@@ -28,7 +30,7 @@
         <input matInput type="password" placeholder="Passowrd">
       </mat-form-field>
       <br>
-        <button mat-raised-button color="primary" class="button-register">Login</button>
+      <button mat-raised-button color="primary" class="button-register">Login</button>
       <mat-form-field class="example-full-width" *ngIf="false">
         <input matInput placeholder="Game Id">
       </mat-form-field>
@@ -37,8 +39,15 @@
         <img src="../../assets/images/home/gmail.png" alt="">
         <img src="../../assets/images/socials/twitter.png" alt="">
         <img src="../../assets/images/socials/microsoft.png" alt="">
-        <img src="../../assets/images/socials/origin.png"alt="">
+        <img src="../../assets/images/socials/origin.png" alt="">
       </div>
+    </mat-card-content>
+    <mat-card-content *ngIf="checkAuth()">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter game id or">
+      </mat-form-field>
+      <br>
+      <button mat-raised-button color="primary" id="button-start-game">Start new Game</button>
     </mat-card-content>
   </mat-card>
 

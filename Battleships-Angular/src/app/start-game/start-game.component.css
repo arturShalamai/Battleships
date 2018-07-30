@@ -60,3 +60,7 @@ mat-card-subtitle .label-signup:hover {
     cursor: pointer;
     transform: translateY(-3px);
 }
+
+#button-start-game{
+    min-width: 268px;
+}

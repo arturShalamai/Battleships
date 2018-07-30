@@ -26,6 +26,10 @@ export class StartGameComponent implements OnInit {
     // }, 3000);
   }
 
+  public checkAuth() : boolean{
+    return this.authSvc.hasValidAccessToken();
+  }
+
   private getRandomImage(): string {
     return this.images[Math.floor(Math.random() * this.images.length)];
   }
