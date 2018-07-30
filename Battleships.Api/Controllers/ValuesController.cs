@@ -26,15 +26,15 @@ namespace Battleships.Api.Controllers
         [HttpGet("{id}")]
         public string  Get(int id)
         {
-            //var disco = await DiscoveryClient.GetAsync("https://localhost:44362");
+            var disco = await DiscoveryClient.GetAsync("https://localhost:44362");
 
-            //var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
-            //var tokenResponse = await tokenClient.RequestClientCredentialsAsync("Platform.ProfileService");
+            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
+            var tokenResponse = await tokenClient.RequestClientCredentialsAsync("Platform.ProfileService");
 
-            //var client = new HttpClient();
-            //client.SetBearerToken(tokenResponse.AccessToken);
+            var client = new HttpClient();
+            client.SetBearerToken(tokenResponse.AccessToken);
 
-            //var resp = client.GetStringAsync("https://");
+            var resp = client.GetStringAsync("https://");
 
             return "value";
         }
