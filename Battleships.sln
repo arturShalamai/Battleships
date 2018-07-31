@@ -32,6 +32,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Battleships-Angular", "Batt
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "52557"
 		SlnRelativePath = "Battleships-Angular\"
+		StartServerOnDebug = "false"
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApi", "TestApi\TestApi.csproj", "{CB4488F4-E3A5-4860-AEB2-3082178EA5A0}"

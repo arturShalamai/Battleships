@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Battleships.BLL;
 using Battleships.BLL.Repos;
 using Battleships.BLL.Services;
@@ -49,7 +50,7 @@ namespace Battleships.Api
 
             services.AddCors(conf =>
             {
-                conf.AddPolicy("AllowAll", opts => opts.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+                conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
         }
 
@@ -70,6 +71,8 @@ namespace Battleships.Api
 
         public void RegisterDependencies(IServiceCollection services)
         {
+            services.AddAutoMapper();
+
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepo<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPlayerService, PlayerService>();
