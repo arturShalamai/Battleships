@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Battleships.Api.Services;
 using Battleships.BLL;
 using Battleships.BLL.Repos;
 using Battleships.BLL.Services;
@@ -101,6 +102,7 @@ namespace Battleships.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
     }
 }

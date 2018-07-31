@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Battleships.Api.Services;
 using Battleships.BLL;
 using Battleships.BLL.Models;
 using Battleships.BLL.Services;
@@ -26,17 +27,20 @@ namespace Battleships.Api.Controllers
     public class AuthController : Controller
     {
         private readonly IPlayerService _playerSvc;
+        private readonly ITokenService _tokenSvc;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
         public AuthController(
             IPlayerService playerSvc,
             IMapper mapper,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ITokenService tokenSvc)
         {
             _playerSvc = playerSvc;
             _mapper = mapper;
             _configuration = configuration;
+            _tokenSvc = tokenSvc;
         }
 
         [HttpPost]
@@ -60,28 +64,8 @@ namespace Battleships.Api.Controllers
             var verifyRes = await _playerSvc.ValidateCredentials(loginModel.Email, loginModel.Password);
             if (verifyRes == PasswordVerificationResult.Success)
             {
-                var player = await _playerSvc.GetPlayer(p => p.Email == loginModel.Email);
-
-                var claims = new[]
-                {
-                    new Claim("sub", player.Id.ToString()),
-                    new Claim("NickName", player.NickName),
-                    new Claim(ClaimTypes.Name, player.FirstName),
-                    new Claim(ClaimTypes.Email, player.Email)
-                };
-
-                var securityKey = _configuration["SecurityKey"];
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecurityKey"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(
-                    issuer: "https://localhost:44310",
-                    audience: "https://localhost:44310",
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: creds);
-
-                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                var token = await _tokenSvc.GetTokenAsync(loginModel.Email);
+                return Ok(new { token });
             }
 
             return BadRequest("Invalid credentials");
