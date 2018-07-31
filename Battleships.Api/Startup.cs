@@ -45,25 +45,8 @@ namespace Battleships.Api
                                               opts => opts.MigrationsAssembly("Battleships.Migrations")));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer("IdentityServer", conf =>
-             {
-                 conf.Authority = "https://localhost:44362";
-                 conf.Audience = "https://localhost:44362/resources";
-             })
-            .AddJwtBearer("SelfSigned", options =>
-             {
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateIssuer = true,
-                     ValidateAudience = true,
-                     ValidateLifetime = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = "https://localhost:44310",
-                     ValidAudience = "https://localhost:44310",
-                     IssuerSigningKey = new SymmetricSecurityKey(
-                         Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
-                 };
-             });
+            .AddIdentityServerJWT()
+            .AddCustomJWT(Configuration);
 
             services.AddAuthorization(config =>
             {
