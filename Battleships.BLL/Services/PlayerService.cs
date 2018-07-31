@@ -19,10 +19,7 @@ namespace Battleships.BLL.Services
             _hasher = new PasswordHasher<Player>();
         }
 
-        public async Task<Player> GetPlayer(Expression<Func<Player, bool>> filter)
-        {
-            return await _unit.PlayerRepo.SingleAsync(filter);
-        }
+        public async Task<Player> GetPlayer(Expression<Func<Player, bool>> filter) => await _unit.PlayerRepo.SingleAsync(filter);
 
 
         public async Task Updatelayer(Player player)
@@ -56,6 +53,13 @@ namespace Battleships.BLL.Services
 
             await _unit.PlayerRepo.AddAsync(newPlayer);
             await _unit.SaveAsync();
+        }
+
+        public async Task<PasswordVerificationResult> ValidateCredentials(string email, string password)
+        {
+            var player = await _unit.PlayerRepo.SingleAsync(p => String.Equals(p.Email, email, StringComparison.OrdinalIgnoreCase));
+            if(player == null) { throw new Exception("There no player with such email"); }
+            return _hasher.VerifyHashedPassword(player, player.Password, password);
         }
     }
 }

@@ -30,10 +30,6 @@ namespace Battleships.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-            //_playerSvc.RegisterPlayer(new DAL.Player() { FirstName = "Artur", LastName = "Shalamai", NickName = "Artur", Score = 25, Credentials = new DAL.PlayerCredentials() { Email = "Artur@mgail.com", Password = "testPassword" } });
-            //var games = _gameSvc.GetAllGames();
-            //await _gameSvc.StartGameAsync();
-
             return Ok(new string[] { "value1", "value2" });
         }
 
@@ -41,16 +37,6 @@ namespace Battleships.Api.Controllers
         [HttpGet("{id}")]
         public string  Get(int id)
         {
-            //var disco = await DiscoveryClient.GetAsync("https://localhost:44362");
-
-            //var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
-            //var tokenResponse = await tokenClient.RequestClientCredentialsAsync("Platform.ProfileService");
-
-            //var client = new HttpClient();
-            //client.SetBearerToken(tokenResponse.AccessToken);
-
-            //var resp = client.GetStringAsync("https://");
-
             return "value";
         }
 

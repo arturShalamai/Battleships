@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Battleships.BLL;
@@ -10,6 +11,7 @@ using Battleships.BLL.Services;
 using Battleships.DAL;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,15 +39,37 @@ namespace Battleships.Api
 
             RegisterDependencies(services);
 
-            services.AddDbContext<BattleshipsContext>(conf => 
+            services.AddDbContext<BattleshipsContext>(conf =>
                             conf.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"),
                                               opts => opts.MigrationsAssembly("Battleships.Migrations")));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(conf =>
+            .AddJwtBearer("IdentityServer", conf =>
+             {
+                 conf.Authority = "https://localhost:44362";
+                 conf.Audience = "https://localhost:44362/resources";
+             })
+            .AddJwtBearer("SelfSigned", options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = "https://localhost:44310",
+                     ValidAudience = "https://localhost:44310",
+                     IssuerSigningKey = new SymmetricSecurityKey(
+                         Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
+                 };
+             });
+
+            services.AddAuthorization(config =>
             {
-                conf.Authority = "https://localhost:44362";
-                conf.Audience = "https://localhost:44362/resources";
+                config.DefaultPolicy = new AuthorizationPolicyBuilder()
+                                                            .RequireAuthenticatedUser()
+                                                            .AddAuthenticationSchemes("IdentityServer", "SelfSigned")
+                                                            .Build();
             });
 
             services.AddCors(conf =>
