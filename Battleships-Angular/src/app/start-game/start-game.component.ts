@@ -11,6 +11,8 @@ export class StartGameComponent implements OnInit {
   private images: string[] = ['/assets/images/home/bg1.jpg', '/assets/images/home/bg2.png', '/assets/images/home/bg3.png'];
   public bgImage: string = this.images[0];
 
+  public isSignUp:boolean;
+
   constructor() { }
 
   ngOnInit() {
@@ -20,6 +22,10 @@ export class StartGameComponent implements OnInit {
     //   console.log(randomImage);
     //   this.bgImage = randomImage;
     // }, 3000);
+  }
+
+  signUp():void{
+      this.isSignUp = true;
   }
 
   private getRandomImage(): string{

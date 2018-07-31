@@ -10,17 +10,21 @@ import { StartGameComponent } from './start-game/start-game.component';
 import {OAuthModule} from 'angular-oauth2-oidc';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
+import { RegisterUserComponent } from './register-user/register-user.component';
+import { FormsModule } from '../../node_modules/@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StartGameComponent
+    StartGameComponent,
+    RegisterUserComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     HttpModule,
+    FormsModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
