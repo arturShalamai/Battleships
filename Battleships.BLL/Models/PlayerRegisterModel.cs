@@ -7,7 +7,13 @@ namespace Battleships.BLL
 {
     public class PlayerRegisterModel
     {
+        public PlayerRegisterModel()
+        {
+
+        }
+
         [Required]
+        [EmailAddress]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
@@ -24,5 +30,11 @@ namespace Battleships.BLL
         [MaxLength(15)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        [MinLength(7)]
+        [MaxLength(15)]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
     }
 }

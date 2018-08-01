@@ -26,7 +26,10 @@ namespace Battleships.DAL
 
         public double Score { get; set; }
 
-        public PlayerCredentials Credentials { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+
+        public string Password { get; set; }
 
         public List<GamePlayer> GamesInfo { get; set; }
     }

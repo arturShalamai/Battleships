@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using Battleships.Api.Services;
 using Battleships.BLL;
 using Battleships.BLL.Repos;
 using Battleships.BLL.Services;
 using Battleships.DAL;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,25 +40,25 @@ namespace Battleships.Api
 
             RegisterDependencies(services);
 
-            services.AddDbContext<BattleshipsContext>(conf => 
+            services.AddDbContext<BattleshipsContext>(conf =>
                             conf.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"),
                                               opts => opts.MigrationsAssembly("Battleships.Migrations")));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(conf =>
-            {
-                conf.Authority = "https://localhost:44362";
-                conf.Audience = "https://localhost:44362/resources";
-            });
+            .AddIdentityServerJWT()
+            .AddCustomJWT(Configuration);
 
-            services.AddSignalR();
+            services.AddAuthorization(config =>
+            {
+                config.DefaultPolicy = new AuthorizationPolicyBuilder()
+                                                            .RequireAuthenticatedUser()
+                                                            .AddAuthenticationSchemes("IdentityServer", "SelfSigned")
+                                                            .Build();
+            });
 
             services.AddCors(conf =>
             {
-                conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin()
-                                                        .AllowAnyMethod()
-                                                        .AllowAnyHeader()
-                                                        .AllowCredentials());
+                conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
         }
 
@@ -70,17 +74,18 @@ namespace Battleships.Api
 
             app.UseCors("AllowAll");
 
-            app.UseSignalR(conf => conf.MapHub<GameHub>("/hub/games"));
-
             app.UseMvc();
         }
 
         public void RegisterDependencies(IServiceCollection services)
         {
+            services.AddAutoMapper();
+
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepo<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
     }
 }

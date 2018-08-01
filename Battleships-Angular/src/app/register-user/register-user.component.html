@@ -1,0 +1,38 @@
+<mat-card class="card-register-user">
+  <mat-card-subtitle>Register
+    <small class="label-login">back to login</small>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <div class="col-md-6">
+      <mat-form-field class="example-full-width">
+        <input type="email" matInput placeholder="Email" value="{{registerModel.Email}}" required [(ngModel)]="registerModel.Email" >
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="First Name" required value="{{registerModel.FirstName}}"  [(ngModel)]="registerModel.FirstName">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Last Name" value="{{registerModel.LastName}}" [(ngModel)]="registerModel.LastName" >
+      </mat-form-field>
+      <br>
+    </div>
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Nick Name" value="{{registerModel.NickName}}" required [(ngModel)]="registerModel.NickName" >
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <input matInput type="password" placeholder="Passowrd" value="{{registerModel.Password}}" [(ngModel)]="registerModel.Password" >
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" class="button-register" (click)="Register()" >Register</button>
+    <!-- <div class="socials">
+      <img src="../../assets/images/socials/transer.png" (click)="login()" alt="">
+      <img src="../../assets/images/home/gmail.png" alt="">
+      <img src="../../assets/images/socials/twitter.png" alt="">
+      <img src="../../assets/images/socials/microsoft.png" alt="">
+      <img src="../../assets/images/socials/origin.png"alt="">
+    </div> -->
+  </mat-card-content>
+</mat-card>
