@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
       // This method just tries to parse the token(s) within the url when
       // the auth-server redirects the user back to the web-app
       // It dosn't send the user the the login page
+      this.oauthService.setStorage(localStorage);
       this.oauthService.tryLogin({}).catch(err => console.log(err));
     });
     let claims = this.oauthService.getIdentityClaims();

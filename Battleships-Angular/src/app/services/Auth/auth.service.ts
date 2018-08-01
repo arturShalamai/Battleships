@@ -10,14 +10,16 @@ export class AuthService {
 
   login(email: string, password: string): Observable<string> {
     this.http
-      .post("https://localhost:44310/api/player/login", {
-        Email: email,
-        Password: password
-      })
+      .post<TokenResponse>(`https://localhost:44310/api/players/token?Email=${email}&password=${password}`, {})
       .subscribe(res => {
         console.log(res);
+        localStorage.setItem("access_token", res.token);
         return of(res);
       });
     return of("none");
   }
+}
+
+class TokenResponse{
+  token: string;
 }

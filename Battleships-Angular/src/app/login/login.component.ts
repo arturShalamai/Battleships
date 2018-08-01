@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() : void{
-    this.authSvc.login(this.email, this.password);
+    this.authSvc.login(this.email, this.password).subscribe(x => {console.log("User Logined")} );
   }
 
 
