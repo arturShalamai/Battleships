@@ -23,4 +23,10 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Battleships.BLL\Battleships.BLL.csproj" />
+    <ProjectReference Include="..\Battleships.DAL\Battleships.DAL.csproj" />
+    <ProjectReference Include="..\Battleships.Migrations\Battleships.Migrations.csproj" />
+  </ItemGroup>
+
 </Project>

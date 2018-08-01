@@ -4,14 +4,14 @@
   </mat-card-subtitle>
   <mat-card-content>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Login">
+      <input matInput placeholder="Login" [(ngModel)]='email'>
     </mat-form-field>
     <br>
     <mat-form-field class="example-full-width">
-      <input matInput type="password" placeholder="Passowrd">
+      <input matInput type="password" placeholder="Passowrd" [(ngModel)]='password' >
     </mat-form-field>
     <br>
-    <button mat-raised-button color="primary" class="button-register">Login</button>
+    <button mat-raised-button color="primary" class="button-register" (click)='login()'>Login</button>
     <mat-form-field class="example-full-width" *ngIf="false">
       <input matInput placeholder="Game Id">
     </mat-form-field>

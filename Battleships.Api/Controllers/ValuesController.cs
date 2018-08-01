@@ -38,13 +38,6 @@ namespace Battleships.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
-
-            //await _gameHub.Clients.All.MakeTurn(25);
-
-            _playerSvc.RegisterPlayer(new DAL.Player() { FirstName = "Artur", LastName = "Shalamai", NickName = "Artur", Score = 25, Credentials = new DAL.PlayerCredentials() { Email = "Artur@mgail.com", Password = "testPassword" } });
-            var games = _gameSvc.GetAllGames();
-            //await _gameSvc.StartGameAsync();
-
             return Ok(new string[] { "value1", "value2" });
         }
 

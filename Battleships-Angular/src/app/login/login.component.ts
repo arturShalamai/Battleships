@@ -1,3 +1,5 @@
+import { OAuthService } from 'angular-oauth2-oidc';
+import { AuthService } from './../services/Auth/auth.service';
 import { Component, OnInit } from "@angular/core";
 
 @Component({
@@ -6,13 +8,21 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
-  constructor() {}
-
   public isSignUp: boolean;
+  public email:string;
+  public password : string;
+
+  constructor(private authSvc:AuthService) {}
+
+  ngOnInit() {
+  }
+
+  login() : void{
+    this.authSvc.login(this.email, this.password);
+  }
+
 
   signUp(): void {
     this.isSignUp = true;
   }
-
-  ngOnInit() {}
 }
