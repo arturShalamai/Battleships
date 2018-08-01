@@ -4,13 +4,15 @@ export class PlayerregisterModel {
     firstName: string,
     lastName: string,
     nickName: string,
-    password: string
+    password: string,
+    confirmPassword: string
   ) {
     this.Email = email;
     this.FirstName = firstName;
     this.LastName = lastName;
     this.NickName = nickName;
     this.Password = password;
+    this.confirmPassword = confirmPassword;
   }
 
   Email: string;
@@ -18,4 +20,5 @@ export class PlayerregisterModel {
   LastName: string;
   NickName: string;
   Password: string;
+  confirmPassword:string;
 }

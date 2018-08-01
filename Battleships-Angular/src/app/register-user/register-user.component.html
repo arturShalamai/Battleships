@@ -26,6 +26,10 @@
       <input matInput type="password" placeholder="Passowrd" value="{{registerModel.Password}}" [(ngModel)]="registerModel.Password" >
     </mat-form-field>
     <br>
+    <mat-form-field class="example-full-width">
+        <input matInput type="password" placeholder="Confirm Passowrd" value="{{registerModel.confirmPassword}}" [(ngModel)]="registerModel.Password" >
+      </mat-form-field>
+    <br>
     <button mat-raised-button color="primary" class="button-register" (click)="Register()" >Register</button>
     <!-- <div class="socials">
       <img src="../../assets/images/socials/transer.png" (click)="login()" alt="">

@@ -1,3 +1,4 @@
+import { AuthService } from './../services/Auth/auth.service';
 import { UsersService } from "./../services/UsersService/users.service";
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { OAuthService } from "angular-oauth2-oidc";
@@ -12,7 +13,7 @@ export class RegisterUserComponent implements OnInit {
   @Output() public login = new EventEmitter<any>();
   public registerModel: PlayerregisterModel;
 
-  constructor(private usersSvc: UsersService) {}
+  constructor(private authSvc: AuthService) {}
 
   ngOnInit() {
     this.registerModel = new PlayerregisterModel(
@@ -20,6 +21,7 @@ export class RegisterUserComponent implements OnInit {
       "Ivan",
       "Petrenko",
       "Ivan112",
+      "qwerty12",
       "qwerty12"
     );
   }
@@ -30,6 +32,6 @@ export class RegisterUserComponent implements OnInit {
 
   Register(): void {
     debugger;
-    this.usersSvc.register(this.registerModel);
+    this.authSvc.register(this.registerModel);
   }
 }
