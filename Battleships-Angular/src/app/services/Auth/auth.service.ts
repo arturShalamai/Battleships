@@ -1,3 +1,4 @@
+import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -18,6 +19,7 @@ export class AuthService {
       });
     return of("none");
   }
+
 }
 
 class TokenResponse{

@@ -1,6 +1,6 @@
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AuthService } from './../services/Auth/auth.service';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 
 @Component({
   selector: "app-login",
@@ -11,8 +11,9 @@ export class LoginComponent implements OnInit {
   public isSignUp: boolean;
   public email:string;
   public password : string;
+  @Output() public register = new EventEmitter<any>();
 
-  constructor(private authSvc:AuthService) {}
+  constructor(private oauthSvc:OAuthService, private authSvc:AuthService) {}
 
   ngOnInit() {
   }
@@ -21,8 +22,11 @@ export class LoginComponent implements OnInit {
     this.authSvc.login(this.email, this.password).subscribe(x => {console.log("User Logined")} );
   }
 
+  platformLogin(){
+    this.oauthSvc.initImplicitFlow();
+  }
 
   signUp(): void {
-    this.isSignUp = true;
+    this.register.emit(null);
   }
 }

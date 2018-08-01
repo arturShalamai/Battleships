@@ -24,8 +24,12 @@ export class StartGameComponent implements OnInit {
     // }, 3000);
   }
 
-  signUp():void{
+  register():void{
       this.isSignUp = true;
+  }
+
+  login(){
+    this.isSignUp = false;
   }
 
   private getRandomImage(): string{

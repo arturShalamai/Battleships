@@ -17,7 +17,8 @@
     start-game works!
   </p> -->
 
- <app-login *ngIf='!isSignUp'></app-login>
+ <app-login *ngIf='!isSignUp'
+ (register)='register()'></app-login>
 
   <app-register-user *ngIf="isSignUp"></app-register-user>
 
