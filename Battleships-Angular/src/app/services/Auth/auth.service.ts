@@ -24,10 +24,9 @@ export class AuthService {
     return of("none");
   }
 
-  register(playerReg: PlayerregisterModel) {
-    this.http
-      .post("https://localhost:44310/api/players/register", playerReg)
-      .subscribe(res => console.log("Registered"));
+  register(playerReg: PlayerregisterModel) : Observable<any> {
+    return this.http
+      .post("https://localhost:44310/api/players/register", playerReg);
   }
 }
 

@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { AuthService } from './../services/Auth/auth.service';
 import { UsersService } from "./../services/UsersService/users.service";
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
@@ -30,8 +31,8 @@ export class RegisterUserComponent implements OnInit {
     this.login.emit(null);
   }
 
-  Register(): void {
+  Register(){
     debugger;
-    this.authSvc.register(this.registerModel);
+    this.authSvc.register(this.registerModel).subscribe(res => this.goToLogin());
   }
 }
