@@ -1,6 +1,6 @@
 import { MatButtonModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuardService } from './services/Auth/auth-guard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
@@ -12,12 +12,14 @@ import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { FormsModule } from '../../node_modules/@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartGameComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

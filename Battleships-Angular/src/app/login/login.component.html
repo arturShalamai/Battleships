@@ -1,0 +1,26 @@
+<mat-card class="login-card">
+  <mat-card-subtitle>Login / Register
+    <small class="label-signup" (click)="signUp()">sign up</small>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Login">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <input matInput type="password" placeholder="Passowrd">
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" class="button-register">Login</button>
+    <mat-form-field class="example-full-width" *ngIf="false">
+      <input matInput placeholder="Game Id">
+    </mat-form-field>
+    <div class="socials">
+      <img src="../../assets/images/socials/transer.png" alt="">
+      <img src="../../assets/images/socials/gmail.svg" alt="">
+      <img src="../../assets/images/socials/twitter.svg" alt="">
+      <img src="../../assets/images/socials/microsoft.svg" alt="">
+      <img src="../../assets/images/socials/origin.png" alt="">
+    </div>
+  </mat-card-content>
+</mat-card>
