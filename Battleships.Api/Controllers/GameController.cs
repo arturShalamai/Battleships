@@ -21,6 +21,14 @@ namespace Battleships.Api.Controllers
             _gamesSvc = gamesSvc;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var res = await _gamesSvc.GetByIdAsync(Guid.Parse(id));
+            return Ok(new { Id = res.Id });
+        }
+
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> StartNewGame()
@@ -28,7 +36,7 @@ namespace Battleships.Api.Controllers
             var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
 
-            return Ok(gameId);
+            return RedirectToAction(nameof(GetById), new { id = gameId });
         }
     }
 }

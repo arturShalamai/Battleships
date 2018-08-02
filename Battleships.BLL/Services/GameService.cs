@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Battleships.BLL.Models;
+using Battleships.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +21,11 @@ namespace Battleships.BLL.Services
         {
             var games = await _unit.GameRepo.AllAsync();
             return games.Select(g => g.Id).ToList();
+        }
+
+        public async Task<Game> GetByIdAsync(Guid gameId)
+        {
+            return await _unit.GameRepo.SingleAsync(g => g.Id == gameId);
         }
 
         public async Task<Guid> StartGameAsync(Guid creatorId)

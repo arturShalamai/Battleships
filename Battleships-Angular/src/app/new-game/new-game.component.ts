@@ -1,4 +1,6 @@
+import { GameService } from './../services/Game/game.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-new-game',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewGameComponent implements OnInit {
 
-  constructor() { }
+  constructor(private gameSvc:GameService, private router:Router) { }
 
   ngOnInit() {
+  }
+
+  createGame(){
+    this.gameSvc.createGame().subscribe(res => {
+        console.log(`Game created with id : ${res.id}`);
+        this.router.navigate(['/game-dashboard'])
+    });
   }
 
 }

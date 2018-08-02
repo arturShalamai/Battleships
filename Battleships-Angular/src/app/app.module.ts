@@ -1,3 +1,4 @@
+import { GameDashboardComponent } from './game-dashboard/game-dashboard.component';
 import { MatButtonModule, MatProgressBarModule, MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AuthGuardService } from './services/Auth/auth-guard.service';
@@ -21,7 +22,8 @@ import { NewGameComponent } from './new-game/new-game.component';
     StartGameComponent,
     RegisterUserComponent,
     LoginComponent,
-    NewGameComponent
+    NewGameComponent,
+    GameDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ import { NewGameComponent } from './new-game/new-game.component';
     RouterModule.forRoot([
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
+      {path : 'game-dashboard', component: GameDashboardComponent},
     ]),
     OAuthModule.forRoot()
   ],
