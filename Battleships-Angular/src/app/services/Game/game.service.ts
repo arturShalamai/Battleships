@@ -14,4 +14,9 @@ export class GameService {
     return this.http.post<CreateGameResponse>('https://localhost:44310/api/Game/create', {},{headers:{'Authorization': `Bearer ${token}`}});
   }
 
+  joinGame(gameId):Observable<any> {
+    var token = localStorage.getItem("access_token");
+    return this.http.post(`https://localhost:44310/api/Game/join/${gameId}`, {},{headers:{'Authorization': `Bearer ${token}`}});
+  }
+
 }

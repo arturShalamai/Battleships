@@ -15,6 +15,7 @@ import { RegisterUserComponent } from './register-user/register-user.component';
 import { FormsModule } from '../../node_modules/@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { NewGameComponent } from './new-game/new-game.component';
+import { JoinGameComponent } from './join-game/join-game.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { NewGameComponent } from './new-game/new-game.component';
     RegisterUserComponent,
     LoginComponent,
     NewGameComponent,
-    GameDashboardComponent
+    GameDashboardComponent,
+    JoinGameComponent
   ],
   imports: [
     BrowserModule,
