@@ -21,10 +21,10 @@ namespace Battleships.BLL.Services
             return games.Select(g => g.Id).ToList();
         }
 
-        public async Task<Guid> StartGameAsync()
+        public async Task<Guid> StartGameAsync(Guid creatorId)
         {
-            var player = await _unit.PlayerRepo.SingleAsync(_ => true);
-            var game = new DAL.Game(player);
+            var creator = await _unit.PlayerRepo.SingleAsync(p => p.Id == creatorId);
+            var game = new DAL.Game(creator);
             await _unit.GameRepo.AddAsync(game);
 
             await _unit.SaveAsync();

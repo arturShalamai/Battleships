@@ -6,7 +6,7 @@ namespace Battleships.BLL.Services
 {
     public interface IGameService
     {
-        Task<Guid> StartGameAsync();
+        Task<Guid> StartGameAsync(Guid creatorId);
         Task<List<Guid>> GetAllGames();
     }
 }

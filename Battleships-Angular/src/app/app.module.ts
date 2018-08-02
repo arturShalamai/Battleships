@@ -13,13 +13,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { FormsModule } from '../../node_modules/@angular/forms';
 import { LoginComponent } from './login/login.component';
+import { NewGameComponent } from './new-game/new-game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartGameComponent,
     RegisterUserComponent,
-    LoginComponent
+    LoginComponent,
+    NewGameComponent
   ],
   imports: [
     BrowserModule,
