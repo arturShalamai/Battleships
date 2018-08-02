@@ -11,7 +11,7 @@ namespace Battleships.Api.Hubs
 
         Task StartGame(string gameId);
 
-        Task EnemyReady();
+        Task OponentReady();
 
         //Task Shipes();
     }

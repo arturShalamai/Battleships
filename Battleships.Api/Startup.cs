@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Battleships.Api.Hubs;
 using Battleships.Api.Services;
 using Battleships.BLL;
 using Battleships.BLL.Repos;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +62,9 @@ namespace Battleships.Api
             {
                 conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
+
+            services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +79,8 @@ namespace Battleships.Api
 
             app.UseCors("AllowAll");
 
+            app.UseSignalR(conf => conf.MapHub<GameHub>("/hubs/game"));
+
             app.UseMvc();
         }
 
@@ -86,6 +93,7 @@ namespace Battleships.Api
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
         }
     }
 }

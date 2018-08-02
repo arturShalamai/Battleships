@@ -17,6 +17,8 @@ namespace Battleships.Api.Hubs
             await Clients.All.StartGame(gameId);
         }
 
-        public async Task EnemyReady() { }
+        public async Task OponentReady(string groupName, string currPlayerId) {
+            await Clients.GroupExcept(groupName, currPlayerId).OponentReady();
+        }
     }
 }

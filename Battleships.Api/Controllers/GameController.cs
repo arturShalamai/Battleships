@@ -39,6 +39,7 @@ namespace Battleships.Api.Controllers
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
+            await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
 
             return RedirectToAction(nameof(GetById), new { id = gameId });
         }
@@ -60,7 +61,7 @@ namespace Battleships.Api.Controllers
             var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             var shipsMapped = String.Join(String.Empty, ships.Field);
             await _gamesSvc.PlaceShips(shipsMapped, Guid.Parse(userId), ships.GameId);
-            _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId);
+            await _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId).SendAsync("oponentReady");
 
             return Ok();
         }
