@@ -26,4 +26,11 @@ namespace Battleships.DAL
 
         public Game Game { get; set; }
     }
+
+
+
+
+
+
+
 }
