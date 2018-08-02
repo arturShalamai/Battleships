@@ -12,7 +12,6 @@ namespace Battleships.DAL
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<GameInfo> GamesInfo { get; set; }
-        public DbSet<GamePlayer> GamePlayer { get; set; }
 
         public BattleshipsContext(DbContextOptions opts) : base(opts)
         {
@@ -21,9 +20,6 @@ namespace Battleships.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.ApplyConfiguration<GamePlayer>(new GamePlayerConfiguration());
-
             modelBuilder.ApplyConfiguration<GameInfo>(new GameInfoConfigurations());
 
             modelBuilder.ApplyConfiguration<Game>(new GameConfigurations());

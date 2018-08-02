@@ -9,20 +9,28 @@ namespace Battleships.DAL
     {
         public GameInfo()
         {
-            FirstUserField = new string('░', 90);
-            SecondUserField = FirstUserField;
+            FirstPlayerField = new string(' ', 42);
+            SecondPlayerField = FirstPlayerField;
+        }
+
+        public GameInfo(Player firstPlayer)
+        {
+            //FirstPlayer = firstPlayer;
+
+            FirstPlayerField = new string(' ', 42);
+            SecondPlayerField = FirstPlayerField;
+
         }
 
         public Guid GameId { get; set; }
-
-        public string FirstUserField { get; set; }
-
-        public string SecondUserField { get; set; }
-        //To make my objects cheaper
-        //If true = first User, false = second
-        //Especially for in memory store
-        public bool Turn { get; set; }
-
         public Game Game { get; set; }
+
+        public Guid FirstPlayerId { get; set; }
+        public Player FirstPlayer { get; set; }
+        public string FirstPlayerField { get; set; }
+
+        public Guid SecondPlayerId { get; set; }
+        public Player SecondPlayer { get; set; }
+        public string SecondPlayerField { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace Battleships.BLL.Services
         public async Task Updatelayer(Player player)
         {
             await _unit.PlayerRepo.UpdateOneAsync(player);
-            await _unit.SaveAsync();
+            _unit.SaveAsync();
         }
 
         public async Task BanPlayer(Guid playerId)
@@ -52,7 +52,7 @@ namespace Battleships.BLL.Services
             newPlayer.Password = hashedPassword;
 
             await _unit.PlayerRepo.AddAsync(newPlayer);
-            await _unit.SaveAsync();
+            _unit.SaveAsync();
         }
 
         public async Task<PasswordVerificationResult> ValidateCredentials(string email, string password)

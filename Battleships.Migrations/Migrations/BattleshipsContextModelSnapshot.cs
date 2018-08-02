@@ -42,34 +42,23 @@ namespace Battleships.Migrations.Migrations
                 {
                     b.Property<Guid>("GameId");
 
-                    b.Property<string>("FirstUserField");
+                    b.Property<string>("FirstPlayerField");
 
-                    b.Property<string>("SecondUserField");
+                    b.Property<Guid>("FirstPlayerId");
 
-                    b.Property<bool>("Turn");
+                    b.Property<string>("SecondPlayerField");
+
+                    b.Property<Guid>("SecondPlayerId");
 
                     b.HasKey("GameId");
+
+                    b.HasIndex("FirstPlayerId");
+
+                    b.HasIndex("SecondPlayerId");
 
                     b.ToTable("GamesInfo");
                 });
 
-            modelBuilder.Entity("Battleships.DAL.GamePlayer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("GameId");
-
-                    b.Property<Guid>("PlayerId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("GamePlayer");
-                });
 
             modelBuilder.Entity("Battleships.DAL.Player", b =>
                 {
@@ -97,24 +86,22 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GameInfo", b =>
                 {
+                    b.HasOne("Battleships.DAL.Player", "FirstPlayer")
+                        .WithMany()
+                        .HasForeignKey("FirstPlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Battleships.DAL.Game", "Game")
                         .WithOne("GameInfo")
                         .HasForeignKey("Battleships.DAL.GameInfo", "GameId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("Battleships.DAL.GamePlayer", b =>
-                {
-                    b.HasOne("Battleships.DAL.Game", "Game")
-                        .WithMany("PlayersInfo")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Battleships.DAL.Player", "Player")
-                        .WithMany("GamesInfo")
-                        .HasForeignKey("PlayerId")
+                    b.HasOne("Battleships.DAL.Player", "SecondPlayer")
+                        .WithMany()
+                        .HasForeignKey("SecondPlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
+
 #pragma warning restore 612, 618
         }
     }

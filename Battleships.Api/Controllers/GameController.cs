@@ -48,5 +48,22 @@ namespace Battleships.Api.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("fire/{positions:int}")]
+        public async Task<IActionResult> Fire(int position)
+        {
+
+
+            return Ok();
+        }
+
+
+        //[HttpPost]
+        //[Route("join/{id}")]
+        //public async Task<IActionResult> PlaceShips(string id)
+        //{
+
+        //}
     }
 }

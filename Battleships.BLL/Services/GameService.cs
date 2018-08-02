@@ -32,23 +32,38 @@ namespace Battleships.BLL.Services
         {
             userId = userId.ToUpper();
 
-            var gameInfo = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
-            var currPlayer = await _unit.PlayerRepo.SingleAsync(p =>  p.Id.ToString() == userId);
+            var gameInfo = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.GameInfo);
+            var currPlayer = await _unit.PlayerRepo.SingleAsync(p => p.Id.ToString() == userId);
             gameInfo.AddPlayer(currPlayer);
 
             await _unit.GameRepo.UpdateOneAsync(gameInfo);
-            await _unit.SaveAsync();
+            _unit.SaveAsync();
         }
 
         public async Task<Guid> StartGameAsync(Guid creatorId)
         {
             var creator = await _unit.PlayerRepo.SingleAsync(p => p.Id == creatorId);
-            var game = new DAL.Game(creator);
+            var game = new Game(creator);
             await _unit.GameRepo.AddAsync(game);
 
-            await _unit.SaveAsync();
+            _unit.SaveAsync();
 
             return game.Id;
+        }
+
+        public async Task Fire(int positions, string userId, Guid gameId)
+        {
+            //userId = userId.ToUpper();
+            //var gameInfo = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo, 
+            //                                                                     g => g.GameInfo);
+
+            //var currPlayer = await _unit.PlayerRepo.SingleAsync(p => p.Id.ToString() == userId);
+
+            //if(gameInfo.PlayersInfo[0].PlayerId == Guid.Parse(userId))
+            //{
+            //    gameInfo.
+            //}
+
         }
     }
 }

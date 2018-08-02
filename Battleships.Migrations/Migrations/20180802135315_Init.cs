@@ -46,62 +46,48 @@ namespace Battleships.Migrations.Migrations
                 columns: table => new
                 {
                     GameId = table.Column<Guid>(nullable: false),
-                    FirstUserField = table.Column<string>(nullable: true),
-                    SecondUserField = table.Column<string>(nullable: true),
-                    Turn = table.Column<bool>(nullable: false)
+                    FirstPlayerField = table.Column<string>(nullable: true),
+                    FirstPlayerId = table.Column<Guid>(nullable: false),
+                    SecondPlayerField = table.Column<string>(nullable: true),
+                    SecondPlayerId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GamesInfo", x => x.GameId);
+                    table.ForeignKey(
+                        name: "FK_GamesInfo_Players_FirstPlayerId",
+                        column: x => x.FirstPlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_GamesInfo_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GamePlayer",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GameId = table.Column<Guid>(nullable: false),
-                    PlayerId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GamePlayer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GamePlayer_Games_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Games",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GamePlayer_Players_PlayerId",
-                        column: x => x.PlayerId,
+                        name: "FK_GamesInfo_Players_SecondPlayerId",
+                        column: x => x.SecondPlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GamePlayer_GameId",
-                table: "GamePlayer",
-                column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GamePlayer_PlayerId",
-                table: "GamePlayer",
-                column: "PlayerId");
+                name: "IX_GamesInfo_FirstPlayerId",
+                table: "GamesInfo",
+                column: "FirstPlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GamesInfo_SecondPlayerId",
+                table: "GamesInfo",
+                column: "SecondPlayerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "GamePlayer");
 
             migrationBuilder.DropTable(
                 name: "GamesInfo");

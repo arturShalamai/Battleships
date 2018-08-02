@@ -24,9 +24,9 @@ namespace Battleships.BLL
             _context = context;
         }
 
-        public async Task SaveAsync()
+        public void SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public void Dispose()
