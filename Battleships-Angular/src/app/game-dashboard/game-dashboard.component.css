@@ -1,3 +1,23 @@
+.gameControls{
+  display: flex;
+  flex-direction: row;
+}
+
+.newgame-component{
+  display: flex;
+  align-items: center;
+}
+
+.Boards{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Boards > div{
+  width: 45%;
+}
+
 table td, table th {
     border: 1px solid #dbdbdb;
     padding: 0.5em 0.75em;
@@ -6,7 +26,6 @@ table td, table th {
     text-align: center;
 }
 table {
-  width: 80%;
   margin: 0 auto;
   border: 1px solid #eee;
 }

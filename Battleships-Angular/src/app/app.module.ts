@@ -24,8 +24,8 @@ import { JoinGameComponent } from './join-game/join-game.component';
     RegisterUserComponent,
     LoginComponent,
     NewGameComponent,
+    JoinGameComponent,
     GameDashboardComponent,
-    JoinGameComponent
   ],
   imports: [
     BrowserModule,

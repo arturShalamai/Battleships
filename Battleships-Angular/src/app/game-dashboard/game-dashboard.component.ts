@@ -9,16 +9,29 @@ import { HubConnectionBuilder } from '@aspnet/signalr';
 })
 export class GameDashboardComponent implements OnInit {
 
-  fieldOne: boolean[][] = [[null, null, null, null, null, null],
-                           [null, null, null, null, null, null],
-                           [null, null, null, null, null, null],
-                           [null, null, null, null, null, null],
-                           [null, null, null, null, null, null],
-                           [null, null, null, null, null, null],
-                           [null, null, null, null, null, null],
+  fieldOne: boolean[][] = [[true, true, false, true, false, true],
+                           [true, true, false, true, false, true],
+                           [true, true, false, true, false, true],
+                           [true, true, false, true, false, true],
+                           [true, true, false, true, false, true],
+                           [true, true, false, true, false, true],
+                           [true, true, false, true, false, true],
                           ];
-                          
+
+  fieldTwo: boolean[][] =[[false, false, false, false, false, false],
+                          [false, false, false, false, false, false],
+                          [false, false, false, false, false, false],
+                          [false, false, false, false, false, false],
+                          [false, false, false, false, false, false],
+                          [false, false, false, false, false, false],
+                          [false, false, false, false, false, false],
+                         ];
+
   constructor(private gameSvc:GameDashboardService) { 
+  }
+
+  fire(index:number){
+    console.log(`index ${index}`)
   }
 
   ngOnInit() {
