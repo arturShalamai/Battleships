@@ -28,6 +28,18 @@ namespace Battleships.BLL.Services
             return await _unit.GameRepo.SingleAsync(g => g.Id == gameId);
         }
 
+        public async Task JoinAsync(Guid gameId, string userId)
+        {
+            userId = userId.ToUpper();
+
+            var gameInfo = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
+            var currPlayer = await _unit.PlayerRepo.SingleAsync(p =>  p.Id.ToString() == userId);
+            gameInfo.AddPlayer(currPlayer);
+
+            await _unit.GameRepo.UpdateOneAsync(gameInfo);
+            await _unit.SaveAsync();
+        }
+
         public async Task<Guid> StartGameAsync(Guid creatorId)
         {
             var creator = await _unit.PlayerRepo.SingleAsync(p => p.Id == creatorId);

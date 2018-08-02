@@ -38,5 +38,15 @@ namespace Battleships.Api.Controllers
 
             return RedirectToAction(nameof(GetById), new { id = gameId });
         }
+
+        [HttpPost]
+        [Route("join/{id}")]
+        public async Task<IActionResult> JoinGame(string id)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+            await _gamesSvc.JoinAsync(Guid.Parse(id), userId);
+
+            return Ok();
+        }
     }
 }

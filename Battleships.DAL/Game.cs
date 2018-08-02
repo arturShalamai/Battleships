@@ -27,7 +27,8 @@ namespace Battleships.DAL
             {
                 new GamePlayer()
                 {
-                    Player = player
+                    Player = player,
+                    Game = this
                 }
             };
         }
@@ -50,6 +51,19 @@ namespace Battleships.DAL
         public GameInfo GameInfo { get; set; }
 
         public List<GamePlayer> PlayersInfo { get; set; }
+
+
+        public void AddPlayer(Player player)
+        {
+            if (PlayersInfo.Count == 2) { throw new Exception("There already 2 players"); }
+            PlayersInfo.Add(new GamePlayer()
+            {
+                Player = player,
+                Game = this
+            });
+        }
+
+
     }
 
     public enum GameStatuses

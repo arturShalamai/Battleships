@@ -12,7 +12,7 @@ namespace Battleships.BLL.Repos
 
         Task<List<T>> WhereAsync(Expression<Func<T, bool>> filter);
 
-        Task<T> SingleAsync(Expression<Func<T, bool>> filter);
+        Task<T> SingleAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
 
         Task AddAsync(T entity);
 

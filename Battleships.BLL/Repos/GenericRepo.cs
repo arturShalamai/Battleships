@@ -30,7 +30,7 @@ namespace Battleships.BLL.Repos
 
         public async Task DeleteManyAsync(Expression<Func<T, bool>> filter)
         {
-            
+
         }
 
         public async Task DeleteOneAsync(T entity)
@@ -38,9 +38,14 @@ namespace Battleships.BLL.Repos
             if (entity != null) { _context.Set<T>().Remove(entity); }
         }
 
-        public async Task<T> SingleAsync(Expression<Func<T, bool>> filter)
+        public async Task<T> SingleAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
         {
-            return await _context.Set<T>().FirstOrDefaultAsync(filter);
+            var ctx = _context.Set<T>().AsQueryable();
+
+            if (includes.Count() != 0)
+                foreach (var include in includes) { ctx = ctx.Include(include); }
+
+            return await ctx.FirstOrDefaultAsync(filter);
         }
 
         public Task UpdateOneAsync(T entity)
