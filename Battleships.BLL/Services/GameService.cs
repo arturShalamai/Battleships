@@ -75,8 +75,8 @@ namespace Battleships.BLL.Services
 
         private void ValidateShipsPlacement(string ships, Game game, Guid userId)
         {
-            if (game == null || !game.PlayersInfo.Any(p => p.PlayerId == userId)) { throw new Exception("Wrong game"); }
-            if (game.Status != GameStatuses.Waiting) { throw new Exception("Already placed"); }
+            if (game == null || game.PlayersInfo.Any(p => p.PlayerId == userId)) { throw new Exception("Wrong game"); }
+            if (game.Status != GameStatuses.Waiting) { throw new Exception("Wrong Game"); }
             if (ships.Count() != 42 || ships.Count(c => c == 'x') != 16) { throw new Exception("Wrong field"); }
             if (game.PlayersInfo[0].PlayerId == userId && game.GameInfo.FirstUserReady) { throw new Exception("Already placed"); }
             if (game.PlayersInfo[1].PlayerId == userId && game.GameInfo.SecondUserReady) { throw new Exception("Already placed"); }
