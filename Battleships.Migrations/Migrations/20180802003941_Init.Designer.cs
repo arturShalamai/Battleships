@@ -11,8 +11,8 @@ using System;
 namespace Battleships.Migrations.Migrations
 {
     [DbContext(typeof(BattleshipsContext))]
-    [Migration("20180731194125_ClientCredentialsInClient")]
-    partial class ClientCredentialsInClient
+    [Migration("20180802003941_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,15 +56,16 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GamePlayer", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
                     b.Property<Guid>("GameId");
 
                     b.Property<Guid>("PlayerId");
 
-                    b.Property<int>("Id");
+                    b.HasKey("Id");
 
-                    b.HasKey("GameId", "PlayerId");
-
-                    b.HasAlternateKey("Id");
+                    b.HasIndex("GameId");
 
                     b.HasIndex("PlayerId");
 

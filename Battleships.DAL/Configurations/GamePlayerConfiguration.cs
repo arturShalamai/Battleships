@@ -11,7 +11,7 @@ namespace Battleships.DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<GamePlayer> builder)
         {
-            builder.HasKey(g => new { g.GameId, g.PlayerId });
+            builder.HasKey(g => g.Id);
 
             builder.HasOne(g => g.Player)
                    .WithMany(p => p.GamesInfo)

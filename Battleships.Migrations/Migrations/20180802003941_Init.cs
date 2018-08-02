@@ -1,28 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace Battleships.Migrations.Migrations
 {
-    public enum SqlServerValueGenerationStrategy { IdentityColumn, SequenceHiLo }
-
     public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Credentials",
-                columns: table => new
-                {
-                    PlayerId = table.Column<Guid>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(maxLength: 15, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Credentials", x => x.PlayerId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
@@ -43,20 +29,16 @@ namespace Battleships.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: true),
                     NickName = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: true),
                     Score = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Players_Credentials_Id",
-                        column: x => x.Id,
-                        principalTable: "Credentials",
-                        principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,14 +65,14 @@ namespace Battleships.Migrations.Migrations
                 name: "GamePlayer",
                 columns: table => new
                 {
-                    GameId = table.Column<Guid>(nullable: false),
-                    PlayerId = table.Column<Guid>(nullable: false),
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GameId = table.Column<Guid>(nullable: false),
+                    PlayerId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GamePlayer", x => new { x.GameId, x.PlayerId });
-                    table.UniqueConstraint("AK_GamePlayer_Id", x => x.Id);
+                    table.PrimaryKey("PK_GamePlayer", x => x.Id);
                     table.ForeignKey(
                         name: "FK_GamePlayer_Games_GameId",
                         column: x => x.GameId,
@@ -104,6 +86,11 @@ namespace Battleships.Migrations.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GamePlayer_GameId",
+                table: "GamePlayer",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GamePlayer_PlayerId",
@@ -124,9 +111,6 @@ namespace Battleships.Migrations.Migrations
 
             migrationBuilder.DropTable(
                 name: "Games");
-
-            migrationBuilder.DropTable(
-                name: "Credentials");
         }
     }
 }
