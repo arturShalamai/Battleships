@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Battleships.Api.Hubs;
+using Battleships.Api.Models;
 using Battleships.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Battleships.Api.Controllers
 {
@@ -15,6 +18,7 @@ namespace Battleships.Api.Controllers
     public class GameController : Controller
     {
         private readonly IGameService _gamesSvc;
+        private readonly IHubContext<GameHub> _gameHub;
 
         public GameController(IGameService gamesSvc)
         {
@@ -45,6 +49,18 @@ namespace Battleships.Api.Controllers
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
             await _gamesSvc.JoinAsync(Guid.Parse(id), userId);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("placeships")]
+        public async Task<IActionResult> PlaceShips([FromBody]PlaceShipsModel ships)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+            var shipsMapped = String.Join(String.Empty, ships.Field);
+            await _gamesSvc.PlaceShips(shipsMapped, Guid.Parse(userId), ships.GameId);
+            _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId);
 
             return Ok();
         }

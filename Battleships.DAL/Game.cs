@@ -20,7 +20,7 @@ namespace Battleships.DAL
         public Game(Player player)
         {
             Id = Guid.NewGuid();
-            Status = GameStatuses.Started;
+            Status = GameStatuses.Waiting;
             StartDate = DateTime.Now;
             GameInfo = new GameInfo();
             PlayersInfo = new List<GamePlayer>

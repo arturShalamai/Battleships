@@ -15,7 +15,7 @@ namespace Battleships.BLL
 
         public IRepository<Player> PlayerRepo { get => _playerRepo ?? new GenericRepo<Player>(_context); }
         public IRepository<Game> GameRepo { get => _gameRepo ?? new GenericRepo<Game>(_context); }
-        public IRepository<GameInfo> GameInfo { get => _gameInfo ?? new GenericRepo<GameInfo>(_context); }
+        public IRepository<GameInfo> GameInfoRepo { get => _gameInfo ?? new GenericRepo<GameInfo>(_context); }
 
         private readonly BattleshipsContext _context;
 

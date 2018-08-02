@@ -10,5 +10,9 @@ namespace Battleships.Api.Hubs
         Task MakeTurn(int pos);
 
         Task StartGame(string gameId);
+
+        Task EnemyReady();
+
+        //Task Shipes();
     }
 }

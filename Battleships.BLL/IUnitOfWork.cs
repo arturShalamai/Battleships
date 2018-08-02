@@ -6,7 +6,7 @@ namespace Battleships.BLL
 {
     public interface IUnitOfWork
     {
-        IRepository<GameInfo> GameInfo { get; }
+        IRepository<GameInfo> GameInfoRepo { get; }
         IRepository<Game> GameRepo { get; }
         IRepository<Player> PlayerRepo { get; }
 

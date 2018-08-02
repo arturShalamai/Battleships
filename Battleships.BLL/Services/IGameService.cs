@@ -11,5 +11,6 @@ namespace Battleships.BLL.Services
         Task<Game> GetByIdAsync(Guid gameId);
         Task<List<Guid>> GetAllGames();
         Task JoinAsync(Guid gameId, string userId);
+        Task PlaceShips(string ships, Guid userId, Guid gameId);
     }
 }

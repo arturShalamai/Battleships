@@ -16,5 +16,7 @@ namespace Battleships.Api.Hubs
         {
             await Clients.All.StartGame(gameId);
         }
+
+        public async Task EnemyReady() { }
     }
 }
