@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.BLL.Services
 {
-    public enum ShotResult { Hit, Miss }
+    public enum ShotResult { Hit, Miss, Win }
 
     public class GameService : IGameService
     {
@@ -80,7 +80,10 @@ namespace Battleships.BLL.Services
             var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo, g => g.GameInfo);
             var field = "";
 
-            if (HasAccess(game, userId)) { field = game.GameInfo.Turn ?  game.GameInfo.SecondUserField : game.GameInfo.FirstUserField; }
+            if (HasAccess(game, userId) && CheckTurn(game, userId))
+            {
+                field = game.GameInfo.Turn ? game.GameInfo.SecondUserField : game.GameInfo.FirstUserField;
+            }
             else { throw new Exception("Wrong game"); }
 
             if (IsValidShot(field, number))
@@ -90,9 +93,13 @@ namespace Battleships.BLL.Services
 
                 if (field[number] == '█')
                 {
-                    sb[number] = 'x';
-                    if(!field.Any(x => x == '█')) { }
+                    sb[number-1] = 'x';
                     res = ShotResult.Hit;
+                    if (!field.Any(x => x == '█'))
+                    {
+                        SetWinner(game, userId);
+                        res = ShotResult.Win;
+                    }
                 }
                 else
                 {
@@ -100,7 +107,9 @@ namespace Battleships.BLL.Services
                     res = ShotResult.Miss;
                 }
 
-                if(game.PlayersInfo[0].PlayerId == userId) { game.GameInfo.FirstUserField = sb.ToString(); }
+                game.SwitchTurn();
+
+                if (game.PlayersInfo[0].PlayerId == userId) { game.GameInfo.FirstUserField = sb.ToString(); }
                 else { game.GameInfo.SecondUserField = sb.ToString(); }
 
                 await _unit.GameRepo.UpdateOneAsync(game);
@@ -111,10 +120,10 @@ namespace Battleships.BLL.Services
             else { throw new Exception("Invalid shot"); }
         }
 
-        private void Win(Game game, string userId)
+        private void SetWinner(Game game, Guid userId)
         {
-            game.Status == GameStatuses.Finished;
-            //game.Winner = game.PlayersInfo[0].PlayerId == userId ? 
+            game.Status = GameStatuses.Finished;
+            game.Winner = game.PlayersInfo[0].PlayerId == userId ? false : true;
         }
 
         #region Helpers
@@ -123,18 +132,26 @@ namespace Battleships.BLL.Services
             return game.PlayersInfo.Any(p => p.PlayerId == userId);
         }
 
+        private bool CheckTurn(Game game, Guid userId)
+        {
+            if (game.PlayersInfo[0].PlayerId == userId && !game.GameInfo.Turn ||
+                game.PlayersInfo[1].PlayerId == userId && game.GameInfo.Turn) { return true; }
+            return false;
+        }
+
         private bool IsValidShot(string field, int number)
         {
+            var fieldItem = field[number];
             return !(number < 0 || number >= 42 || field[number] == 'x' || field[number] == '·');
         }
 
         private void ValidateShipsPlacement(string ships, Game game, Guid userId)
         {
-            if (game == null || game.PlayersInfo.Any(p => p.PlayerId == userId)) { throw new Exception("Wrong game"); }
+            if (game == null || !game.PlayersInfo.Any(p => p.PlayerId == userId)) { throw new Exception("Wrong game"); }
             if (game.Status != GameStatuses.Waiting) { throw new Exception("Wrong Game"); }
-            if (ships.Count() != 42 || ships.Count(c => c == 'x') != 16) { throw new Exception("Wrong field"); }
+            if (ships.Count() != 42 || ships.Count(c => c == '█') != 16) { throw new Exception("Wrong field"); }
             if (game.PlayersInfo[0].PlayerId == userId && game.GameInfo.FirstUserReady) { throw new Exception("Already placed"); }
-            if (game.PlayersInfo[1].PlayerId == userId && game.GameInfo.SecondUserReady) { throw new Exception("Already placed"); }
+            if (game.PlayersInfo.Count() == 2 && game.PlayersInfo[1].PlayerId == userId && game.GameInfo.SecondUserReady) { throw new Exception("Already placed"); }
         }
         #endregion
     }

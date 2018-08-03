@@ -40,12 +40,10 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> StartNewGame()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-            await _gameHub.Clients.Client(userEmail).SendAsync("oponentReady");
+            var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
 
-            //var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
+            //await _gameHub.Clients.Client(userEmail).SendAsync("oponentReady");
             //await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
-
 
             return RedirectToAction(nameof(GetById), new { id = "" });
         }

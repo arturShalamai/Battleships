@@ -52,6 +52,10 @@ namespace Battleships.DAL
 
         public List<GamePlayer> PlayersInfo { get; set; }
 
+        public void SwitchTurn()
+        {
+            GameInfo.Turn = !GameInfo.Turn;
+        }
 
         public void AddPlayer(Player player)
         {
