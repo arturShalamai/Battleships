@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Battleships.Api.Hubs;
 using Battleships.Api.Models;
@@ -20,9 +21,10 @@ namespace Battleships.Api.Controllers
         private readonly IGameService _gamesSvc;
         private readonly IHubContext<GameHub> _gameHub;
 
-        public GameController(IGameService gamesSvc)
+        public GameController(IGameService gamesSvc, IHubContext<GameHub> gameHub)
         {
             _gamesSvc = gamesSvc;
+            _gameHub = gameHub;
         }
 
         [HttpGet]
@@ -38,10 +40,14 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> StartNewGame()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-            var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
-            await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            await _gameHub.Clients.Client(userEmail).SendAsync("oponentReady");
 
-            return RedirectToAction(nameof(GetById), new { id = gameId });
+            //var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
+            //await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
+
+
+            return RedirectToAction(nameof(GetById), new { id = "" });
         }
 
         [HttpPost]
@@ -65,5 +71,18 @@ namespace Battleships.Api.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("{gameId}/shot/{number}")]
+        public async Task<IActionResult> Shot(Guid gameId, int number)
+        {
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            var res = await _gamesSvc.Shot(gameId, Guid.Parse(userId), number);
+
+            return Ok(new { res = res.ToString()});
+        }
+
+        private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;
+
     }
 }

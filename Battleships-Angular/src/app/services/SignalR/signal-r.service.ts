@@ -14,7 +14,7 @@ export class SignalRService {
   constructor() {
     let hubConnBuilder = new HubConnectionBuilder();
     this.gamesConnection = hubConnBuilder
-      .withUrl("https://localhost:44310/hubs/game")
+      .withUrl("https://localhost:44310/hubs/game", {accessTokenFactory : () => localStorage.getItem("access_token")})
       .build();
 
       this.gamesConnection.start()

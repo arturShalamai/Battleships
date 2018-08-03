@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace Battleships.Api.Hubs
 {
+    [Authorize]
     [EnableCors("AllowAll")]
     public class GameHub : Hub<IGameHub>
     {

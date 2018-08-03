@@ -40,6 +40,8 @@ namespace Battleships.Api
         {
             services.AddMvc();
 
+            services.AddSignalR();
+
             RegisterDependencies(services);
 
             services.AddDbContext<BattleshipsContext>(conf =>
@@ -62,8 +64,6 @@ namespace Battleships.Api
             {
                 conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
-
-            services.AddSignalR();
 
         }
 
@@ -93,7 +93,7 @@ namespace Battleships.Api
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
         }
     }
 }

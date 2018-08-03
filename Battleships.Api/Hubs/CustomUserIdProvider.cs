@@ -11,7 +11,9 @@ namespace Battleships.Api.Hubs
     {
         public virtual string GetUserId(HubConnectionContext connection)
         {
-            return connection.User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            var check = connection.User.HasClaim(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            var id = connection.User?.FindFirst(c => c.Type == ClaimTypes.Email)?.Value;
+            return connection.User?.FindFirst(c => c.Type == ClaimTypes.Email)?.Value;
         }
     }
 }

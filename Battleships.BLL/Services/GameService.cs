@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Battleships.BLL.Services
 {
+    public enum ShotResult { Hit, Miss }
+
     public class GameService : IGameService
     {
         private readonly IUnitOfWork _unit;
@@ -73,6 +75,59 @@ namespace Battleships.BLL.Services
 
         }
 
+        public async Task<ShotResult> Shot(Guid gameId, Guid userId, int number)
+        {
+            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo, g => g.GameInfo);
+            var field = "";
+
+            if (HasAccess(game, userId)) { field = game.GameInfo.Turn ?  game.GameInfo.SecondUserField : game.GameInfo.FirstUserField; }
+            else { throw new Exception("Wrong game"); }
+
+            if (IsValidShot(field, number))
+            {
+                var sb = new StringBuilder(field);
+                var res = new ShotResult();
+
+                if (field[number] == '█')
+                {
+                    sb[number] = 'x';
+                    if(!field.Any(x => x == '█')) { }
+                    res = ShotResult.Hit;
+                }
+                else
+                {
+                    sb[number] = '·';
+                    res = ShotResult.Miss;
+                }
+
+                if(game.PlayersInfo[0].PlayerId == userId) { game.GameInfo.FirstUserField = sb.ToString(); }
+                else { game.GameInfo.SecondUserField = sb.ToString(); }
+
+                await _unit.GameRepo.UpdateOneAsync(game);
+                await _unit.SaveAsync();
+
+                return res;
+            }
+            else { throw new Exception("Invalid shot"); }
+        }
+
+        private void Win(Game game, string userId)
+        {
+            game.Status == GameStatuses.Finished;
+            //game.Winner = game.PlayersInfo[0].PlayerId == userId ? 
+        }
+
+        #region Helpers
+        private bool HasAccess(Game game, Guid userId)
+        {
+            return game.PlayersInfo.Any(p => p.PlayerId == userId);
+        }
+
+        private bool IsValidShot(string field, int number)
+        {
+            return !(number < 0 || number >= 42 || field[number] == 'x' || field[number] == '·');
+        }
+
         private void ValidateShipsPlacement(string ships, Game game, Guid userId)
         {
             if (game == null || game.PlayersInfo.Any(p => p.PlayerId == userId)) { throw new Exception("Wrong game"); }
@@ -81,6 +136,6 @@ namespace Battleships.BLL.Services
             if (game.PlayersInfo[0].PlayerId == userId && game.GameInfo.FirstUserReady) { throw new Exception("Already placed"); }
             if (game.PlayersInfo[1].PlayerId == userId && game.GameInfo.SecondUserReady) { throw new Exception("Already placed"); }
         }
-
+        #endregion
     }
 }

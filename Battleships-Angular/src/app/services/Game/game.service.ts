@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 })
 export class GameService {
   constructor(private http:HttpClient, private signalRSvc:SignalRService) {
-    signalRSvc.gamesConnection.on('OponentReady',(res) => console.log("Oponent Ready"));
+    signalRSvc.gamesConnection.on('oponentReady',(res) => console.log("Oponent Ready"));
    }
 
   createGame(): Observable<CreateGameResponse>{
