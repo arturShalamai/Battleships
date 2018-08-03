@@ -1,3 +1,9 @@
-<p>
-  field works!
-</p>
+<table class="board">
+  <tr *ngFor='let row of enemyField; let i = index;'>
+    <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)"></td>
+  </tr>
+</table>
+<!-- <span>{{ userMode ? userField[i*numbOfCols+j] : item == null? "" : item==true? "🔥" : "🗙"}}</span> -->
+<!-- </td>
+    </tr>
+  </table> -->
