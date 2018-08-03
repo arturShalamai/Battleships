@@ -14,12 +14,14 @@ export class SignalRService {
   constructor() {
     let hubConnBuilder = new HubConnectionBuilder();
     this.gamesConnection = hubConnBuilder
-      .withUrl("https://localhost:44310/hubs/game", {accessTokenFactory : () => localStorage.getItem("access_token")})
+      .withUrl("https://localhost:44310/hubs/game", { accessTokenFactory : () => localStorage.getItem("access_token")})
       .build();
 
       this.gamesConnection.start()
       .then(x => console.log("Connection Success"))
       .catch(err => console.log("Hub Connection error", err));
+
+      this.gamesConnection.on("hited", args => console.log(`Hited ${args}`))
   }
 
   subscribe(name:string){

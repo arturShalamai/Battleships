@@ -74,10 +74,13 @@ namespace Battleships.Api.Controllers
         [Route("{gameId}/shot/{number}")]
         public async Task<IActionResult> Shot(Guid gameId, int number)
         {
-            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
-            var res = await _gamesSvc.Shot(gameId, Guid.Parse(userId), number);
+            var userId = GetUserClaim(ClaimTypes.Name);
+            //var res = await _gamesSvc.Shot(gameId, Guid.Parse(userId), number);
 
-            return Ok(new { res = res.ToString()});
+            if (true) { await _gameHub.Clients.All.SendAsync("hited", "1"); }
+
+            //new { res = res.ToString() }
+            return Ok();
         }
 
         private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;

@@ -44,6 +44,8 @@ namespace Battleships.Api
 
             RegisterDependencies(services);
 
+            
+
             services.AddDbContext<BattleshipsContext>(conf =>
                             conf.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"),
                                               opts => opts.MigrationsAssembly("Battleships.Migrations")));
@@ -93,7 +95,7 @@ namespace Battleships.Api
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            //services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
         }
     }
 }

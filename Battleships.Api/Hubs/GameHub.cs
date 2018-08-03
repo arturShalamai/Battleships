@@ -9,6 +9,11 @@ namespace Battleships.Api.Hubs
     [EnableCors("AllowAll")]
     public class GameHub : Hub<IGameHub>
     {
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync();
+        }
+
         public async Task MakeTurn(int pos)
         {
             await Clients.All.MakeTurn(pos);

@@ -15,6 +15,7 @@ export class JoinGameComponent implements OnInit {
               private router:Router) { }
 
   ngOnInit() {
+    
   }
 
   joinGame(){
