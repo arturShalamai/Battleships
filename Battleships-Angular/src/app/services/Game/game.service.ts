@@ -51,4 +51,14 @@ export class GameService {
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
+
+  checkParticipation(gameId: string): Promise<boolean> {
+    let token = localStorage.getItem("access_token");
+    return this.http.get<boolean>(
+      `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    ).toPromise();
+  }
 }

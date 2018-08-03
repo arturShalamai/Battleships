@@ -2,6 +2,7 @@ import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
 import { Component, OnInit } from "@angular/core";
 import { HubConnectionBuilder } from "@aspnet/signalr";
+import { ActivatedRoute } from "../../../node_modules/@angular/router";
 
 @Component({
   selector: "app-game-dashboard",
@@ -10,6 +11,8 @@ import { HubConnectionBuilder } from "@aspnet/signalr";
 })
 export class GameDashboardComponent implements OnInit {
   gameId: string;
+
+  showMenu: boolean = true;
 
   fieldOne: boolean[][] = [
     [true, true, false, true, false, true],
@@ -31,7 +34,20 @@ export class GameDashboardComponent implements OnInit {
     [false, false, false, false, false, false]
   ];
 
-  constructor(private gameSvc: GameService) {}
+  constructor(private gameSvc: GameService, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    debugger;
+    var gameId = this.route.snapshot.params["id"];
+    this.gameSvc.checkParticipation(gameId).then(res => {
+      debugger;
+      if (gameId != undefined && this.gameSvc.checkParticipation(gameId)) {
+        this.gameId == gameId;
+        this.showMenu = false;
+        console.log("Game id : ", gameId);
+      }
+    });
+  }
 
   fire(index: number) {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
@@ -44,6 +60,4 @@ export class GameDashboardComponent implements OnInit {
     this.gameId = game;
     console.log("Game Id was chnged to ", game);
   }
-
-  ngOnInit() {}
 }

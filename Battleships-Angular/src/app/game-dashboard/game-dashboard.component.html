@@ -1,7 +1,17 @@
-<div class="gameControls">
-  <app-new-game class="newgame-component"></app-new-game>
-  <app-join-game (gameJoined)='srtGameId($event)'></app-join-game>
-</div>
+<mat-card class="gameControls-card" *ngIf='showMenu'>
+  <mat-card-header>
+    <h4>Start Play</h4>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="gameControls">
+      <app-new-game class="newgame-component"></app-new-game>
+      <p class="span-or">or</p>
+      <app-join-game class="joinGame-component" (gameJoined)='srtGameId($event)'></app-join-game>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div class="black" *ngIf='showMenu'></div>
 
 <hr />
 <div class="Boards">
