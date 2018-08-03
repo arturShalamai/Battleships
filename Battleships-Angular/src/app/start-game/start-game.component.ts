@@ -1,3 +1,5 @@
+import 'rxjs-compat';
+import { debug } from 'util';
 import { AuthService } from "./../services/Auth/auth.service";
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Observable } from "rxjs";
@@ -45,8 +47,9 @@ export class StartGameComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     debugger;
-    this.authSvc.validateUser().subscribe(res => {
-      this.router.navigate(["/game/1"]);
+    this.authSvc.validateUser().map(res => {
+      debugger;
+      this.redirectToDashboard();
     });
   }
 
@@ -57,7 +60,8 @@ export class StartGameComponent implements OnInit, AfterViewInit {
   login() {
     this.isSignUp = false;
   }
-  redirectToDashboard() {
+
+  public redirectToDashboard(){
     this.router.navigate(["/game/1"]);
   }
 

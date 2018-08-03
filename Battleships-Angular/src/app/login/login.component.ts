@@ -1,6 +1,7 @@
-import { OAuthService } from 'angular-oauth2-oidc';
-import { AuthService } from './../services/Auth/auth.service';
+import { OAuthService } from "angular-oauth2-oidc";
+import { AuthService } from "./../services/Auth/auth.service";
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Router } from "../../../node_modules/@angular/router";
 
 @Component({
   selector: "app-login",
@@ -9,25 +10,30 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 })
 export class LoginComponent implements OnInit {
   public isSignUp: boolean;
-  public email:string;
-  public password : string;
+  public email: string;
+  public password: string;
   @Output() public register = new EventEmitter<any>();
   @Output() public loginSuccess = new EventEmitter<any>();
 
-  constructor(private oauthSvc:OAuthService, private authSvc:AuthService) {}
+  constructor(
+    private oauthSvc: OAuthService,
+    private authSvc: AuthService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  submitSuccess(){
+  submitSuccess() {
     this.loginSuccess.emit(null);
   }
 
-  login() : void{
-    this.authSvc.login(this.email, this.password).subscribe(x => {this.submitSuccess();} );
+  login(): void {
+    this.authSvc.login(this.email, this.password).subscribe(res =>{
+      this.submitSuccess();
+    });
   }
 
-  platformLogin(){
+  platformLogin() {
     debugger;
     this.oauthSvc.initImplicitFlow();
   }
