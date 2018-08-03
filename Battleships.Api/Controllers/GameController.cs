@@ -62,10 +62,11 @@ namespace Battleships.Api.Controllers
         [Route("placeships")]
         public async Task<IActionResult> PlaceShips([FromBody]PlaceShipsModel ships)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-            var shipsMapped = String.Join(String.Empty, ships.Field);
-            await _gamesSvc.PlaceShips(shipsMapped, Guid.Parse(userId), ships.GameId);
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            await _gamesSvc.PlaceShips(ships.Field, Guid.Parse(userId), ships.GameId);
             await _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId).SendAsync("oponentReady");
+
+            //User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
             return Ok();
         }

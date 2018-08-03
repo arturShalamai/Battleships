@@ -8,6 +8,6 @@ namespace Battleships.Api.Models
     public class PlaceShipsModel
     {
         public Guid GameId { get; set; }
-        public List<string> Field { get; set; }
+        public string Field { get; set; }
     }
 }

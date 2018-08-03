@@ -17,13 +17,14 @@
 <div class="Boards">
   <div class="playerBoard">
     <table class="board">
-      <div></div>
+      <div></div>  
       <tr *ngFor='let row of fieldOne; let i = index;'>
-        <td *ngFor='let item of row; let j = index;' (click)="fire((i+1)*(j+1))">
-          <span>{{item == null? "" : item==true? "🔥" : "🗙"}}</span>
+        <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
+          <span>{{userField[i*numbOfCols+j]}}</span>
         </td>
       </tr>
     </table>
+    <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
   </div>
 
   <div class="enemyBoard">

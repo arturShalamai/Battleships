@@ -1,4 +1,4 @@
 export class ShipsFieldModel{
     public GameId:string;
-    public Field:string[];
+    public Field:string;
 }

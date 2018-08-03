@@ -3,6 +3,8 @@ import { GameDashboardService } from "./../services/GameDashboard/game-dashboard
 import { Component, OnInit } from "@angular/core";
 import { HubConnectionBuilder } from "@aspnet/signalr";
 import { ActivatedRoute, Router } from "../../../node_modules/@angular/router";
+import { ShipsFieldModel } from "../Models/ShipsFieldModel";
+import { debug } from "util";
 
 @Component({
   selector: "app-game-dashboard",
@@ -13,6 +15,8 @@ export class GameDashboardComponent implements OnInit {
   gameId: string;
 
   showMenu: boolean = true;
+
+  userField = '█ ██  █   █ █  ████       █ █ █ █     █ █ ';
 
   fieldOne: boolean[][] = [
     [true, true, false, true, false, true],
@@ -45,17 +49,21 @@ export class GameDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     // this.router.events.subscribe(res => {
 
     //   });
   }
 
+  numbOfRows : number = 7;
+  numbOfCols : number = 6;
+
   private checkForParticipation() {
+    debugger;
     var gameId = this.route.snapshot.params["id"];
     this.gameSvc.checkParticipation(gameId).then(res => {
+      debugger;
       if (gameId != undefined && this.gameSvc.checkParticipation(gameId)) {
-        this.gameId == gameId;
+        this.gameId = gameId;
         this.showMenu = false;
         console.log("Game id : ", gameId);
       }
@@ -69,8 +77,26 @@ export class GameDashboardComponent implements OnInit {
     });
   }
 
+  confirmShips(){
+    debugger;
+    let shipsModel = new ShipsFieldModel();
+    shipsModel.GameId = this.gameId;
+    shipsModel.Field = this.userField;
+    this.gameSvc.submitShips(shipsModel).subscribe(res => console.log('Ships position accepted'));
+  }
+
+  placeShip(index:number){
+    this.userField = replaceAt(this.userField, index, '█');
+    console.log('Ship placed : ', index);
+    console.log(this.userField);
+  }
+
   srtGameId(game: string) {
     this.gameId = game;
     console.log("Game Id was chnged to ", game);
   }
+}
+
+function replaceAt(s, n, t) {
+  return s.substring(0, n) + t + s.substring(n + 1);
 }

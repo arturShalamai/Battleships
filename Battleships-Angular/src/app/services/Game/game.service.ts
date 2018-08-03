@@ -33,12 +33,12 @@ export class GameService {
     );
   }
 
-  submitShips(fieldModel: ShipsFieldModel) {
+  submitShips(fieldModel: ShipsFieldModel): Observable<any> {
     var token = localStorage.getItem("access_token");
     return this.http.post(
       `https://localhost:44310/api/Game/placeships`,
-      { fieldModel },
-      { headers: { Authorization: `Bearer ${token}` } }
+      fieldModel,
+      { headers: { Authorization: `Bearer ${token}`, ContentType:'application/json' } }
     );
   }
 
