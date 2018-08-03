@@ -1,26 +1,26 @@
-import { GameService } from './../services/Game/game.service';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '../../../node_modules/@angular/router';
+import { EventEmitter, Output } from "@angular/core";
+import { GameService } from "./../services/Game/game.service";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "../../../node_modules/@angular/router";
 
 @Component({
-  selector: 'app-join-game',
-  templateUrl: './join-game.component.html',
-  styleUrls: ['./join-game.component.css']
+  selector: "app-join-game",
+  templateUrl: "./join-game.component.html",
+  styleUrls: ["./join-game.component.css"]
 })
 export class JoinGameComponent implements OnInit {
+  gameId: string;
 
-  gameId : string;
+  @Output() gameJoined = new EventEmitter<string>();
 
-  constructor(private gameSvc:GameService,
-              private router:Router) { }
+  constructor(private gameSvc: GameService, private router: Router) {}
 
-  ngOnInit() {
-    
+  ngOnInit() {}
+
+  joinGame() {
+    this.gameSvc.joinGame(this.gameId).subscribe(res => {
+      debugger;
+      this.gameJoined.emit(this.gameId);
+    });
   }
-
-  joinGame(){
-    debugger;
-    this.gameSvc.joinGame(this.gameId).subscribe(res => this.router.navigate(['/game-dashboard']));
-  }
-
 }

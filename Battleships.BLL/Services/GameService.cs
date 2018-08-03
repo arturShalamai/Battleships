@@ -93,7 +93,7 @@ namespace Battleships.BLL.Services
 
                 if (field[number] == '█')
                 {
-                    sb[number-1] = 'x';
+                    sb[number] = 'x';
                     res = ShotResult.Hit;
                     if (!field.Any(x => x == '█'))
                     {

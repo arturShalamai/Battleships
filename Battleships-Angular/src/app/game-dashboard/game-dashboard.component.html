@@ -1,6 +1,6 @@
 <div class="gameControls">
   <app-new-game class="newgame-component"></app-new-game>
-  <app-join-game></app-join-game>
+  <app-join-game (gameJoined)='srtGameId($event)'></app-join-game>
 </div>
 
 <hr />

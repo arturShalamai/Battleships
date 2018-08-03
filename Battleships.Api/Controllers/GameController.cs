@@ -45,7 +45,7 @@ namespace Battleships.Api.Controllers
             //await _gameHub.Clients.Client(userEmail).SendAsync("oponentReady");
             //await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
 
-            return RedirectToAction(nameof(GetById), new { id = "" });
+            return RedirectToAction(nameof(GetById), new { id = gameId });
         }
 
         [HttpPost]
@@ -71,15 +71,12 @@ namespace Battleships.Api.Controllers
         }
 
         [HttpPost]
-        [Route("{gameId}/shot/{number}")]
+        [Route("{gameId}/fire/{number}")]
         public async Task<IActionResult> Shot(Guid gameId, int number)
         {
-            var userId = GetUserClaim(ClaimTypes.Name);
-            //var res = await _gamesSvc.Shot(gameId, Guid.Parse(userId), number);
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            var res = await _gamesSvc.Shot(gameId, Guid.Parse(userId), number);
 
-            if (true) { await _gameHub.Clients.All.SendAsync("hited", "1"); }
-
-            //new { res = res.ToString() }
             return Ok();
         }
 
