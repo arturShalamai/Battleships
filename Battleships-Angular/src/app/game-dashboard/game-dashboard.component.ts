@@ -2,7 +2,7 @@ import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
 import { Component, OnInit } from "@angular/core";
 import { HubConnectionBuilder } from "@aspnet/signalr";
-import { ActivatedRoute } from "../../../node_modules/@angular/router";
+import { ActivatedRoute, Router } from "../../../node_modules/@angular/router";
 
 @Component({
   selector: "app-game-dashboard",
@@ -34,13 +34,26 @@ export class GameDashboardComponent implements OnInit {
     [false, false, false, false, false, false]
   ];
 
-  constructor(private gameSvc: GameService, private route: ActivatedRoute) {}
+  constructor(
+    private gameSvc: GameService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.route.params.subscribe(param => {
+      this.checkForParticipation();
+    });
+  }
 
   ngOnInit() {
     debugger;
+    // this.router.events.subscribe(res => {
+
+    //   });
+  }
+
+  private checkForParticipation() {
     var gameId = this.route.snapshot.params["id"];
     this.gameSvc.checkParticipation(gameId).then(res => {
-      debugger;
       if (gameId != undefined && this.gameSvc.checkParticipation(gameId)) {
         this.gameId == gameId;
         this.showMenu = false;
