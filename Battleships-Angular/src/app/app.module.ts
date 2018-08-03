@@ -16,6 +16,7 @@ import { FormsModule } from '../../node_modules/@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { NewGameComponent } from './new-game/new-game.component';
 import { JoinGameComponent } from './join-game/join-game.component';
+import { FieldComponent } from './field/field.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { JoinGameComponent } from './join-game/join-game.component';
     NewGameComponent,
     JoinGameComponent,
     GameDashboardComponent,
+    FieldComponent,
   ],
   imports: [
     BrowserModule,
