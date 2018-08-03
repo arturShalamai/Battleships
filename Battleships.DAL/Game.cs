@@ -44,7 +44,8 @@ namespace Battleships.DAL
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
-        //If true = first, false = second
+        
+        //If false = first, true = second
         //I do this to make my objects cheaper
         public bool Winner { get; set; }
 

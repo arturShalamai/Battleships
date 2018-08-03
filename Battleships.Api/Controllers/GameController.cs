@@ -80,6 +80,16 @@ namespace Battleships.Api.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("{gameId}/surrender")]
+        public async Task<IActionResult> Surrender(Guid gameId)
+        {
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            await _gamesSvc.Surrender(gameId, Guid.Parse(userId));
+
+            return Ok();
+        }
+
         private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;
 
     }

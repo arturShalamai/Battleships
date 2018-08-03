@@ -32,18 +32,20 @@ namespace Battleships.BLL.Services
 
         public async Task JoinAsync(Guid gameId, string userId)
         {
-            var gameInfo = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
-            var currPlayer = await _unit.PlayerRepo.SingleAsync(p => p.Id.ToString() == userId);
-            gameInfo.AddPlayer(currPlayer);
+            var game = await GetGame(gameId);
+            if (game.Status != GameStatuses.Waiting) { throw new Exception("You cannot place ships at this game"); }
 
-            await _unit.GameRepo.UpdateOneAsync(gameInfo);
+            var currPlayer = await _unit.PlayerRepo.SingleAsync(p => p.Id.ToString() == userId);
+            game.AddPlayer(currPlayer);
+
+            await _unit.GameRepo.UpdateOneAsync(game);
             await _unit.SaveAsync();
         }
 
         public async Task<Guid> StartGameAsync(Guid creatorId)
         {
             var creator = await _unit.PlayerRepo.SingleAsync(p => p.Id == creatorId, c => c.GamesInfo);
-            var game = new DAL.Game(creator);
+            var game = new Game(creator);
             await _unit.GameRepo.AddAsync(game);
 
             await _unit.SaveAsync();
@@ -53,8 +55,8 @@ namespace Battleships.BLL.Services
 
         public async Task PlaceShips(string ships, Guid userId, Guid gameId)
         {
-            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.GameInfo,
-                                                                       g => g.PlayersInfo);
+            var game = await GetGame(gameId);
+            if(game.Status != GameStatuses.Waiting) { throw new Exception("You cannot place ships at this game"); }
 
             ValidateShipsPlacement(ships, game, userId);
 
@@ -69,15 +71,17 @@ namespace Battleships.BLL.Services
                 game.GameInfo.SecondUserReady = true;
             }
 
+            if(game.GameInfo.FirstUserReady && game.GameInfo.SecondUserReady) { game.Status = GameStatuses.Started; }
+
             await _unit.GameRepo.UpdateOneAsync(game);
-
             await _unit.SaveAsync();
-
         }
 
         public async Task<ShotResult> Shot(Guid gameId, Guid userId, int number)
         {
-            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo, g => g.GameInfo);
+            var game = await GetGame(gameId);
+            if (game.Status != GameStatuses.Started) { throw new Exception("You cannot play this game"); }
+
             var field = "";
 
             if (HasAccess(game, userId) && 
@@ -101,6 +105,7 @@ namespace Battleships.BLL.Services
                     {
                         SetWinner(game, userId);
                         res = ShotResult.Win;
+                        return res;
                     }
                 }
                 else
@@ -128,11 +133,25 @@ namespace Battleships.BLL.Services
             game.Winner = game.PlayersInfo[0].PlayerId == userId ? false : true;
         }
 
+        public async Task Surrender(Guid gameId, Guid userId)
+        {
+            var game = await GetGame(gameId);
+
+            if (!HasAccess(game, userId)) { throw new Exception("Wrong game"); }
+
+            game.Winner = game.PlayersInfo[0].PlayerId == userId ? true : false;
+            game.Status = GameStatuses.Finished;
+
+            await _unit.GameRepo.UpdateOneAsync(game);
+            await _unit.SaveAsync();
+        }
+
+
         #region Helpers
-        private bool CheckPlayersReady(Game game) => 
+        private bool CheckPlayersReady(Game game) =>
             game.GameInfo.FirstUserReady && game.GameInfo.SecondUserReady;
 
-        private bool HasAccess(Game game, Guid userId) => 
+        private bool HasAccess(Game game, Guid userId) =>
             game.PlayersInfo.Any(p => p.PlayerId == userId);
 
         private bool CheckTurn(Game game, Guid userId)
@@ -156,6 +175,10 @@ namespace Battleships.BLL.Services
             if (game.PlayersInfo[0].PlayerId == userId && game.GameInfo.FirstUserReady) { throw new Exception("Already placed"); }
             if (game.PlayersInfo.Count() == 2 && game.PlayersInfo[1].PlayerId == userId && game.GameInfo.SecondUserReady) { throw new Exception("Already placed"); }
         }
+
+        private async Task<Game> GetGame(Guid id) =>
+            await _unit.GameRepo.SingleAsync(g => g.Id == id, g => g.PlayersInfo, g => g.GameInfo);
+
         #endregion
     }
 }
