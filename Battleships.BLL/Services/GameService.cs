@@ -80,7 +80,9 @@ namespace Battleships.BLL.Services
             var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo, g => g.GameInfo);
             var field = "";
 
-            if (HasAccess(game, userId) && CheckTurn(game, userId))
+            if (HasAccess(game, userId) && 
+                CheckTurn(game, userId) && 
+                CheckPlayersReady(game))
             {
                 field = game.GameInfo.Turn ? game.GameInfo.SecondUserField : game.GameInfo.FirstUserField;
             }
@@ -105,9 +107,9 @@ namespace Battleships.BLL.Services
                 {
                     sb[number] = '·';
                     res = ShotResult.Miss;
-                }
 
-                game.SwitchTurn();
+                    game.SwitchTurn();
+                }
 
                 if (game.PlayersInfo[0].PlayerId == userId) { game.GameInfo.FirstUserField = sb.ToString(); }
                 else { game.GameInfo.SecondUserField = sb.ToString(); }
@@ -127,10 +129,11 @@ namespace Battleships.BLL.Services
         }
 
         #region Helpers
-        private bool HasAccess(Game game, Guid userId)
-        {
-            return game.PlayersInfo.Any(p => p.PlayerId == userId);
-        }
+        private bool CheckPlayersReady(Game game) => 
+            game.GameInfo.FirstUserReady && game.GameInfo.SecondUserReady;
+
+        private bool HasAccess(Game game, Guid userId) => 
+            game.PlayersInfo.Any(p => p.PlayerId == userId);
 
         private bool CheckTurn(Game game, Guid userId)
         {
