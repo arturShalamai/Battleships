@@ -41,7 +41,7 @@ import { JoinGameComponent } from './join-game/join-game.component';
     RouterModule.forRoot([
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
-      {path : 'game-dashboard', component: GameDashboardComponent},
+      {path : 'game/:id', component: GameDashboardComponent},
     ]),
     OAuthModule.forRoot()
   ],

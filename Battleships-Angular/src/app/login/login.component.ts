@@ -12,17 +12,23 @@ export class LoginComponent implements OnInit {
   public email:string;
   public password : string;
   @Output() public register = new EventEmitter<any>();
+  @Output() public loginSuccess = new EventEmitter<any>();
 
   constructor(private oauthSvc:OAuthService, private authSvc:AuthService) {}
 
   ngOnInit() {
   }
 
+  submitSuccess(){
+    this.loginSuccess.emit(null);
+  }
+
   login() : void{
-    this.authSvc.login(this.email, this.password).subscribe(x => {console.log("User Logined")} );
+    this.authSvc.login(this.email, this.password).subscribe(x => {this.submitSuccess();} );
   }
 
   platformLogin(){
+    debugger;
     this.oauthSvc.initImplicitFlow();
   }
 

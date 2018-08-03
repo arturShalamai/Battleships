@@ -24,9 +24,22 @@ export class AuthService {
     return of("none");
   }
 
-  register(playerReg: PlayerregisterModel) : Observable<any> {
+  register(playerReg: PlayerregisterModel): Observable<any> {
+    return this.http.post(
+      "https://localhost:44310/api/players/register",
+      playerReg
+    );
+  }
+
+  validateUser(): Observable<any> {
+    let token = localStorage.getItem("access_token");
+    var res = false;
     return this.http
-      .post("https://localhost:44310/api/players/register", playerReg);
+      .post(
+        'https://localhost:44310/api/players/validateToken',
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
   }
 }
 

@@ -24,6 +24,7 @@ namespace Battleships.Api.Controllers
     [EnableCors("AllowAll")]
     [Produces("application/json")]
     [Route("api/players")]
+    [Authorize]
     public class AuthController : Controller
     {
         private readonly IPlayerService _playerSvc;
@@ -70,5 +71,13 @@ namespace Battleships.Api.Controllers
 
             return BadRequest("Invalid credentials");
         }
+
+        [HttpPost]
+        [Route("validateToken")]
+        public IActionResult ValidateToken()
+        {
+            return Ok();
+        }
+
     }
 }
