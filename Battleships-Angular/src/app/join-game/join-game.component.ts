@@ -20,7 +20,8 @@ export class JoinGameComponent implements OnInit {
   joinGame() {
     this.gameSvc.joinGame(this.gameId).subscribe(res => {
       debugger;
-      this.gameJoined.emit(this.gameId);
+      this.router.navigate([`/game/${this.gameId}`])
+      // this.gameJoined.emit(this.gameId);
     });
   }
 }
