@@ -90,6 +90,14 @@ namespace Battleships.Api.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("{gameId}/checkParticipant")]
+        public async Task<IActionResult> CheckParticipant(Guid gameId)
+        {
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            return Ok(await _gamesSvc.CheckAccess(gameId, Guid.Parse(userId)));
+        }
+
         private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;
 
     }

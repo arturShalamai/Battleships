@@ -14,5 +14,7 @@ namespace Battleships.BLL.Services
         Task PlaceShips(string ships, Guid userId, Guid gameId);
         Task<ShotResult> Shot(Guid gameId, Guid userId, int number);
         Task Surrender(Guid gameId, Guid userId);
+
+        Task<bool> CheckAccess(Guid gameId, Guid userId);
     }
 }

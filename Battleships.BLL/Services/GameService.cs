@@ -146,6 +146,11 @@ namespace Battleships.BLL.Services
             await _unit.SaveAsync();
         }
 
+        public async Task<bool> CheckAccess(Guid gameId, Guid userId)
+        {
+            var game = await GetGame(gameId);
+            return HasAccess(game, userId);
+        }
 
         #region Helpers
         private bool CheckPlayersReady(Game game) =>
