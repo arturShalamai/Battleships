@@ -15,8 +15,7 @@ namespace Battleships.Api.Mappings
         {
             CreateMap<PlayerRegisterModel, Player>();
 
-            CreateMap<Game, GameInfoModel>()
-                .ForMember(dest => dest.Turn, opts => opts.MapFrom(src => src.GameInfo.Turn));
+            CreateMap<Game, GameInfoModel>();
         }
     }
 }

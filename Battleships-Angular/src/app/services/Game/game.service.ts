@@ -1,3 +1,4 @@
+import { GameInfoModel } from './../../Models/GameInfoModel';
 import { ShotResult } from './ShotResult';
 import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
 import { SignalRService } from "./../SignalR/signal-r.service";
@@ -13,6 +14,14 @@ export class GameService {
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
     signalRSvc.gamesConnection.on("oponentReady", res =>
       console.log("Oponent Ready")
+    );
+  }
+
+  getGameInfo(id:string): Observable<GameInfoModel>{
+    var token = localStorage.getItem("access_token");
+    return this.http.get<GameInfoModel>(
+      `https://localhost:44310/api/Game/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
   }
 

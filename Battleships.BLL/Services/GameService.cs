@@ -42,6 +42,8 @@ namespace Battleships.BLL.Services
 
                 res.EnemyField = game.GameInfo.SecondUserField.Replace('█', ' ');
                 res.EnemyReady= game.GameInfo.SecondUserReady;
+
+                res.Turn = "Player";
             }
             else
             {
@@ -50,6 +52,8 @@ namespace Battleships.BLL.Services
 
                 res.EnemyField = game.GameInfo.FirstUserField.Replace('█', ' ');
                 res.EnemyReady = game.GameInfo.FirstUserReady;
+
+                res.Turn = "Enemy";
             }
 
             return res;

@@ -39,6 +39,7 @@ export class GameDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
   numbOfRows : number = 7;
@@ -62,7 +63,6 @@ export class GameDashboardComponent implements OnInit {
       debugger;
       var sym = res.result== 'Hit' ? 'x' : '0';
       this.enemyFieldString = replaceAt(this.enemyFieldString, index, sym);
-      // this.enemyFieldString[index] = 
       console.log(`Successfully fired to ${this.gameId} at ${res.result}`);
     });
   }
