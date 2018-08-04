@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Battleships.Api.Hubs;
 using Battleships.Api.Models;
 using Battleships.BLL.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -101,6 +102,5 @@ namespace Battleships.Api.Controllers
         }
 
         private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;
-
     }
 }

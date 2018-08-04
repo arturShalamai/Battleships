@@ -11,6 +11,7 @@ using Battleships.BLL;
 using Battleships.BLL.Models;
 using Battleships.BLL.Services;
 using Battleships.DAL;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -31,17 +32,20 @@ namespace Battleships.Api.Controllers
         private readonly ITokenService _tokenSvc;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unit;
 
         public AuthController(
             IPlayerService playerSvc,
             IMapper mapper,
             IConfiguration configuration,
-            ITokenService tokenSvc)
+            ITokenService tokenSvc,
+            IUnitOfWork unit)
         {
             _playerSvc = playerSvc;
             _mapper = mapper;
             _configuration = configuration;
             _tokenSvc = tokenSvc;
+            _unit = unit;
         }
 
         [HttpPost]
@@ -79,5 +83,38 @@ namespace Battleships.Api.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("signin-platform")]
+        [Authorize(AuthenticationSchemes = "IdentityServer")]
+        public async Task<IActionResult> SigninPlatform()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = Guid.Parse(claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            var user = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
+            if (user != null) { return Ok(); }
+
+            var player = new Player()
+            {
+                Id = userId,
+                Email = GetUserClaim(ClaimTypes.NameIdentifier),
+                FirstName = GetUserClaim("FirstName"),
+                LastName = GetUserClaim("LastName"),
+                NickName = GetUserClaim("NickName"),
+                isExternal = true
+            };
+
+            await _unit.PlayerRepo.AddAsync(player);
+            await _unit.SaveAsync();
+
+            return Ok();
+        }
+
+        private string GetUserClaim(string type)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            return claimsIdentity.Claims.FirstOrDefault(c => c.Type == type).Value;
+        }
+
     }
+
 }

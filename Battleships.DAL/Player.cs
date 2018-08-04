@@ -31,6 +31,8 @@ namespace Battleships.DAL
 
         public string Password { get; set; }
 
+        public bool isExternal { get; set; }
+
         public List<GamePlayer> GamesInfo { get; set; }
     }
 }

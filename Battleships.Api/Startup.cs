@@ -60,6 +60,8 @@ namespace Battleships.Api
                                                             .RequireAuthenticatedUser()
                                                             .AddAuthenticationSchemes("IdentityServer", "SelfSigned")
                                                             .Build();
+
+                //config.AddPolicy("PlatformOnly", opts => opts.AddAuthenticationSchemes("IdentityServer").Build());
             });
 
             services.AddCors(conf =>

@@ -58,6 +58,7 @@ namespace Battleships.BLL.Services
         public async Task<PasswordVerificationResult> ValidateCredentials(string email, string password)
         {
             var player = await _unit.PlayerRepo.SingleAsync(p => String.Equals(p.Email, email, StringComparison.OrdinalIgnoreCase));
+            if(player.isExternal) { return PasswordVerificationResult.Failed; }
             if(player == null) { throw new Exception("There no player with such email"); }
             return _hasher.VerifyHashedPassword(player, player.Password, password);
         }
