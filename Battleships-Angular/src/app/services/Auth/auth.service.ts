@@ -1,3 +1,4 @@
+import { debug } from 'util';
 import { PlayerregisterModel } from "./../../register-user/PlayerRegisterModel";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Observable, of } from "rxjs";
@@ -10,7 +11,7 @@ import * as jwt_decode from "jwt-decode";
   providedIn: "root"
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private oAuthSvc:OAuthService) {}
 
   login(email: string, password: string): Observable<string> {
     this.http
@@ -20,7 +21,7 @@ export class AuthService {
       )
       .subscribe(res => {
         console.log(res);
-        localStorage.setItem("token", res.token);
+        localStorage.setItem("access_token", res.token);
         return of(res);
       });
     return of("none");
@@ -34,9 +35,15 @@ export class AuthService {
   }
 
   logout(){
-    let token = localStorage.getItem("access_token");
+    let token = localStorage.getItem('access_token');
     if(token == undefined) { return; }
     let tokenInfo = jwt_decode(token);
+
+    debugger;
+
+    if(this.oAuthSvc.hasValidAccessToken()) { this.oAuthSvc.logOut(); }
+    else{ localStorage.setItem('access_token', ''); }
+    
     console.log(tokenInfo);
   }
 
