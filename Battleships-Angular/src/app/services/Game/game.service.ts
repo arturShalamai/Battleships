@@ -1,5 +1,5 @@
-import { GameInfoModel } from './../../Models/GameInfoModel';
-import { ShotResult } from './ShotResult';
+import { GameInfoModel } from "./../../Models/GameInfoModel";
+import { ShotResult } from "./ShotResult";
 import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
 import { SignalRService } from "./../SignalR/signal-r.service";
 import { CreateGameResponse } from "./CreateGameResponse";
@@ -17,7 +17,7 @@ export class GameService {
     );
   }
 
-  getGameInfo(id:string): Observable<GameInfoModel>{
+  getGameInfo(id: string): Observable<GameInfoModel> {
     var token = localStorage.getItem("access_token");
     return this.http.get<GameInfoModel>(
       `https://localhost:44310/api/Game/${id}`,
@@ -48,7 +48,12 @@ export class GameService {
     return this.http.post(
       `https://localhost:44310/api/Game/placeships`,
       fieldModel,
-      { headers: { Authorization: `Bearer ${token}`, ContentType:'application/json' } }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json"
+        }
+      }
     );
   }
 
@@ -62,13 +67,26 @@ export class GameService {
     );
   }
 
-  checkParticipation(gameId: string): Promise<boolean> {
+  surrender(gameId: string): Observable<any> {
     let token = localStorage.getItem("access_token");
-    return this.http.get<boolean>(
-      `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+    return this.http.post<any>(
+      `https://localhost:44310/api/Game/${gameId}/surrender`,
+      {},
       {
         headers: { Authorization: `Bearer ${token}` }
       }
-    ).toPromise();
+    );
+  }
+
+  checkParticipation(gameId: string): Promise<boolean> {
+    let token = localStorage.getItem("access_token");
+    return this.http
+      .get<boolean>(
+        `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      .toPromise();
   }
 }

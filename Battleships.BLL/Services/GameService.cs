@@ -156,19 +156,15 @@ namespace Battleships.BLL.Services
             else { throw new Exception("Invalid shot"); }
         }
 
-        private void SetWinner(Game game, Guid userId)
-        {
-            game.Status = GameStatuses.Finished;
-            game.Winner = game.PlayersInfo[0].PlayerId == userId ? false : true;
-        }
-
         public async Task Surrender(Guid gameId, Guid userId)
         {
             var game = await GetGame(gameId);
 
+            if(game.Status == GameStatuses.Finished) { throw new Exception("You cannot surrender at this stage of game"); }
+
             if (!HasAccess(game, userId)) { throw new Exception("Wrong game"); }
 
-            game.Winner = game.PlayersInfo[0].PlayerId == userId ? true : false;
+            SetLooser(game, userId);
             game.Status = GameStatuses.Finished;
 
             await _unit.GameRepo.UpdateOneAsync(game);
@@ -208,6 +204,18 @@ namespace Battleships.BLL.Services
             if (ships.Count() != 42 || ships.Count(c => c == '█') != 16) { throw new Exception("Wrong field"); }
             if (game.PlayersInfo[0].PlayerId == userId && game.GameInfo.FirstUserReady) { throw new Exception("Already placed"); }
             if (game.PlayersInfo.Count() == 2 && game.PlayersInfo[1].PlayerId == userId && game.GameInfo.SecondUserReady) { throw new Exception("Already placed"); }
+        }
+
+        private void SetWinner(Game game, Guid userId)
+        {
+            game.Status = GameStatuses.Finished;
+            game.Winner = game.PlayersInfo[0].PlayerId == userId ? false : true;
+        }
+
+        private void SetLooser(Game game, Guid userId)
+        {
+            game.Status = GameStatuses.Finished;
+            game.Winner = game.PlayersInfo[0].PlayerId == userId ? true : false;
         }
 
         private async Task<Game> GetGame(Guid id) =>

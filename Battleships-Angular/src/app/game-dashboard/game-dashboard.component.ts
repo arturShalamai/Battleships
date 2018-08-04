@@ -16,7 +16,7 @@ export class GameDashboardComponent implements OnInit {
 
   showMenu: boolean = true;
 
-  userField = ' '.repeat(42);
+  userField = " ".repeat(42);
   enemyFieldString = " ".repeat(42);
   enemyField: boolean[][] = [
     [null, null, null, null, null, null],
@@ -81,6 +81,13 @@ export class GameDashboardComponent implements OnInit {
     this.gameSvc
       .submitShips(shipsModel)
       .subscribe(res => console.log("Ships position accepted"));
+  }
+
+  surrender() {
+    debugger;
+    this.gameSvc.surrender(this.gameId).subscribe(res => {
+      this.router.navigate(["/game/1"]);
+    });
   }
 
   placeShip(index: number) {
