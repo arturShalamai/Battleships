@@ -17,28 +17,26 @@
 <div class="Boards">
   <div class="playerBoard">
     <table class="board">
-      <div></div>  
       <tr *ngFor='let row of enemyField; let i = index;'>
         <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
           <span>{{userField[i*numbOfCols+j]}}</span>
         </td>
       </tr>
     </table>
-    <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
-    <button mat-raised-button color="primary" class="button-register" (click)='surrender()'>Surrender</button>
+    <div class="controls-game">
+      <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
+      <button mat-raised-button color="primary" class="button-register" (click)='surrender()'>Surrender</button>
+    </div>
   </div>
 
   <div class="enemyBoard">
     <table class="board">
       <div></div>
       <tr *ngFor='let row of enemyField; let i = index;'>
-          <td *ngFor='let item of row; let j = index;' (click)="fire(i*numbOfCols+j)">
+        <td *ngFor='let item of row; let j = index;' (click)="fire(i*numbOfCols+j)">
           <span>{{enemyFieldString[i*numbOfCols+j] == 'x' ? '🔥' : enemyFieldString[i*numbOfCols+j] == '0' ? '🗙' : ''}}</span>
         </td>
       </tr>
     </table>
   </div>
 </div>
-
-
-

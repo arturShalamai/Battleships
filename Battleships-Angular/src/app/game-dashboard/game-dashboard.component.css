@@ -84,3 +84,22 @@ table tr:hover {
 .battleship-tile:hover {
   cursor: pointer;
 }
+
+.player-game{
+  display: flex;
+  justify-content: center;
+}
+
+.controls-game{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  /* width: 54%; */
+}
+
+.controls-game button{
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 218px;
+}

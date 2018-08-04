@@ -62,7 +62,7 @@ namespace Battleships.BLL.Services
         public async Task JoinAsync(Guid gameId, string userId)
         {
             var game = await GetGame(gameId);
-            if (game.Status != GameStatuses.Waiting) { throw new Exception("You cannot place ships at this game"); }
+            if (game.Status != GameStatuses.Waiting) { throw new Exception("You cannot join this game"); }
 
             var currPlayer = await _unit.PlayerRepo.SingleAsync(p => p.Id.ToString() == userId);
             game.AddPlayer(currPlayer);
@@ -165,7 +165,6 @@ namespace Battleships.BLL.Services
             if (!HasAccess(game, userId)) { throw new Exception("Wrong game"); }
 
             SetLooser(game, userId);
-            game.Status = GameStatuses.Finished;
 
             await _unit.GameRepo.UpdateOneAsync(game);
             await _unit.SaveAsync();
