@@ -4,6 +4,8 @@ import { Observable, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
+import * as jwt_decode from "jwt-decode";
+
 @Injectable({
   providedIn: "root"
 })
@@ -18,7 +20,7 @@ export class AuthService {
       )
       .subscribe(res => {
         console.log(res);
-        localStorage.setItem("access_token", res.token);
+        localStorage.setItem("token", res.token);
         return of(res);
       });
     return of("none");
@@ -30,6 +32,14 @@ export class AuthService {
       playerReg
     );
   }
+
+  logout(){
+    let token = localStorage.getItem("access_token");
+    if(token == undefined) { return; }
+    let tokenInfo = jwt_decode(token);
+    console.log(tokenInfo);
+  }
+
 
   validateUser(): Observable<any> {
     let token = localStorage.getItem("access_token");

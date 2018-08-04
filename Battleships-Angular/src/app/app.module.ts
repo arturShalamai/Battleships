@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { NewGameComponent } from './new-game/new-game.component';
 import { JoinGameComponent } from './join-game/join-game.component';
 import { FieldComponent } from './field/field.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FieldComponent } from './field/field.component';
     JoinGameComponent,
     GameDashboardComponent,
     FieldComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

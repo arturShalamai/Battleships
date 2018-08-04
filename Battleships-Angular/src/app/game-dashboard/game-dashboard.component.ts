@@ -1,7 +1,7 @@
 import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
 import { Component, OnInit } from "@angular/core";
-import { HubConnectionBuilder } from "@aspnet/signalr";
+// import { HubConnectionBuilder } from "@aspnet/signalr";
 import { ActivatedRoute, Router } from "../../../node_modules/@angular/router";
 import { ShipsFieldModel } from "../Models/ShipsFieldModel";
 import { debug } from "util";
