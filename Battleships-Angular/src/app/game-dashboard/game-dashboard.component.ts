@@ -17,25 +17,15 @@ export class GameDashboardComponent implements OnInit {
   showMenu: boolean = true;
 
   userField = '█ ██  █   █ █  ████       █ █ █ █     █ █ ';
-
-  fieldOne: boolean[][] = [
-    [true, true, false, true, false, true],
-    [true, true, false, true, false, true],
-    [true, true, false, true, false, true],
-    [true, true, false, true, false, true],
-    [true, true, false, true, false, true],
-    [true, true, false, true, false, true],
-    [true, true, false, true, false, true]
-  ];
-
-  fieldTwo: boolean[][] = [
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false],
-    [false, false, false, false, false, false]
+  enemyFieldString = ' '.repeat(42);
+  enemyField: boolean[][] = [
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null]
   ];
 
   constructor(
@@ -49,9 +39,6 @@ export class GameDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.router.events.subscribe(res => {
-
-    //   });
   }
 
   numbOfRows : number = 7;
@@ -73,7 +60,10 @@ export class GameDashboardComponent implements OnInit {
   fire(index: number) {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
       debugger;
-      console.log(`Successfully fired to ${this.gameId} at ${res}`);
+      var sym = res.result== 'Hit' ? 'x' : '0';
+      this.enemyFieldString = replaceAt(this.enemyFieldString, index, sym);
+      // this.enemyFieldString[index] = 
+      console.log(`Successfully fired to ${this.gameId} at ${res.result}`);
     });
   }
 

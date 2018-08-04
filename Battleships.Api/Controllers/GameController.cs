@@ -31,8 +31,9 @@ namespace Battleships.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var res = await _gamesSvc.GetByIdAsync(Guid.Parse(id));
-            return Ok(new { Id = res.Id });
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            var game = await _gamesSvc.GetByIdAsync(Guid.Parse(id), Guid.Parse(userId));
+            return Ok(game);
         }
 
         [HttpPost]
@@ -78,7 +79,7 @@ namespace Battleships.Api.Controllers
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
             var res = await _gamesSvc.Shot(gameId, Guid.Parse(userId), number);
 
-            return Ok();
+            return Ok(new { Result = res.ToString() });
         }
 
         [HttpPost]

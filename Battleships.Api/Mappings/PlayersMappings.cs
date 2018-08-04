@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Battleships.BLL.Models;
 using Battleships.BLL;
 using Battleships.DAL;
 using System;
@@ -13,6 +14,9 @@ namespace Battleships.Api.Mappings
         public PlayersMappings()
         {
             CreateMap<PlayerRegisterModel, Player>();
+
+            CreateMap<Game, GameInfoModel>()
+                .ForMember(dest => dest.Turn, opts => opts.MapFrom(src => src.GameInfo.Turn));
         }
     }
 }

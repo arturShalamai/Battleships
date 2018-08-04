@@ -1,3 +1,4 @@
+import { ShotResult } from './ShotResult';
 import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
 import { SignalRService } from "./../SignalR/signal-r.service";
 import { CreateGameResponse } from "./CreateGameResponse";
@@ -42,10 +43,10 @@ export class GameService {
     );
   }
 
-  fire(gameId: string, index: number): Observable<any> {
+  fire(gameId: string, index: number): Observable<ShotResult> {
     debugger;
     var token = localStorage.getItem("access_token");
-    return this.http.post<string>(
+    return this.http.post<ShotResult>(
       `https://localhost:44310/api/Game/${gameId}/fire/${index}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }

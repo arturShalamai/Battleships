@@ -1,4 +1,5 @@
-﻿using Battleships.BLL.Models;
+﻿using AutoMapper;
+using Battleships.BLL.Models;
 using Battleships.DAL;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace Battleships.BLL.Services
     public class GameService : IGameService
     {
         private readonly IUnitOfWork _unit;
+        private readonly IMapper _mapper;
 
-        public GameService(IUnitOfWork unit)
+        public GameService(IUnitOfWork unit, IMapper mapper)
         {
             _unit = unit;
+            _mapper = mapper;
         }
 
         public async Task<List<Guid>> GetAllGames()
@@ -25,9 +28,31 @@ namespace Battleships.BLL.Services
             return games.Select(g => g.Id).ToList();
         }
 
-        public async Task<Game> GetByIdAsync(Guid gameId)
+        public async Task<GameInfoModel> GetByIdAsync(Guid gameId, Guid userId)
         {
-            return await _unit.GameRepo.SingleAsync(g => g.Id == gameId);
+            var game = await GetGame(gameId);
+            if(!HasAccess(game, userId)) { throw new Exception("Wrong game"); }
+
+            var res = _mapper.Map<GameInfoModel>(game);
+
+            if(game.PlayersInfo[0].PlayerId == userId)
+            {
+                res.PlayerField = game.GameInfo.FirstUserField;
+                res.PlayerReady = game.GameInfo.FirstUserReady;
+
+                res.EnemyField = game.GameInfo.SecondUserField.Replace('█', ' ');
+                res.EnemyReady= game.GameInfo.SecondUserReady;
+            }
+            else
+            {
+                res.PlayerField = game.GameInfo.SecondUserField;
+                res.PlayerReady = game.GameInfo.SecondUserReady;
+
+                res.EnemyField = game.GameInfo.FirstUserField.Replace('█', ' ');
+                res.EnemyReady = game.GameInfo.FirstUserReady;
+            }
+
+            return res;
         }
 
         public async Task JoinAsync(Guid gameId, string userId)
