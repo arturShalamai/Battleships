@@ -46,7 +46,7 @@ namespace Battleships.Api.Controllers
             //await _gameHub.Clients.Client(userEmail).SendAsync("oponentReady");
             //await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
 
-            return RedirectToAction(nameof(GetById), new { id = gameId });
+            return Ok(gameId);
         }
 
         [HttpPost]

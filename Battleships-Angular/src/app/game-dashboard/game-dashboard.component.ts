@@ -16,8 +16,8 @@ export class GameDashboardComponent implements OnInit {
 
   showMenu: boolean = true;
 
-  userField = '█ ██  █   █ █  ████       █ █ █ █     █ █ ';
-  enemyFieldString = ' '.repeat(42);
+  userField = ' '.repeat(42);
+  enemyFieldString = " ".repeat(42);
   enemyField: boolean[][] = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
@@ -39,11 +39,17 @@ export class GameDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    var gameId = this.route.snapshot.params["id"];
+    this.gameSvc.getGameInfo(gameId).subscribe(res => {
+      debugger;
+      this.enemyFieldString = res.enemyField;
+      this.userField = res.playerField;
+      console.log(res);
+    });
   }
 
-  numbOfRows : number = 7;
-  numbOfCols : number = 6;
+  numbOfRows: number = 7;
+  numbOfCols: number = 6;
 
   private checkForParticipation() {
     debugger;
@@ -61,23 +67,25 @@ export class GameDashboardComponent implements OnInit {
   fire(index: number) {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
       debugger;
-      var sym = res.result== 'Hit' ? 'x' : '0';
+      var sym = res.result == "Hit" ? "x" : "0";
       this.enemyFieldString = replaceAt(this.enemyFieldString, index, sym);
       console.log(`Successfully fired to ${this.gameId} at ${res.result}`);
     });
   }
 
-  confirmShips(){
+  confirmShips() {
     debugger;
     let shipsModel = new ShipsFieldModel();
     shipsModel.GameId = this.gameId;
     shipsModel.Field = this.userField;
-    this.gameSvc.submitShips(shipsModel).subscribe(res => console.log('Ships position accepted'));
+    this.gameSvc
+      .submitShips(shipsModel)
+      .subscribe(res => console.log("Ships position accepted"));
   }
 
-  placeShip(index:number){
-    this.userField = replaceAt(this.userField, index, '█');
-    console.log('Ship placed : ', index);
+  placeShip(index: number) {
+    this.userField = replaceAt(this.userField, index, "█");
+    console.log("Ship placed : ", index);
     console.log(this.userField);
   }
 

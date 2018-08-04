@@ -1,13 +1,13 @@
 export class GameInfoModel{
     public Id: string;
     
-    public PlayerField: string;
-    public PlayerReady: boolean;
+    public playerField: string;
+    public playerReady: boolean;
 
-    public EnemyField: string;
-    public EnemyReady: boolean;
+    public enemyField: string;
+    public enemyReady: boolean;
 
-    public Turn: string;
+    public turn: string;
 }
 
 // public string PlayerField { get; set; }

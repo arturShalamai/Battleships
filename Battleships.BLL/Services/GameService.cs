@@ -43,7 +43,7 @@ namespace Battleships.BLL.Services
                 res.EnemyField = game.GameInfo.SecondUserField.Replace('█', ' ');
                 res.EnemyReady= game.GameInfo.SecondUserReady;
 
-                res.Turn = "Player";
+                res.Turn  = game.GameInfo.Turn ? "Enemy" : "Player";
             }
             else
             {
@@ -53,7 +53,7 @@ namespace Battleships.BLL.Services
                 res.EnemyField = game.GameInfo.FirstUserField.Replace('█', ' ');
                 res.EnemyReady = game.GameInfo.FirstUserReady;
 
-                res.Turn = "Enemy";
+                res.Turn = game.GameInfo.Turn ? "Player" : "Enemy";
             }
 
             return res;
@@ -117,7 +117,7 @@ namespace Battleships.BLL.Services
                 CheckTurn(game, userId) && 
                 CheckPlayersReady(game))
             {
-                field = game.GameInfo.Turn ? game.GameInfo.SecondUserField : game.GameInfo.FirstUserField;
+                field = game.PlayersInfo[0].PlayerId == userId ? game.GameInfo.SecondUserField : game.GameInfo.FirstUserField;
             }
             else { throw new Exception("Wrong game"); }
 
@@ -145,8 +145,8 @@ namespace Battleships.BLL.Services
                     game.SwitchTurn();
                 }
 
-                if (game.PlayersInfo[0].PlayerId == userId) { game.GameInfo.FirstUserField = sb.ToString(); }
-                else { game.GameInfo.SecondUserField = sb.ToString(); }
+                if (game.PlayersInfo[0].PlayerId == userId) { game.GameInfo.SecondUserField = sb.ToString(); }
+                else { game.GameInfo.FirstUserField = sb.ToString(); }
 
                 await _unit.GameRepo.UpdateOneAsync(game);
                 await _unit.SaveAsync();
