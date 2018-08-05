@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Battleships.BLL.Repos
     {
         Task<List<T>> AllAsync();
 
-        Task<List<T>> WhereAsync(Expression<Func<T, bool>> filter);
+        Task<IQueryable<T>> WhereAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
 
         Task<T> SingleAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
 

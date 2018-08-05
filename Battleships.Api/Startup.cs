@@ -97,7 +97,7 @@ namespace Battleships.Api
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<ITokenService, TokenService>();
-            //services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
         }
     }
 }

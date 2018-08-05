@@ -21,7 +21,7 @@ export class SignalRService {
       .then(x => console.log("Connection Success"))
       .catch(err => console.log("Hub Connection error", err));
 
-      this.gamesConnection.on("hited", args => console.log(`Hited ${args}`))
+      // this.gamesConnection.on("hited", args => console.log(`Hited ${args}`));
   }
 
   subscribe(name:string){

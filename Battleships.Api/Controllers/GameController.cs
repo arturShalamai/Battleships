@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Battleships.Api.Hubs;
 using Battleships.Api.Models;
+using Battleships.BLL;
 using Battleships.BLL.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -19,12 +20,17 @@ namespace Battleships.Api.Controllers
     [Authorize]
     public class GameController : Controller
     {
+        private readonly IUnitOfWork _unit;
         private readonly IGameService _gamesSvc;
         private readonly IHubContext<GameHub> _gameHub;
 
-        public GameController(IGameService gamesSvc, IHubContext<GameHub> gameHub)
+        public GameController(
+            IGameService gamesSvc,
+            IHubContext<GameHub> gameHub,
+            IUnitOfWork unit)
         {
             _gamesSvc = gamesSvc;
+            _unit = unit;
             _gameHub = gameHub;
         }
 
@@ -34,6 +40,7 @@ namespace Battleships.Api.Controllers
         {
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
             var game = await _gamesSvc.GetByIdAsync(Guid.Parse(id), Guid.Parse(userId));
+            await _gameHub.Clients.Group(userId).SendAsync("getGame", game);
             return Ok(game);
         }
 
@@ -54,8 +61,12 @@ namespace Battleships.Api.Controllers
         [Route("join/{id}")]
         public async Task<IActionResult> JoinGame(string id)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var playerConnection = await _unit.PlayerConnections.SingleAsync(p => p.PlayerId == Guid.Parse(userId));
+
             await _gamesSvc.JoinAsync(Guid.Parse(id), userId);
+            await _gameHub.Groups.AddToGroupAsync(userId.ToString(), id);
+            await _gameHub.Clients.GroupExcept(id, userId).SendAsync("oponentConnected");
 
             return Ok();
         }

@@ -54,9 +54,13 @@ namespace Battleships.BLL.Repos
             return Task.CompletedTask;
         }
 
-        public async Task<List<T>> WhereAsync(Expression<Func<T, bool>> filter)
+        public async Task<IQueryable<T>> WhereAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
         {
-            return await _context.Set<T>().Where(filter).ToListAsync();
+            var ctx = _context.Set<T>().AsQueryable();
+
+            foreach (var include in includes){ ctx.Include(include); }
+
+            return ctx;
         }
     }
 }

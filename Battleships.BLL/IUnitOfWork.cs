@@ -9,6 +9,7 @@ namespace Battleships.BLL
         IRepository<GameInfo> GameInfoRepo { get; }
         IRepository<Game> GameRepo { get; }
         IRepository<Player> PlayerRepo { get; }
+        IRepository<PlayerConnection> PlayerConnections { get; }
 
         Task SaveAsync();
 

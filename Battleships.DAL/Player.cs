@@ -11,6 +11,7 @@ namespace Battleships.DAL
         {
             Id = Guid.NewGuid();
             GamesInfo = new List<GamePlayer>();
+            Connections = new List<PlayerConnection>();
         }
 
         [Key]
@@ -34,5 +35,7 @@ namespace Battleships.DAL
         public bool isExternal { get; set; }
 
         public List<GamePlayer> GamesInfo { get; set; }
+
+        public List<PlayerConnection> Connections { get; set; }
     }
 }

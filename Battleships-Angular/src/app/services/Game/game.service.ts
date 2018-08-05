@@ -12,9 +12,10 @@ import { Injectable } from "@angular/core";
 })
 export class GameService {
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
-    signalRSvc.gamesConnection.on("oponentReady", res =>
-      console.log("Oponent Ready")
+    signalRSvc.gamesConnection.on("getGame", res =>
+      console.log("Got game with id ", 25)
     );
+    // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
   getGameInfo(id:string): Observable<GameInfoModel>{
