@@ -1,5 +1,5 @@
-import { GameInfoModel } from './../../Models/GameInfoModel';
-import { ShotResult } from './ShotResult';
+import { GameInfoModel } from "./../../Models/GameInfoModel";
+import { ShotResult } from "./ShotResult";
 import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
 import { SignalRService } from "./../SignalR/signal-r.service";
 import { CreateGameResponse } from "./CreateGameResponse";
@@ -12,13 +12,14 @@ import { Injectable } from "@angular/core";
 })
 export class GameService {
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
-    signalRSvc.gamesConnection.on("getGame", res =>
-      console.log("Got game with id ", 25)
-    );
+    signalRSvc.gamesConnection.on("getGame", res => {
+      debugger;
+      console.log("Got game with id ", 25);
+    });
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
-  getGameInfo(id:string): Observable<GameInfoModel>{
+  getGameInfo(id: string): Observable<GameInfoModel> {
     var token = localStorage.getItem("access_token");
     return this.http.get<GameInfoModel>(
       `https://localhost:44310/api/Game/${id}`,
@@ -49,7 +50,12 @@ export class GameService {
     return this.http.post(
       `https://localhost:44310/api/Game/placeships`,
       fieldModel,
-      { headers: { Authorization: `Bearer ${token}`, ContentType:'application/json' } }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json"
+        }
+      }
     );
   }
 
@@ -65,11 +71,13 @@ export class GameService {
 
   checkParticipation(gameId: string): Promise<boolean> {
     let token = localStorage.getItem("access_token");
-    return this.http.get<boolean>(
-      `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    ).toPromise();
+    return this.http
+      .get<boolean>(
+        `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      .toPromise();
   }
 }

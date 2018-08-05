@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Battleships.Api.Hubs;
-
+using Battleships.BLL;
 using Battleships.BLL.Services;
 
 using IdentityModel.Client;
@@ -21,23 +22,28 @@ namespace Battleships.Api.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-
-        private readonly IHubContext<GameHub, IGameHub> _gameHub;
-
         private readonly IPlayerService _playerSvc;
         private readonly IGameService _gameSvc;
+        private readonly IHubContext<GameHub> _gameHub;
+        private readonly IUnitOfWork _unit;
 
-        public ValuesController(IGameService gameSvc, IPlayerService playerSvc)
+        public ValuesController(
+            IGameService gameSvc, 
+            IPlayerService playerSvc, 
+            IUnitOfWork unit)
         {
+            _unit = unit;
             _gameSvc = gameSvc;
             _playerSvc = playerSvc;
         }
 
         // GET api/values
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> Get()
         {
+            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            await _gameHub.Clients.Client(userId).SendAsync("getGame", "Game Info");
             return Ok(new string[] { "value1", "value2" });
         }
 
@@ -77,5 +83,7 @@ namespace Battleships.Api.Controllers
         public void Delete(int id)
         {
         }
+
+        private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;
     }
 }

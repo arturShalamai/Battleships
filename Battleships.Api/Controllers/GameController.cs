@@ -40,7 +40,7 @@ namespace Battleships.Api.Controllers
         {
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
             var game = await _gamesSvc.GetByIdAsync(Guid.Parse(id), Guid.Parse(userId));
-            await _gameHub.Clients.Group(userId).SendAsync("getGame", game);
+            //await _gameHub.Clients.Group(userId).SendAsync("getGame", game);
             return Ok(game);
         }
 
@@ -65,8 +65,8 @@ namespace Battleships.Api.Controllers
             var playerConnection = await _unit.PlayerConnections.SingleAsync(p => p.PlayerId == Guid.Parse(userId));
 
             await _gamesSvc.JoinAsync(Guid.Parse(id), userId);
-            await _gameHub.Groups.AddToGroupAsync(userId.ToString(), id);
-            await _gameHub.Clients.GroupExcept(id, userId).SendAsync("oponentConnected");
+            //await _gameHub.Groups.AddToGroupAsync(userId.ToString(), id);
+            //await _gameHub.Clients.GroupExcept(id, userId).SendAsync("oponentConnected");
 
             return Ok();
         }
@@ -76,8 +76,10 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> PlaceShips([FromBody]PlaceShipsModel ships)
         {
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            var connId =  await _unit.PlayerConnections.SingleAsync(pc => pc.PlayerId == Guid.Parse(userId));
+            await _gameHub.Clients.Client(connId.ConnectionId.ToString()).SendAsync("getGame", "Game Info");
             await _gamesSvc.PlaceShips(ships.Field, Guid.Parse(userId), ships.GameId);
-            await _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId).SendAsync("oponentReady");
+            //await _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId).SendAsync("oponentReady");
 
             //User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
 
@@ -109,6 +111,8 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> CheckParticipant(Guid gameId)
         {
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            var connId = _unit.PlayerConnections.SingleAsync(pc => pc.PlayerId == Guid.Parse(userId));
+            await _gameHub.Clients.Client(connId.ToString()).SendAsync("getGame", "Game Info");
             return Ok(await _gamesSvc.CheckAccess(gameId, Guid.Parse(userId)));
         }
 
