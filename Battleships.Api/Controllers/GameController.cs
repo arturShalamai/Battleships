@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Battleships.Api.Controllers
 {
@@ -40,7 +41,7 @@ namespace Battleships.Api.Controllers
         {
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
             var game = await _gamesSvc.GetByIdAsync(Guid.Parse(id), Guid.Parse(userId));
-            //await _gameHub.Clients.Group(userId).SendAsync("getGame", game);
+
             return Ok(game);
         }
 
@@ -48,11 +49,10 @@ namespace Battleships.Api.Controllers
         [Route("create")]
         public async Task<IActionResult> StartNewGame()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-            var gameId = await _gamesSvc.StartGameAsync(Guid.Parse(userId));
+            var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
+            var gameId = await _gamesSvc.StartGameAsync(userId);
 
-            //await _gameHub.Clients.Client(userEmail).SendAsync("oponentReady");
-            //await _gameHub.Groups.AddToGroupAsync(userId, gameId.ToString());
+            await AddUserToGroup(userId, gameId.ToString());
 
             return Ok(gameId);
         }
@@ -61,12 +61,13 @@ namespace Battleships.Api.Controllers
         [Route("join/{id}")]
         public async Task<IActionResult> JoinGame(string id)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var playerConnection = await _unit.PlayerConnections.SingleAsync(p => p.PlayerId == Guid.Parse(userId));
+            var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
+            await _gamesSvc.JoinAsync(Guid.Parse(id), userId.ToString());
 
-            await _gamesSvc.JoinAsync(Guid.Parse(id), userId);
-            //await _gameHub.Groups.AddToGroupAsync(userId.ToString(), id);
-            //await _gameHub.Clients.GroupExcept(id, userId).SendAsync("oponentConnected");
+            await AddUserToGroup(userId, id);
+
+            var userConnections = await  GetUserHubsConnections(userId);
+            await _gameHub.Clients.GroupExcept(id, userConnections).SendAsync("onPlayerJoined");
 
             return Ok();
         }
@@ -76,7 +77,7 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> PlaceShips([FromBody]PlaceShipsModel ships)
         {
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
-            var connId =  await _unit.PlayerConnections.SingleAsync(pc => pc.PlayerId == Guid.Parse(userId));
+            var connId = await _unit.PlayerConnections.SingleAsync(pc => pc.PlayerId == Guid.Parse(userId));
             await _gameHub.Clients.Client(connId.ConnectionId.ToString()).SendAsync("getGame", "Game Info");
             await _gamesSvc.PlaceShips(ships.Field, Guid.Parse(userId), ships.GameId);
             //await _gameHub.Clients.GroupExcept(ships.GameId.ToString(), userId).SendAsync("oponentReady");
@@ -117,5 +118,19 @@ namespace Battleships.Api.Controllers
         }
 
         private string GetUserClaim(string type) => User.Claims.FirstOrDefault(c => c.Type == type).Value;
+
+
+        private async Task<List<string>> GetUserHubsConnections(Guid userId)
+        {
+            var playerConnections = await _unit.PlayerConnections.WhereAsync(pc => pc.PlayerId == userId);
+            return await playerConnections.Select(x => x.ConnectionId).ToListAsync();
+        }
+
+        private async Task AddUserToGroup(Guid userId, string groupName)
+        {
+            var userConnections = await GetUserHubsConnections(userId);
+            foreach (var connection in userConnections) { await _gameHub.Groups.AddToGroupAsync(connection, groupName); }
+        }
+
     }
 }

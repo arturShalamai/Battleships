@@ -70,6 +70,24 @@ namespace Battleships.Api.Hubs
         }
 
 
+        public async override Task OnDisconnectedAsync(Exception exception)
+        {
+            var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
+
+            try
+            {
+                var currConnectionEntity = await _unit.PlayerConnections.SingleAsync(p => p.ConnectionId == Context.ConnectionId);
+                await _unit.PlayerConnections.DeleteOneAsync(currConnectionEntity);
+                await _unit.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            await base.OnDisconnectedAsync(exception);
+        }
+
         #region Helpers
         private async Task SubscribeToActiveGames(Guid userId)
         {

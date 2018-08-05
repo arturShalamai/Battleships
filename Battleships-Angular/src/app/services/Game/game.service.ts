@@ -16,6 +16,11 @@ export class GameService {
       debugger;
       console.log("Got game with id ", 25);
     });
+
+    signalRSvc.gamesConnection.on("onPlayerJoined", res => {
+      console.log("Player Joined");
+    });
+
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
