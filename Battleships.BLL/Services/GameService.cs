@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Battleships.BLL.Models;
 using Battleships.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace Battleships.BLL.Services
             await _unit.SaveAsync();
         }
 
-        public async Task<Guid> StartGameAsync(Guid creatorId)
+        public async Task<Game> StartGameAsync(Guid creatorId)
         {
             var creator = await _unit.PlayerRepo.SingleAsync(p => p.Id == creatorId, c => c.GamesInfo);
             var game = new Game(creator);
@@ -79,7 +80,7 @@ namespace Battleships.BLL.Services
 
             await _unit.SaveAsync();
 
-            return game.Id;
+            return game;
         }
 
         public async Task PlaceShips(string ships, Guid userId, Guid gameId)
@@ -212,6 +213,12 @@ namespace Battleships.BLL.Services
 
         private async Task<Game> GetGame(Guid id) =>
             await _unit.GameRepo.SingleAsync(g => g.Id == id, g => g.PlayersInfo, g => g.GameInfo);
+
+        private async Task<List<string>> GetUserHubsConnections(Guid userId)
+        {
+            var playerConnections = await _unit.PlayerConnections.WhereAsync(pc => pc.PlayerId == userId);
+            return await playerConnections.Select(x => x.ConnectionId).ToListAsync();
+        }
 
         #endregion
     }

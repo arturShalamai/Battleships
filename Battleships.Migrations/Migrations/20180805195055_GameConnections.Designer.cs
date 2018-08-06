@@ -11,9 +11,10 @@ using System;
 namespace Battleships.Migrations.Migrations
 {
     [DbContext(typeof(BattleshipsContext))]
-    partial class BattleshipsContextModelSnapshot : ModelSnapshot
+    [Migration("20180805195055_GameConnections")]
+    partial class GameConnections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,28 +74,6 @@ namespace Battleships.Migrations.Migrations
                     b.HasIndex("PlayerId");
 
                     b.ToTable("GamePlayer");
-                });
-
-            modelBuilder.Entity("Battleships.DAL.GamesConnection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConnectionId");
-
-                    b.Property<Guid>("GameId");
-
-                    b.Property<Guid?>("PlayerId");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("GameConnections");
                 });
 
             modelBuilder.Entity("Battleships.DAL.Player", b =>
@@ -160,18 +139,6 @@ namespace Battleships.Migrations.Migrations
                         .WithMany("GamesInfo")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Battleships.DAL.GamesConnection", b =>
-                {
-                    b.HasOne("Battleships.DAL.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Battleships.DAL.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId");
                 });
 
             modelBuilder.Entity("Battleships.DAL.PlayerConnection", b =>

@@ -10,7 +10,7 @@ namespace Battleships.DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<PlayerConnection> builder)
         {
-            builder.HasKey(pc => pc.Id);
+            builder.HasKey(pc => pc.ConnectionId);
 
             builder.HasOne(pc => pc.Player)
                 .WithMany(p => p.Connections)

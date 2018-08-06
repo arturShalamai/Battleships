@@ -11,9 +11,10 @@ using System;
 namespace Battleships.Migrations.Migrations
 {
     [DbContext(typeof(BattleshipsContext))]
-    partial class BattleshipsContextModelSnapshot : ModelSnapshot
+    [Migration("20180805195427_GameConnectionsTable")]
+    partial class GameConnectionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,10 +78,8 @@ namespace Battleships.Migrations.Migrations
 
             modelBuilder.Entity("Battleships.DAL.GamesConnection", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("ConnectionId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConnectionId");
 
                     b.Property<Guid>("GameId");
 
@@ -88,7 +87,7 @@ namespace Battleships.Migrations.Migrations
 
                     b.Property<Guid>("UserId");
 
-                    b.HasKey("Id");
+                    b.HasKey("ConnectionId");
 
                     b.HasIndex("GameId");
 

@@ -14,6 +14,7 @@ namespace Battleships.DAL
         public DbSet<GameInfo> GamesInfo { get; set; }
         public DbSet<GamePlayer> GamePlayer { get; set; }
         public DbSet<PlayerConnection> PlayerConnections { get; set; }
+        public DbSet<GamesConnection> GameConnections { get; set; }
 
         public BattleshipsContext(DbContextOptions opts) : base(opts)
         {

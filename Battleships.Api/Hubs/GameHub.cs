@@ -88,6 +88,9 @@ namespace Battleships.Api.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
+
+        public string GetcurrentConn() => Context.ConnectionId;
+
         #region Helpers
         private async Task SubscribeToActiveGames(Guid userId)
         {
@@ -98,7 +101,7 @@ namespace Battleships.Api.Hubs
             foreach (var gameId in gameIds) { await Groups.AddToGroupAsync(Context.ConnectionId, gameId.ToString()); }
 
 
-            await Clients.Group(gameIds[0].ToString()).MakeTurn(25);
+            //await Clients.Group(gameIds[0].ToString()).MakeTurn(25);
 
         }
 

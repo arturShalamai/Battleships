@@ -7,6 +7,8 @@ using Battleships.Api.Hubs;
 using Battleships.Api.Models;
 using Battleships.BLL;
 using Battleships.BLL.Services;
+using Battleships.DAL;
+using Battleships.Migrations.Migrations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,6 +41,8 @@ namespace Battleships.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
+            Guid gameId = Guid.NewGuid();
+            if (!Guid.TryParse(id, out gameId)) { return Ok(); }
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
             var game = await _gamesSvc.GetByIdAsync(Guid.Parse(id), Guid.Parse(userId));
 
@@ -50,24 +54,47 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> StartNewGame()
         {
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
-            var gameId = await _gamesSvc.StartGameAsync(userId);
+            var game = await _gamesSvc.StartGameAsync(userId);
 
-            await AddUserToGroup(userId, gameId.ToString());
+            var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
+            var playerConnections = await GetUserHubsConnections(userId);
 
-            return Ok(gameId);
+            foreach (var connection in playerConnections)
+            {
+                var gameConn = new GamesConnection()
+                {
+                    Game = game,
+                    Player = player,
+                    ConnectionId = connection
+                };
+
+                await _unit.GameConnections.AddAsync(gameConn);
+                await _unit.SaveAsync();
+            }
+
+            await AddUserToGroup(game.Id, playerConnections);
+
+            return Ok(game.Id);
         }
 
         [HttpPost]
         [Route("join/{id}")]
-        public async Task<IActionResult> JoinGame(string id)
+        public async Task<IActionResult> JoinGame(Guid id)
         {
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
-            await _gamesSvc.JoinAsync(Guid.Parse(id), userId.ToString());
+            try
+            {
+                await _gamesSvc.JoinAsync(id, userId.ToString());
+            }
+            catch (Exception ex) { return BadRequest(); }
 
-            await AddUserToGroup(userId, id);
 
-            var userConnections = await  GetUserHubsConnections(userId);
-            await _gameHub.Clients.GroupExcept(id, userConnections).SendAsync("onPlayerJoined");
+            var userConnections = await GetUsersGameConnections(userId, id);
+
+            //await AddConnectionToGameAsync(userId, id);
+            await AddUserToGroup(userId, userConnections);
+
+            await _gameHub.Clients.GroupExcept(id.ToString(), userConnections).SendAsync("onPlayerJoined");
 
             return Ok();
         }
@@ -111,7 +138,9 @@ namespace Battleships.Api.Controllers
         [Route("{gameId}/checkParticipant")]
         public async Task<IActionResult> CheckParticipant(Guid gameId)
         {
+            Guid gameIdParse = Guid.NewGuid();
             var userId = GetUserClaim(ClaimTypes.NameIdentifier);
+            if(!Guid.TryParse(gameId.ToString(), out gameIdParse)) { return Ok(false); }
             var connId = _unit.PlayerConnections.SingleAsync(pc => pc.PlayerId == Guid.Parse(userId));
             await _gameHub.Clients.Client(connId.ToString()).SendAsync("getGame", "Game Info");
             return Ok(await _gamesSvc.CheckAccess(gameId, Guid.Parse(userId)));
@@ -126,10 +155,48 @@ namespace Battleships.Api.Controllers
             return await playerConnections.Select(x => x.ConnectionId).ToListAsync();
         }
 
+        private async Task<List<string>> GetUserGameConnectionsAsync(Guid userId, Guid gameId)
+        {
+            var connections = await _unit.GameConnections.WhereAsync(gc => gc.UserId == userId && gc.GameId == gameId);
+            return connections.Select(gc => gc.ConnectionId).ToList();
+        }
+
         private async Task AddUserToGroup(Guid userId, string groupName)
         {
-            var userConnections = await GetUserHubsConnections(userId);
-            foreach (var connection in userConnections) { await _gameHub.Groups.AddToGroupAsync(connection, groupName); }
+            var playerConnections = await GetUserHubsConnections(userId);
+            foreach (var connection in playerConnections) { await _gameHub.Groups.AddToGroupAsync(connection, groupName); }
+        }
+
+        private async Task AddUserToGroup(Guid groupName, List<string> userConnections)
+        {
+            foreach (var connection in userConnections) { await _gameHub.Groups.AddToGroupAsync(connection, groupName.ToString()); }
+        }
+
+        private async Task AddConnectionToGameAsync(Guid userId, Guid gameId)
+        {
+            var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
+            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId);
+
+            var playerConnections = await GetUserHubsConnections(userId);
+
+            foreach (var connection in playerConnections)
+            {
+                var gameConn = new GamesConnection()
+                {
+                    Game = game,
+                    Player = player,
+                    ConnectionId = connection
+                };
+
+                await _unit.GameConnections.AddAsync(gameConn);
+                await _unit.SaveAsync();
+            }
+        }
+
+        private async Task<List<string>> GetUsersGameConnections(Guid userId, Guid gameId)
+        {
+            var gameConns = await _unit.GameConnections.WhereAsync(gc => gc.UserId == userId && gc.GameId == gameId);
+            return await gameConns.Select(g => g.ConnectionId).ToListAsync();
         }
 
     }

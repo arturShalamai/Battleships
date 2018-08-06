@@ -11,9 +11,10 @@ using System;
 namespace Battleships.Migrations.Migrations
 {
     [DbContext(typeof(BattleshipsContext))]
-    partial class BattleshipsContextModelSnapshot : ModelSnapshot
+    [Migration("20180806054608_GameConnectionsId")]
+    partial class GameConnectionsId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
