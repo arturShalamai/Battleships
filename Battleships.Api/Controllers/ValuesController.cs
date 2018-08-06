@@ -31,9 +31,11 @@ namespace Battleships.Api.Controllers
         public ValuesController(
             IGameService gameSvc, 
             IPlayerService playerSvc, 
-            IUnitOfWork unit)
+            IUnitOfWork unit,
+            IHubContext<GameHub> gameHub)
         {
             _unit = unit;
+            _gameHub = gameHub;
             _gameSvc = gameSvc;
             _playerSvc = playerSvc;
         }
@@ -53,12 +55,19 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
-            var userConnections = await GetUsersGameConnections(userId, id);
+            var userConnections = await GetUserHubsConnections(userId);
 
-            await AddConnectionToGameAsync(userId, id);
-            await AddUserToGroup(userId, userConnections);
+            //var secondUserId = _unit.GameRepo.SingleAsync(g => g.Ga)
 
-            await _gameHub.Clients.GroupExcept(id.ToString(), userConnections).SendAsync("onPlayerJoined");
+            //await AddConnectionToGameAsync(userId, id);
+            //await AddUserToGroup(userId, userConnections);
+
+            foreach (var connection in userConnections)
+            {
+                await _gameHub.Groups.AddToGroupAsync(connection, id.ToString());
+            }
+
+            await _gameHub.Clients.Group(id.ToString()).SendAsync("onPlayerJoined");
 
             //var disco = await DiscoveryClient.GetAsync("https://localhost:44362");
 
@@ -136,8 +145,13 @@ namespace Battleships.Api.Controllers
                     ConnectionId = connection
                 };
 
-                await _unit.GameConnections.AddAsync(gameConn);
-                await _unit.SaveAsync();
+                if(_unit.GameConnections.SingleAsync(gc => gc.UserId == userId && 
+                                                           gc.GameId ==  gameId && 
+                                                           gc.ConnectionId == gameConn.ConnectionId) == null)
+                {
+                    await _unit.GameConnections.AddAsync(gameConn);
+                    await _unit.SaveAsync();
+                }
             }
         }
 

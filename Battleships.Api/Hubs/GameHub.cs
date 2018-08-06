@@ -94,7 +94,9 @@ namespace Battleships.Api.Hubs
         #region Helpers
         private async Task SubscribeToActiveGames(Guid userId)
         {
-            var games = await _unit.GameRepo.WhereAsync(g => g.PlayersInfo.Any(p => p.PlayerId == userId), g => g.PlayersInfo);
+            var games = await _unit.GameRepo.WhereAsync(g => g.PlayersInfo.Any(p => p.PlayerId == userId) && g.Status == GameStatuses.Started, 
+                                                        g => g.PlayersInfo);
+
             var gameIds = games.Select(g => g.Id).ToList();
             var distinct = gameIds.Distinct().ToList();
 

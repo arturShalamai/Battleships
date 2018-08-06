@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
 import { Component, OnInit } from "@angular/core";
@@ -31,21 +32,37 @@ export class GameDashboardComponent implements OnInit {
   constructor(
     private gameSvc: GameService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private client: HttpClient
   ) {
-    this.route.params.subscribe(param => {
-      this.checkForParticipation();
-    });
+    // this.route.params.subscribe(param => {
+    //   this.checkForParticipation();
+    // });
   }
 
   ngOnInit() {
     var gameId = this.route.snapshot.params["id"];
-    this.gameSvc.getGameInfo(gameId).subscribe(res => {
-      debugger;
-      this.enemyFieldString = res.enemyField;
-      this.userField = res.playerField;
-      console.log(res);
-    });
+    // this.gameSvc.getGameInfo(gameId).subscribe(res => {
+    //   debugger;
+    //   this.enemyFieldString = res.enemyField;
+    //   this.userField = res.playerField;
+    //   console.log(res);
+    // });
+  }
+
+  getGame(){
+    debugger;
+    let token = localStorage.getItem("access_token");
+    this.client
+    .get(
+      "https://localhost:44310/api/values/84616006-81e5-4f1d-9506-00d2ceabc4e1",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        responseType: "text"
+      }
+    ).subscribe(res => {});
   }
 
   numbOfRows: number = 7;

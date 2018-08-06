@@ -56,7 +56,7 @@ namespace Battleships.BLL.Repos
 
         public async Task<IQueryable<T>> WhereAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
         {
-            var ctx = _context.Set<T>().AsQueryable();
+            var ctx = _context.Set<T>().AsQueryable().Where(filter);
 
             foreach (var include in includes){ ctx.Include(include); }
 

@@ -17,20 +17,22 @@ export class GameService {
       console.log("Got game with id ", 25);
     });
 
-    signalRSvc.gamesConnection.on("onPlayerJoined", res => {
-      console.log("Player Joined");
+    signalRSvc.gamesConnection.on('onGameCrated', msg => {
+      console.log(Date.now().toLocaleString(), msg);
     });
+
+
 
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
-  getGameInfo(id: string): Observable<GameInfoModel> {
-    var token = localStorage.getItem("access_token");
-    return this.http.get<GameInfoModel>(
-      `https://localhost:44310/api/Game/${id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-  }
+  // getGameInfo(id: string): Observable<GameInfoModel> {
+  //   var token = localStorage.getItem("access_token");
+  //   return this.http.get<GameInfoModel>(
+  //     `https://localhost:44310/api/Game/${id}`,
+  //     { headers: { Authorization: `Bearer ${token}` } }
+  //   );
+  // }
 
   createGame(): Observable<CreateGameResponse> {
     var token = localStorage.getItem("access_token");
