@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Battleships.Api.Hubs;
 using Battleships.Api.Models;
 using Battleships.BLL;
@@ -23,17 +24,20 @@ namespace Battleships.Api.Controllers
     [Authorize]
     public class GameController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unit;
         private readonly IGameService _gamesSvc;
         private readonly IHubContext<GameHub> _gameHub;
 
         public GameController(
+            IMapper mapper,
+            IUnitOfWork unit,
             IGameService gamesSvc,
-            IHubContext<GameHub> gameHub,
-            IUnitOfWork unit)
+            IHubContext<GameHub> gameHub)
         {
-            _gamesSvc = gamesSvc;
             _unit = unit;
+            _mapper = mapper;
+            _gamesSvc = gamesSvc;
             _gameHub = gameHub;
         }
 
@@ -89,9 +93,9 @@ namespace Battleships.Api.Controllers
             var game = await _unit.GameRepo.SingleAsync(g => g.Id == id, g => g.PlayersInfo);
             var conns = await GetUserHubsConnections(game.PlayersInfo[0].PlayerId);
 
-            //var userConnections = await GetUsersGameConnections(userId, id);
-
-            await _gameHub.Clients.Clients(conns).SendAsync("onPlayerJoined");
+            var user = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
+            var userInfo = _mapper.Map<PlayerJoinedInfoModel>(user);
+            await _gameHub.Clients.Clients(conns).SendAsync("onPlayerJoined", userInfo);
 
             //await AddConnectionToGameAsync(userId, id);
             //await AddUserToGroup(userId, id.ToString());

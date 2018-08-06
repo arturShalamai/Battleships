@@ -22,13 +22,13 @@ export class SignalRService {
       })
       .build();
 
-      // this.gamesConnection.
+    // this.gamesConnection.
 
     this.gamesConnection
       .start()
       .then(() => {
         this.gamesConnection.on("onPlayerJoined", res => {
-          console.log(Date.now().toLocaleString(), "Player Joined");
+          console.log(Date.now().toLocaleString(), "Joined player : ", res);
         });
 
         console.log("Connection Success");

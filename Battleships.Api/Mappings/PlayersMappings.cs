@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Battleships.Api.Models;
 
 namespace Battleships.Api.Mappings
 {
@@ -16,6 +17,8 @@ namespace Battleships.Api.Mappings
             CreateMap<PlayerRegisterModel, Player>();
 
             CreateMap<Game, GameInfoModel>();
+
+            CreateMap<Player, PlayerJoinedInfoModel>();
         }
     }
 }
