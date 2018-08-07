@@ -13,12 +13,16 @@ import { Injectable } from "@angular/core";
 export class GameService {
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
     signalRSvc.gamesConnection.on("getGame", res => {
-      debugger;
-      console.log("Got game with id ", 25);
+      // debugger;
+      // console.log("Got game with id ", 25);
     });
 
     signalRSvc.gamesConnection.on('onGameCrated', msg => {
       console.log(Date.now().toLocaleString(), msg);
+    });
+
+    signalRSvc.gamesConnection.on('onHit', res => {
+      console.log(Date.now().toLocaleString(), res);
     });
 
 

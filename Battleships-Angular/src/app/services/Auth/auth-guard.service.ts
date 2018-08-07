@@ -20,7 +20,7 @@ export class AuthGuardService implements CanActivate {
   constructor(private authSvc: AuthService, private router: Router) {}
 
   canActivate() {
-    debugger;
+    // debugger;
     return this.authSvc
       .validateUser()
       .map(() => {

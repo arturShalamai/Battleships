@@ -14,7 +14,7 @@ export class NewGameComponent implements OnInit {
 
   createGame() {
     this.gameSvc.createGame().subscribe(res => {
-      debugger;
+      // debugger;
       console.log(`Game created with id : ${res.id}`);
       this.router.navigate([`/game/${res.id}`]);
     });

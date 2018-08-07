@@ -60,26 +60,10 @@ namespace Battleships.Api.Controllers
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
             var game = await _gamesSvc.StartGameAsync(userId);
 
-            var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
-            var playerConnections = await GetUserHubsConnections(userId);
+            await AddConnectionToGameAsync(userId, game.Id);
+            await AddUserToGroup(userId, game.Id.ToString());
 
-            foreach (var connection in playerConnections)
-            {
-                var gameConn = new GamesConnection()
-                {
-                    Game = game,
-                    Player = player,
-                    ConnectionId = connection,
-                    UserId = userId
-                };
-
-                await _unit.GameConnections.AddAsync(gameConn);
-                _unit.Save();
-            }
-
-            await AddUserToGroup(game.Id, playerConnections);
-
-            await _gameHub.Clients.Group(game.Id.ToString()).SendAsync("onGameCrated", "Signalr game created");
+            await _gameHub.Clients.Group(game.Id.ToString()).SendAsync("onGameCrated", "Game created");
 
             return Ok(game.Id);
         }
@@ -93,34 +77,10 @@ namespace Battleships.Api.Controllers
 
             await _gamesSvc.JoinAsync(id, userId.ToString());
 
-            var game = await _unit.GameRepo.SingleAsync(g => g.Id == id, g => g.PlayersInfo);
-            var conns = await GetUserHubsConnections(game.PlayersInfo[0].PlayerId);
+            await AddConnectionToGameAsync(userId, id);
 
-            foreach (var connection in conns)
-            {
-                var gameConn = new GamesConnection()
-                {
-                    Game = game,
-                    Player = player,
-                    ConnectionId = connection,
-                    UserId = userId
-                };
-
-                await _unit.GameConnections.AddAsync(gameConn);
-                _unit.Save();
-            }
-
-
-            var user = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
-            var userInfo = _mapper.Map<PlayerJoinedInfoModel>(user);
-            await _gameHub.Clients.Clients(conns).SendAsync("onPlayerJoined", userInfo);
-
-            //await AddConnectionToGameAsync(userId, id);
-            //await AddUserToGroup(userId, id.ToString());
-
-            //await _gameHub.Clients
-            //    .GroupExcept(id.ToString(), userConnections)
-            //    .SendAsync("onPlayerJoined");
+            var secondDuserProxy = await GetSecondUserConnection(userId, id);
+            await secondDuserProxy.SendAsync("onPlayerJoined", _mapper.Map<PlayerJoinedInfoModel>(player));
 
             return Ok();
         }
@@ -145,16 +105,8 @@ namespace Battleships.Api.Controllers
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
             await _gamesSvc.PlaceShips(ships.Field, userId, ships.GameId);
 
-            var game = await _unit.GameRepo.SingleAsync(g => g.Id == ships.GameId, g => g.PlayersInfo);
-            var secondUserId = game.PlayersInfo[0].PlayerId == userId ? game.PlayersInfo[1].PlayerId : game.PlayersInfo[0].PlayerId;
-
-            var conns = await GetUserGameConnectionsAsync(secondUserId, ships.GameId);
-
-
-
-            //await ReConnectGame(userId, ships.GameId);
-            //var secondUserProxy = await GetSecondUserConnection(userId, ships.GameId);
-            await _gameHub.Clients.Clients(conns).SendAsync("onPlayerReady");
+            var secondUserProxy = await GetSecondUserConnection(userId, ships.GameId);
+            await secondUserProxy.SendAsync("onPlayerReady");
 
             return Ok();
         }
@@ -166,10 +118,7 @@ namespace Battleships.Api.Controllers
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
             var res = await _gamesSvc.Shot(gameId, userId, number);
 
-            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
-            var secondUserId = game.PlayersInfo[0].PlayerId == userId ? userId : game.PlayersInfo[1].PlayerId;
-
-            var conns = await GetUserGameConnectionsAsync(secondUserId, gameId);
+            var secondUserProxy = await GetSecondUserConnection(userId, gameId);
 
             var shotResultModel = new GameShotResultModel()
             {
@@ -178,7 +127,7 @@ namespace Battleships.Api.Controllers
                 Result = res
             };
 
-            await _gameHub.Clients.Clients(conns).SendAsync("onHit", shotResultModel);
+            await secondUserProxy.SendAsync("onHit", shotResultModel);
 
             return Ok(new { Result = res.ToString() });
         }
@@ -217,11 +166,7 @@ namespace Battleships.Api.Controllers
         private async Task<List<string>> GetUserGameConnectionsAsync(Guid userId, Guid gameId)
         {
             var connections = await _unit.GameConnections.Where(gc => gc.UserId == userId && gc.GameId == gameId);
-            var gameconns = connections.ToList();
-
-            var connectionsId = gameconns.Select(gc => gc.ConnectionId).ToList();
-
-            return connectionsId;
+            return connections.Select(gc => gc.ConnectionId).ToList();
         }
 
         private async Task AddUserToGroup(Guid userId, string groupName)
@@ -248,7 +193,8 @@ namespace Battleships.Api.Controllers
                 {
                     Game = game,
                     Player = player,
-                    ConnectionId = connection
+                    ConnectionId = connection,
+                    UserId = player.Id
                 };
 
                 await _unit.GameConnections.AddAsync(gameConn);
@@ -264,7 +210,7 @@ namespace Battleships.Api.Controllers
 
         private async Task<IClientProxy> GetSecondUserConnection(Guid userId, Guid gameId)
         {
-            var game = await _unit.GameRepo.SingleAsync(g => g.PlayersInfo.Any(p => p.PlayerId == userId), g => g.PlayersInfo);
+            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
             var secondUserId = game.PlayersInfo[0].PlayerId == userId ? game.PlayersInfo[1].PlayerId : game.PlayersInfo[0].PlayerId;
 
             var conns = await GetUserGameConnectionsAsync(secondUserId, gameId);

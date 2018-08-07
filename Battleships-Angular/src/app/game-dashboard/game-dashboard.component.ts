@@ -48,6 +48,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     var gameId = this.route.snapshot.params["id"];
     if (gameId != undefined) {
       this.gameId = gameId;
+      // checkForParticipation(this.gameId);
     }
     // this.gameSvc.getGameInfo(gameId).subscribe(res => {
     //   debugger;
@@ -96,7 +97,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   confirmShips() {
-    debugger;
+    // debugger;
     let shipsModel = new ShipsFieldModel();
     shipsModel.GameId = this.gameId;
     shipsModel.Field = this.userField;

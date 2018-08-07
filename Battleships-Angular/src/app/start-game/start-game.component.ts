@@ -46,10 +46,10 @@ export class StartGameComponent implements OnInit, AfterViewInit {
   //&session_state=wgY1CUVAG-aCcZHvoPCudSrNcOFW3gWzNpEpuVHwtTA.f8a06be505dfed4f7f01f71f2f02b563
 
   ngAfterViewInit(): void {
-    debugger;
+    // debugger;
     this.authSvc.validateUser().map(res => {
-      debugger;
-      this.redirectToDashboard();
+      // debugger;
+      // this.redirectToDashboard();
     });
   }
 
