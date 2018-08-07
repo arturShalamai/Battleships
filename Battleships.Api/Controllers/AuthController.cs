@@ -104,7 +104,7 @@ namespace Battleships.Api.Controllers
             };
 
             await _unit.PlayerRepo.AddAsync(player);
-            await _unit.SaveAsync();
+            _unit.Save();
 
             return Ok();
         }

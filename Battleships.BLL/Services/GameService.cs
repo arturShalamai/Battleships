@@ -69,7 +69,7 @@ namespace Battleships.BLL.Services
             game.AddPlayer(currPlayer);
 
             await _unit.GameRepo.UpdateOneAsync(game);
-            await _unit.SaveAsync();
+            _unit.Save();
         }
 
         public async Task<Game> StartGameAsync(Guid creatorId)
@@ -78,7 +78,7 @@ namespace Battleships.BLL.Services
             var game = new Game(creator);
             await _unit.GameRepo.AddAsync(game);
 
-            await _unit.SaveAsync();
+            _unit.Save();
 
             return game;
         }
@@ -104,7 +104,7 @@ namespace Battleships.BLL.Services
             if(game.GameInfo.FirstUserReady && game.GameInfo.SecondUserReady) { game.Status = GameStatuses.Started; }
 
             await _unit.GameRepo.UpdateOneAsync(game);
-            await _unit.SaveAsync();
+            _unit.Save();
         }
 
         public async Task<ShotResult> Shot(Guid gameId, Guid userId, int number)
@@ -150,7 +150,7 @@ namespace Battleships.BLL.Services
                 else { game.GameInfo.FirstUserField = sb.ToString(); }
 
                 await _unit.GameRepo.UpdateOneAsync(game);
-                await _unit.SaveAsync();
+                _unit.Save();
 
                 return res;
             }
@@ -173,7 +173,7 @@ namespace Battleships.BLL.Services
             game.Status = GameStatuses.Finished;
 
             await _unit.GameRepo.UpdateOneAsync(game);
-            await _unit.SaveAsync();
+            _unit.Save();
         }
 
         public async Task<bool> CheckAccess(Guid gameId, Guid userId)
@@ -216,7 +216,7 @@ namespace Battleships.BLL.Services
 
         private async Task<List<string>> GetUserHubsConnections(Guid userId)
         {
-            var playerConnections = await _unit.PlayerConnections.WhereAsync(pc => pc.PlayerId == userId);
+            var playerConnections = await _unit.PlayerConnections.Where(pc => pc.PlayerId == userId);
             return await playerConnections.Select(x => x.ConnectionId).ToListAsync();
         }
 

@@ -108,13 +108,13 @@ namespace Battleships.Api.Controllers
 
         private async Task<List<string>> GetUserHubsConnections(Guid userId)
         {
-            var playerConnections = await _unit.PlayerConnections.WhereAsync(pc => pc.PlayerId == userId);
+            var playerConnections = await _unit.PlayerConnections.Where(pc => pc.PlayerId == userId);
             return await playerConnections.Select(x => x.ConnectionId).ToListAsync();
         }
 
         private async Task<List<string>> GetUserGameConnectionsAsync(Guid userId, Guid gameId)
         {
-            var connections = await _unit.GameConnections.WhereAsync(gc => gc.UserId == userId && gc.GameId == gameId);
+            var connections = await _unit.GameConnections.Where(gc => gc.UserId == userId && gc.GameId == gameId);
             return connections.Select(gc => gc.ConnectionId).ToList();
         }
 
@@ -150,14 +150,14 @@ namespace Battleships.Api.Controllers
                                                            gc.ConnectionId == gameConn.ConnectionId) == null)
                 {
                     await _unit.GameConnections.AddAsync(gameConn);
-                    await _unit.SaveAsync();
+                    _unit.Save();
                 }
             }
         }
 
         private async Task<List<string>> GetUsersGameConnections(Guid userId, Guid gameId)
         {
-            var gameConns = await _unit.GameConnections.WhereAsync(gc => gc.UserId == userId && gc.GameId == gameId);
+            var gameConns = await _unit.GameConnections.Where(gc => gc.UserId == userId && gc.GameId == gameId);
             return await gameConns.Select(g => g.ConnectionId).ToListAsync();
         }
     }

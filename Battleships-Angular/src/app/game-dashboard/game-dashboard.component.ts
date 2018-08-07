@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from "@angular/common/http";
 import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 // import { HubConnectionBuilder } from "@aspnet/signalr";
 import { ActivatedRoute, Router } from "../../../node_modules/@angular/router";
 import { ShipsFieldModel } from "../Models/ShipsFieldModel";
@@ -12,13 +12,17 @@ import { debug } from "util";
   templateUrl: "./game-dashboard.component.html",
   styleUrls: ["./game-dashboard.component.css"]
 })
-export class GameDashboardComponent implements OnInit {
+export class GameDashboardComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    debugger;
+    this.gameSvc.closeConn();
+  }
   gameId: string;
 
   showMenu: boolean = true;
 
-  userField = ' '.repeat(42);
-  enemyFieldString = " ".repeat(42);
+  userField = " ".repeat(42);
+  enemyFieldString = '█ █   █     █ █████        ██  ████       ';
   enemyField: boolean[][] = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
@@ -42,6 +46,9 @@ export class GameDashboardComponent implements OnInit {
 
   ngOnInit() {
     var gameId = this.route.snapshot.params["id"];
+    if (gameId != undefined) {
+      this.gameId = gameId;
+    }
     // this.gameSvc.getGameInfo(gameId).subscribe(res => {
     //   debugger;
     //   this.enemyFieldString = res.enemyField;
@@ -50,30 +57,28 @@ export class GameDashboardComponent implements OnInit {
     // });
   }
 
-  getGame(){
+  getGame() {
     debugger;
     let token = localStorage.getItem("access_token");
     this.client
-    .get(
-      "https://localhost:44310/api/values/84616006-81e5-4f1d-9506-00d2ceabc4e1",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        responseType: "text"
-      }
-    ).subscribe(res => {});
+      .get(
+        "https://localhost:44310/api/values/84616006-81e5-4f1d-9506-00d2ceabc4e1",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          responseType: "text"
+        }
+      )
+      .subscribe(res => {});
   }
 
   numbOfRows: number = 7;
   numbOfCols: number = 6;
 
-  private checkForParticipation() {
-    debugger;
-    var gameId = this.route.snapshot.params["id"];
+  private checkForParticipation(gameId : string) {
     this.gameSvc.checkParticipation(gameId).then(res => {
-      debugger;
-      if (gameId != undefined && this.gameSvc.checkParticipation(gameId)) {
+      if (res == true) {
         this.gameId = gameId;
         this.showMenu = false;
         console.log("Game id : ", gameId);
@@ -95,9 +100,9 @@ export class GameDashboardComponent implements OnInit {
     let shipsModel = new ShipsFieldModel();
     shipsModel.GameId = this.gameId;
     shipsModel.Field = this.userField;
-    this.gameSvc
-      .submitShips(shipsModel)
-      .subscribe(res => console.log("Ships position accepted"));
+    this.gameSvc.submitShips(shipsModel).subscribe(res => {
+      console.log("Ships position accepted");
+    });
   }
 
   placeShip(index: number) {
@@ -108,8 +113,16 @@ export class GameDashboardComponent implements OnInit {
 
   srtGameId(game: string) {
     this.gameId = game;
+    this.router.navigate([`/game/${this.gameId}`]);
     console.log("Game Id was chnged to ", game);
   }
+
+  gameJoined(gameId: string){
+    this.showMenu = false;
+    this.gameId = gameId;
+    // this.checkForParticipation();
+  }
+
 }
 
 function replaceAt(s, n, t) {

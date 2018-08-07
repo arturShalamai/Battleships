@@ -31,21 +31,16 @@ export class SignalRService {
           console.log(Date.now().toLocaleString(), "Joined player : ", res);
         });
 
+        this.gamesConnection.on("onPlayerReady", res => {
+          console.log(Date.now().toLocaleString(), "Second player ready.", res);
+        });
+
         console.log("Connection Success");
         setTimeout(resolve, 10000);
         // delay(5000);
       })
       .then(() => {
-        this.client
-          .get(
-            "https://localhost:44310/api/values/84616006-81e5-4f1d-9506-00d2ceabc4e1",
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`
-              }
-            }
-          )
-          .subscribe(res => console.log(`[Games Service] : ${res}`));
+        // this.gamesConnection.stop();
       })
       .catch(err => console.log("Hub Connection error", err));
 

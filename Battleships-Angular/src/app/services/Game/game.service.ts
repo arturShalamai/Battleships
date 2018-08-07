@@ -26,6 +26,10 @@ export class GameService {
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
+  closeConn(){
+    this.signalRSvc.gamesConnection.stop();
+  }
+
   // getGameInfo(id: string): Observable<GameInfoModel> {
   //   var token = localStorage.getItem("access_token");
   //   return this.http.get<GameInfoModel>(

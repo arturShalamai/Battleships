@@ -32,7 +32,7 @@ namespace Battleships.Api.Hubs
             try
             {
                 await _unit.PlayerConnections.AddAsync(new PlayerConnection(player, Context.ConnectionId));
-                await _unit.SaveAsync();
+                _unit.Save();
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace Battleships.Api.Hubs
             {
                 var currConnectionEntity = await _unit.PlayerConnections.SingleAsync(p => p.ConnectionId == Context.ConnectionId);
                 await _unit.PlayerConnections.DeleteOneAsync(currConnectionEntity);
-                await _unit.SaveAsync();
+                _unit.Save();
             }
             catch (Exception ex)
             {
@@ -94,7 +94,7 @@ namespace Battleships.Api.Hubs
         #region Helpers
         private async Task SubscribeToActiveGames(Guid userId)
         {
-            var games = await _unit.GameRepo.WhereAsync(g => g.PlayersInfo.Any(p => p.PlayerId == userId) && g.Status == GameStatuses.Started, 
+            var games = await _unit.GameRepo.Where(g => g.PlayersInfo.Any(p => p.PlayerId == userId) && g.Status == GameStatuses.Started, 
                                                         g => g.PlayersInfo);
 
             var gameIds = games.Select(g => g.Id).ToList();

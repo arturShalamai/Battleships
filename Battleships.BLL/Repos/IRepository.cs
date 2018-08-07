@@ -11,7 +11,7 @@ namespace Battleships.BLL.Repos
     {
         Task<List<T>> AllAsync();
 
-        Task<IQueryable<T>> WhereAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
+        Task<IQueryable<T>> Where(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
 
         Task<T> SingleAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
 

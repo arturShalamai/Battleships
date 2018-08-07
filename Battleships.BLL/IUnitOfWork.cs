@@ -12,7 +12,7 @@ namespace Battleships.BLL
         IRepository<PlayerConnection> PlayerConnections { get; }
         IRepository<GamesConnection> GameConnections { get; }
 
-        Task SaveAsync();
+        void Save();
 
         void Dispose();
     }
