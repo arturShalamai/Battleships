@@ -5,7 +5,6 @@ import { AuthGuardService } from './services/Auth/auth-guard.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
-
 import { AppComponent } from './app.component';
 import { StartGameComponent } from './start-game/start-game.component';
 import {OAuthModule} from 'angular-oauth2-oidc';
@@ -48,20 +47,9 @@ import { GameResultComponent } from './game-result/game-result.component';
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
       {path : 'login', component: StartGameComponent},
-<<<<<<< HEAD
-<<<<<<< HEAD
-      {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
-      {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]},
-=======
-      {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService]},
-      {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]}
->>>>>>> BugFix-ClientRouting
-=======
       {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService]},
       {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
       {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]}
-
->>>>>>> BugFix-ClientRouting
     ]),
     OAuthModule.forRoot()
   ],

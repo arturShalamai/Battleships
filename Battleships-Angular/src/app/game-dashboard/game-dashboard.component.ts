@@ -20,7 +20,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
   gameId: string;
 
-  showMenu: boolean = true;
+  showMenu: boolean = false;
 
   gameInfo: GameInfoModel;
 

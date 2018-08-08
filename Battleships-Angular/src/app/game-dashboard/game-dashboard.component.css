@@ -1,3 +1,10 @@
+.game-dasboard{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://image.freepik.com/free-photo/desk-texture_23-2147731363.jpg');
+}
+
 .gameControls-card {
   position: absolute;
   top: 50%;
