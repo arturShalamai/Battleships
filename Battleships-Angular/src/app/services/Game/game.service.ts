@@ -60,9 +60,9 @@ export class GameService {
       });
   }
 
-  createGame(): Observable<CreateGameResponse> {
+  createGame(): Observable<string> {
     var token = localStorage.getItem("access_token");
-    return this.http.post<CreateGameResponse>(
+    return this.http.post<string>(
       "https://localhost:44310/api/Game/create",
       {},
       { headers: { Authorization: `Bearer ${token}` } }

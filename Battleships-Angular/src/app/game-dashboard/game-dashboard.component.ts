@@ -94,16 +94,19 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     console.log(this.userField);
   }
 
-  srtGameId(game: string) {
-    this.gameId = game;
-    this.router.navigate([`/game/${this.gameId}`]);
-    console.log("Game Id was chnged to ", game);
+  onGameStarted(gameId: string) {
+    this.gameId = gameId;
+    this.showMenu = false;
+    this.loadCurrGame();
+    console.log("Stated game ", gameId);
   }
 
-  gameJoined(gameId: string) {
+  onGameJoined(gameId: string) {
+    debugger;
     this.showMenu = false;
     this.gameId = gameId;
-    // this.checkForParticipation();
+    this.loadCurrGame();
+    console.log("Joined  game ", gameId);
   }
 }
 
