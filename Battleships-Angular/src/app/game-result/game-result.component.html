@@ -1,0 +1,16 @@
+<div class="game-result-div">
+  <div class="result" [style.background-color]='backgroundColor'>
+    <div class="result-win" *ngIf='victory'>
+      <h1>Congratulations !!!</h1>
+      <h2>You have won. You have gained 10 points;</h2>
+      <h2>🎉</h2>
+    </div>
+    <div class="result-lose" *ngIf='!victory'>
+      <h1>You Lose ): </h1>
+      <h2>Don't worry. Next time.</h2>
+      <h2>😥</h2>
+    </div>
+
+    <button mat-raised-button color="primary" class="button-register">Return to menu</button>
+  </div>
+</div>
