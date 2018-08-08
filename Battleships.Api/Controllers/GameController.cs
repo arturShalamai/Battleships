@@ -28,17 +28,20 @@ namespace Battleships.Api.Controllers
         private readonly IUnitOfWork _unit;
         private readonly IGameService _gamesSvc;
         private readonly IHubContext<GameHub> _gameHub;
+        private readonly IScoreService _scoreService;
 
         public GameController(
             IMapper mapper,
             IUnitOfWork unit,
             IGameService gamesSvc,
+            IScoreService scoreService,
             IHubContext<GameHub> gameHub)
         {
             _unit = unit;
             _mapper = mapper;
             _gamesSvc = gamesSvc;
             _gameHub = gameHub;
+            _scoreService = scoreService;
         }
 
         [HttpGet]
@@ -120,6 +123,14 @@ namespace Battleships.Api.Controllers
 
             if (res == ShotResult.Win)
             {
+
+                var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
+                player.Score += 10;
+                await _unit.PlayerRepo.UpdateOneAsync(player);
+                _unit.Save();
+
+                await _scoreService.SendScores(player.Id, player.Score);
+
                 await _gameHub.Clients.Group(gameId.ToString()).SendAsync("onGameEnd", new
                 {
                     GameId = gameId,
@@ -154,6 +165,13 @@ namespace Battleships.Api.Controllers
 
             var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
             var winnerId = game.PlayersInfo[0].PlayerId == userId ? game.PlayersInfo[1].PlayerId : game.PlayersInfo[0].PlayerId;
+
+            var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == winnerId);
+            player.Score += 10;
+            await _unit.PlayerRepo.UpdateOneAsync(player);
+            _unit.Save();
+
+            await _scoreService.SendScores(player.Id, player.Score);
 
             await _gameHub.Clients.Group(gameId.ToString()).SendAsync("onGameEnd", new
             {

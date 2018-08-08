@@ -44,7 +44,7 @@ namespace Battleships.Api
 
             RegisterDependencies(services);
 
-            
+
 
             services.AddDbContext<BattleshipsContext>(conf =>
                             conf.UseSqlServer(Configuration.GetConnectionString("MSSQLConnectionString"),
@@ -68,6 +68,12 @@ namespace Battleships.Api
             {
                 conf.AddPolicy("AllowAll", opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
+
+            var disco = DiscoveryClient.GetAsync("https://localhost:44362").Result;
+
+            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
+            var tokenResponse = tokenClient.RequestClientCredentialsAsync("Platform.ProfileService").Result;
+            API.AccessToken = tokenResponse.AccessToken;
 
         }
 
@@ -98,6 +104,7 @@ namespace Battleships.Api
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            services.AddScoped<IScoreService, ScoreService>();
         }
     }
 }
