@@ -1,3 +1,4 @@
+import { GameInfoModel } from "./../Models/GameInfoModel";
 import { HttpClient } from "@angular/common/http";
 import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
@@ -21,8 +22,10 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   showMenu: boolean = true;
 
+  gameInfo: GameInfoModel;
+
   userField = " ".repeat(42);
-  enemyFieldString = '█ █   █     █ █████        ██  ████       ';
+  enemyFieldString = "█ █   █     █ █████        ██  ████       ";
   enemyField: boolean[][] = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
@@ -38,54 +41,33 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private client: HttpClient
-  ) {
-    // this.route.params.subscribe(param => {
-    //   this.checkForParticipation();
-    // });
-  }
+  ) {}
 
   ngOnInit() {
-    var gameId = this.route.snapshot.params["id"];
-    if (gameId != undefined) {
-      this.gameId = gameId;
-      // checkForParticipation(this.gameId);
-    }
-    // this.gameSvc.getGameInfo(gameId).subscribe(res => {
-    //   debugger;
-    //   this.enemyFieldString = res.enemyField;
-    //   this.userField = res.playerField;
-    //   console.log(res);
-    // });
+    this.route.params.subscribe(params => {
+      debugger;
+      let idParam = params["id"];
+      if (idParam != undefined) {
+        this.gameSvc.checkParticipation(idParam).subscribe(suc => {
+          debugger;
+          if (suc) {
+            this.showMenu = false;
+            this.gameId = idParam;
+            this.loadCurrGame();
+          }
+        });
+      }
+    });
   }
 
-  getGame() {
-    debugger;
-    let token = localStorage.getItem("access_token");
-    this.client
-      .get(
-        "https://localhost:44310/api/values/84616006-81e5-4f1d-9506-00d2ceabc4e1",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          responseType: "text"
-        }
-      )
-      .subscribe(res => {});
+  loadCurrGame() {
+    this.gameSvc.getGameInfo(this.gameId).subscribe(res => {
+      this.gameInfo = res;
+    });
   }
 
   numbOfRows: number = 7;
   numbOfCols: number = 6;
-
-  private checkForParticipation(gameId : string) {
-    this.gameSvc.checkParticipation(gameId).then(res => {
-      if (res == true) {
-        this.gameId = gameId;
-        this.showMenu = false;
-        console.log("Game id : ", gameId);
-      }
-    });
-  }
 
   fire(index: number) {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
@@ -112,18 +94,20 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     console.log(this.userField);
   }
 
-  srtGameId(game: string) {
-    this.gameId = game;
-    this.router.navigate([`/game/${this.gameId}`]);
-    console.log("Game Id was chnged to ", game);
+  onGameStarted(gameId: string) {
+    this.gameId = gameId;
+    this.showMenu = false;
+    this.loadCurrGame();
+    console.log("Stated game ", gameId);
   }
 
-  gameJoined(gameId: string){
+  onGameJoined(gameId: string) {
+    debugger;
     this.showMenu = false;
     this.gameId = gameId;
-    // this.checkForParticipation();
+    this.loadCurrGame();
+    console.log("Joined  game ", gameId);
   }
-
 }
 
 function replaceAt(s, n, t) {

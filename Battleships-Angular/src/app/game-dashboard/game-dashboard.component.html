@@ -6,9 +6,11 @@
   </mat-card-header>
   <mat-card-content>
     <div class="gameControls">
-      <app-new-game class="newgame-component"></app-new-game>
+      <app-new-game class="newgame-component"
+      (gameStarted)='onGameStarted($event)'></app-new-game>
       <p class="span-or">or</p>
-      <app-join-game class="joinGame-component" (gameJoined)='gameJoined($event)'></app-join-game>
+      <app-join-game class="joinGame-component" 
+      (gameJoined)='onGameJoined($event)'></app-join-game>
     </div>
   </mat-card-content>
 </mat-card>
@@ -41,4 +43,11 @@
   </div>
 </div>
 
-<button mat-raised-button color="primary" class="button-register" (click)='getGame()'>Get Game</button>
+<div class="curr-game-info">
+   <p>{{gameInfo.Id}}</p>
+   <p>{{gameInfo.playerField}}</p>
+   <p>{{gameInfo.playerReady}}</p>
+   <p>{{gameInfo.enemyField}}</p>
+   <p>{{gameInfo.enemyReady}}</p>
+   <p>{{gameInfo.turn}}</p>
+</div>

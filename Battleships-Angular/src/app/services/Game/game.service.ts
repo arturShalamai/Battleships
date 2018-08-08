@@ -4,7 +4,7 @@ import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
 import { SignalRService } from "./../SignalR/signal-r.service";
 import { CreateGameResponse } from "./CreateGameResponse";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, Subscribable } from "rxjs";
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -21,14 +21,14 @@ export class GameService {
     //   console.log(Date.now().toLocaleString(), msg);
     // });
 
-    signalRSvc.gamesConnection.on('onHit', res => {
+    signalRSvc.gamesConnection.on("onHit", res => {
       console.log("Hited : ", res);
     });
 
-    signalRSvc.gamesConnection.on('onGameEnd', res => {
+    signalRSvc.gamesConnection.on("onGameEnd", res => {
       console.log("Game End", res);
     });
-    
+
     signalRSvc.gamesConnection.on("onPlayerJoined", res => {
       console.log(`Joined player : ${res.Id} ${res.FirstName}`);
     });
@@ -36,12 +36,11 @@ export class GameService {
     signalRSvc.gamesConnection.on("onPlayerReady", res => {
       console.log(Date.now().toLocaleString(), "Second player ready.");
     });
-    
 
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
-  closeConn(){
+  closeConn() {
     this.signalRSvc.gamesConnection.stop();
   }
 
@@ -53,9 +52,17 @@ export class GameService {
   //   );
   // }
 
-  createGame(): Observable<CreateGameResponse> {
+  getGameInfo(gameId: string): Observable<GameInfoModel> {
+    let token = localStorage.getItem("access_token");
+    return this.http
+      .get<GameInfoModel>(`https://localhost:44310/api/Game/${gameId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  }
+
+  createGame(): Observable<string> {
     var token = localStorage.getItem("access_token");
-    return this.http.post<CreateGameResponse>(
+    return this.http.post<string>(
       "https://localhost:44310/api/Game/create",
       {},
       { headers: { Authorization: `Bearer ${token}` } }
@@ -95,15 +102,13 @@ export class GameService {
     );
   }
 
-  checkParticipation(gameId: string): Promise<boolean> {
+  checkParticipation(gameId: string): Observable<boolean> {
     let token = localStorage.getItem("access_token");
-    return this.http
-      .get<boolean>(
-        `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      )
-      .toPromise();
+    return this.http.get<boolean>(
+      `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
   }
 }

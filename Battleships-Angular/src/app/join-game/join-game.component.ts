@@ -18,9 +18,7 @@ export class JoinGameComponent implements OnInit {
   ngOnInit() {}
 
   joinGame() {
-    this.gameSvc.joinGame(this.gameId).subscribe(res => {
-      // debugger;
-      this.router.navigate([`/game/${this.gameId}`])
+    this.gameSvc.joinGame(this.gameId).subscribe(suc => {
       this.gameJoined.emit(this.gameId);
     });
   }

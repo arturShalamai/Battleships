@@ -1,4 +1,5 @@
-export class PlayerregisterModel {
+export class PlayerRegisterModel {
+
   constructor(
     email: string,
     firstName: string,
@@ -12,7 +13,7 @@ export class PlayerregisterModel {
     this.LastName = lastName;
     this.NickName = nickName;
     this.Password = password;
-    this.confirmPassword = confirmPassword;
+    this.ConfirmPassword = confirmPassword;
   }
 
   Email: string;
@@ -20,5 +21,5 @@ export class PlayerregisterModel {
   LastName: string;
   NickName: string;
   Password: string;
-  confirmPassword:string;
+  ConfirmPassword: string;
 }

@@ -27,16 +27,6 @@ export class SignalRService {
     this.gamesConnection
       .start()
       .then(() => {
-        this.gamesConnection.on("onPlayerJoined", res => {
-          console.log(`Joined player : ${res.Id} ${res.FirstName}`);
-        });
-
-        this.gamesConnection.on("onPlayerReady", res => {
-          console.log(Date.now().toLocaleString(), "Second player ready.");
-        });
-
-        console.log("Connection Success");
-        setTimeout(resolve, 10000);
         // delay(5000);
       })
       .then(() => {

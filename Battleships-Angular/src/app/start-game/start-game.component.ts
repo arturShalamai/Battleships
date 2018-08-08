@@ -1,5 +1,5 @@
-import 'rxjs-compat';
-import { debug } from 'util';
+import "rxjs-compat";
+import { debug } from "util";
 import { AuthService } from "./../services/Auth/auth.service";
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Observable } from "rxjs";
@@ -27,9 +27,13 @@ export class StartGameComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    debugger;
     let access_token = this.route.snapshot.queryParams["access_token"];
-    if(access_token != undefined) { localStorage.setItem("access_token", access_token); }
+    if (access_token != undefined) {
+      localStorage.setItem("access_token", access_token);
+    }
+    
+    this.authSvc.validateUser().subscribe(res => { this.redirectToDashboard(); })
+
     // setInterval(() => {
     //   var randomImage = this.getRandomImage();
     //   console.log(randomImage);
@@ -53,16 +57,16 @@ export class StartGameComponent implements OnInit, AfterViewInit {
     });
   }
 
-  register(): void {
+  showRegister(): void {
     this.isSignUp = true;
   }
 
-  login() {
+  showLogin() {
     this.isSignUp = false;
   }
 
-  public redirectToDashboard(){
-    this.router.navigate(["/game/1"]);
+  public redirectToDashboard() {
+    this.router.navigate(["/game"]);
   }
 
   private getRandomImage(): string {
