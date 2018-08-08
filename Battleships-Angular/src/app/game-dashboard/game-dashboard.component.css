@@ -74,6 +74,23 @@
   text-align: center;
 }
 
+.board-enemy{
+  flex-display: row;
+}
+
+.board .status{
+  display: flex;
+  justify-content: flex-start;
+  color: white;
+}
+
+.board .status .display{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #eeeeee;
+}
+
 .board h2{
   color: white;
 }

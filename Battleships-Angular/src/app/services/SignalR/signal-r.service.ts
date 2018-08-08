@@ -22,19 +22,14 @@ export class SignalRService {
       })
       .build();
 
-    // this.gamesConnection.
-
     this.gamesConnection
       .start()
-      .then(() => {
-        // delay(5000);
-      })
-      .then(() => {
-        // this.gamesConnection.stop();
-      })
-      .catch(err => console.log("Hub Connection error", err));
-
-    // this.gamesConnection.on("hited", args => console.log(`Hited ${args}`));
+      .then(suc => {
+        console.log("Connection to hub estblished");
+      },
+      err => {
+        console.warn("Connection to hub wasn't estblished");
+      });
   }
 
   subscribe(name: string) {}

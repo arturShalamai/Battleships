@@ -6,51 +6,23 @@ import { CreateGameResponse } from "./CreateGameResponse";
 import { HttpClient } from "@angular/common/http";
 import { Observable, Subscribable } from "rxjs";
 import { Injectable } from "@angular/core";
+import { HubConnection } from "../../../../node_modules/@aspnet/signalr";
 
 @Injectable({
   providedIn: "root"
 })
 export class GameService {
+
+  public gamesConnection: HubConnection | undefined;
+
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
-    // signalRSvc.gamesConnection.on("getGame", res => {
-    //   // debugger;
-    //   // console.log("Got game with id ", 25);
-    // });
-
-    // signalRSvc.gamesConnection.on('onGameCrated', msg => {
-    //   console.log(Date.now().toLocaleString(), msg);
-    // });
-
-    signalRSvc.gamesConnection.on("onHit", res => {
-      console.log("Hited : ", res);
-    });
-
-    signalRSvc.gamesConnection.on("onGameEnd", res => {
-      console.log("Game End", res);
-    });
-
-    signalRSvc.gamesConnection.on("onPlayerJoined", res => {
-      console.log(`Joined player : ${res.Id} ${res.FirstName}`);
-    });
-
-    signalRSvc.gamesConnection.on("onPlayerReady", res => {
-      console.log(Date.now().toLocaleString(), "Second player ready.");
-    });
-
-    // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
+    
+    this.gamesConnection = signalRSvc.gamesConnection;
   }
 
   closeConn() {
     this.signalRSvc.gamesConnection.stop();
   }
-
-  // getGameInfo(id: string): Observable<GameInfoModel> {
-  //   var token = localStorage.getItem("access_token");
-  //   return this.http.get<GameInfoModel>(
-  //     `https://localhost:44310/api/Game/${id}`,
-  //     { headers: { Authorization: `Bearer ${token}` } }
-  //   );
-  // }
 
   getGameInfo(gameId: string): Observable<GameInfoModel> {
     let token = localStorage.getItem("access_token");

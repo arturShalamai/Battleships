@@ -241,10 +241,10 @@ namespace Battleships.Api.Controllers
 
                 await _unit.GameConnections.AddAsync(gameConn);
 
-                await AddUserToGroup(gameId, playerConnections);
-
                 _unit.Save();
             }
+
+            await AddUserToGroup(gameId, playerConnections);
         }
 
         private async Task StopGameConnections(Guid gameId) =>

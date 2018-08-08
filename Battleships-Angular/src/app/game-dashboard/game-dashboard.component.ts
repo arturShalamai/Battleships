@@ -1,3 +1,4 @@
+import { SignalRService } from "./../services/SignalR/signal-r.service";
 import { GameInfoModel } from "./../Models/GameInfoModel";
 import { HttpClient } from "@angular/common/http";
 import { GameService } from "./../services/Game/game.service";
@@ -14,30 +15,23 @@ import { debug } from "util";
   styleUrls: ["./game-dashboard.component.css"]
 })
 export class GameDashboardComponent implements OnInit, OnDestroy {
-  ngOnDestroy(): void {
-    debugger;
-    this.gameSvc.closeConn();
-  }
   gameId: string;
-
-  showMenu: boolean = false;
-  shipsLeft = 16;
   gameInfo: GameInfoModel;
+  showMenu: boolean = true;
+
+  shipsLeft = 16;
 
   userField = " ".repeat(42);
   enemyFieldString = "█ █   █     █ █████        ██  ████       ";
-  enemyField: boolean[][] = [
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null]
-  ];
+
+  numbOfRows = Array(7).fill(1);
+  numbOfCols = Array(6).fill(1);
+
+  secondPlayerStatus = "#eee";
 
   constructor(
     private gameSvc: GameService,
+    private signalRSvc: SignalRService,
     private route: ActivatedRoute,
     private router: Router,
     private client: HttpClient
@@ -56,6 +50,28 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
         });
       }
     });
+
+    this.subscribeToSignalREvents();
+
+  }
+
+  subscribeToSignalREvents() {
+    this.signalRSvc.gamesConnection.on("onHit", res => {
+      console.log("Hited : ", res);
+    });
+
+    this.signalRSvc.gamesConnection.on("onGameEnd", res => {
+      console.log("Game End", res);
+    });
+
+    this.signalRSvc.gamesConnection.on("onPlayerJoined", res => {
+      debugger;
+      this.onPlayerJoined();
+    });
+
+    this.signalRSvc.gamesConnection.on("onPlayerReady", res => {
+      console.log(Date.now().toLocaleString(), "Second player ready.");
+    });
   }
 
   loadCurrGame() {
@@ -63,9 +79,6 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
       this.gameInfo = res;
     });
   }
-
-  numbOfRows: number = 7;
-  numbOfCols: number = 6;
 
   fire(index: number) {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
@@ -77,7 +90,6 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   confirmShips() {
-    // debugger;
     let shipsModel = new ShipsFieldModel();
     shipsModel.GameId = this.gameId;
     shipsModel.Field = this.userField;
@@ -105,6 +117,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   onGameJoined(gameId: string) {
     debugger;
     this.showMenu = false;
+    this.secondPlayerStatus = '#64dd17'
     this.gameId = gameId;
     this.loadCurrGame();
     console.log("Joined  game ", gameId);
@@ -113,6 +126,15 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   onLoggedOut() {
     debugger;
     this.router.navigate(["/login"]);
+  }
+
+  onPlayerJoined() {
+    this.secondPlayerStatus = "#64dd17";
+  }
+
+  ngOnDestroy(): void {
+    debugger;
+    this.gameSvc.closeConn();
   }
 }
 

@@ -21,25 +21,30 @@
     <div class="board board-player">
       <h2>Ships left : {{shipsLeft}} </h2>
       <table>
-        <tr *ngFor='let row of enemyField; let i = index;'>
-          <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
-            <span>{{userField[i*numbOfCols+j]=='█'? '⛵' : ' ' }}</span>
+        <tr *ngFor='let row of numbOfRows; let i = index;'>
+          <td *ngFor='let item of numbOfCols; let j = index;' (click)="placeShip(i*numbOfCols.length+j)">
+            <span>{{userField[i*numbOfCols.length+j]=='█'? '⛵' : ' ' }}</span>
           </td>
         </tr>
       </table>
+    
       <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
     </div>
 
     <div class="board board-enemy">
       <h2>Enemy board</h2>
-      <table >
-        <tr *ngFor='let row of enemyField; let i = index;'>
-          <td *ngFor='let item of row; let j = index;' (click)="fire(i*numbOfCols+j)">
-            <span>{{enemyFieldString[i*numbOfCols+j] == 'x' ? '🔥' : enemyFieldString[i*numbOfCols+j] == '0' ? '🗙' : ''}}</span>
+      <table>
+        <tr *ngFor='let row of numbOfRows; let i = index;'>
+          <td *ngFor='let item of numbOfCols; let j = index;' (click)="fire(i*numbOfCols.length+j)">
+            <span>{{enemyFieldString[i*numbOfCols.length+j] == '█' ? '🔥' : enemyFieldString[i*numbOfCols.length+j] == '0' ? '🗙'
+              : ''}}</span>
           </td>
         </tr>
       </table>
-      
+      <div class="status">
+          <div class="display" [style.background-color]='secondPlayerStatus'></div>
+          <p> Status</p>
+        </div>
     </div>
   </div>
 
@@ -69,12 +74,12 @@
   <div class="Boards">
   </div>
 
-  <div class="curr-game-info">
+  <!-- <div class="curr-game-info">
     <p>{{gameInfo.Id}}</p>
     <p>{{gameInfo.playerField}}</p>
     <p>{{gameInfo.playerReady}}</p>
     <p>{{gameInfo.enemyField}}</p>
     <p>{{gameInfo.enemyReady}}</p>
     <p>{{gameInfo.turn}}</p>
-  </div>
+  </div> -->
   <!-- </div> -->
