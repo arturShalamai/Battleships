@@ -1,4 +1,4 @@
-<app-logout></app-logout>
+<app-logout (loggedOut)='onLoggedOut()'></app-logout>
 
 <mat-card class="gameControls-card" *ngIf='showMenu'>
   <mat-card-header>

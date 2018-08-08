@@ -32,17 +32,11 @@ export class AuthService {
     if (token == undefined) {
       return;
     }
-    let tokenInfo = jwt_decode(token);
-
-    debugger;
-
     if (this.oAuthSvc.hasValidAccessToken()) {
       this.oAuthSvc.logOut();
     } else {
       localStorage.setItem("access_token", "");
     }
-
-    console.log(tokenInfo);
   }
 
   validateUser(): Observable<any> {

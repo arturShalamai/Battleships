@@ -49,7 +49,8 @@ import { GameResultComponent } from './game-result/game-result.component';
       {path : '', component: StartGameComponent},
       {path : 'login', component: StartGameComponent},
       {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService]},
-      {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]}
+      {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
+      {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]}
 
     ]),
     OAuthModule.forRoot()
