@@ -46,7 +46,8 @@ import { LogoutComponent } from './logout/logout.component';
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
       {path : 'login', component: StartGameComponent},
-      {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
+      {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService]},
+      {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]}
     ]),
     OAuthModule.forRoot()
   ],

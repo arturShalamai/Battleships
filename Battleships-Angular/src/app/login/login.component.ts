@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   public isSignUp: boolean;
   public email: string;
   public password: string;
+
   @Output() public register = new EventEmitter<any>();
   @Output() public loginSuccess = new EventEmitter<any>();
 
@@ -24,13 +25,23 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   submitSuccess() {
-    this.loginSuccess.emit(null);
+
   }
 
   login(): void {
-    this.authSvc.login(this.email, this.password).subscribe(res =>{
-      this.submitSuccess();
-    });
+    debugger;
+    this.authSvc.login(this.email, this.password).subscribe(
+      suc => {
+        debugger;
+        localStorage.setItem('access_token', suc.token);
+        this.loginSuccess.emit(null);
+      },
+      err => {
+        debugger;
+        this.email = '';
+        this.password = '';
+      }
+    );
   }
 
   platformLogin() {

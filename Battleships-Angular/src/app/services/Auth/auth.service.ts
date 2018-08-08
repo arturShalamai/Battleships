@@ -13,22 +13,16 @@ import * as jwt_decode from "jwt-decode";
 export class AuthService {
   constructor(private http: HttpClient, private oAuthSvc:OAuthService) {}
 
-  login(email: string, password: string): Observable<string> {
-    this.http
+  login(email: string, password: string): Observable<TokenResponse> {
+    return this.http
       .post<TokenResponse>(
         `https://localhost:44310/api/players/token?Email=${email}&password=${password}`,
         {}
-      )
-      .subscribe(res => {
-        console.log(res);
-        localStorage.setItem("access_token", res.token);
-        return of(res);
-      });
-    return of("none");
+      );
   }
 
   register(playerReg: PlayerregisterModel): Observable<any> {
-    return this.http.post(
+    return this.http.post<any>(
       "https://localhost:44310/api/players/register",
       playerReg
     );
