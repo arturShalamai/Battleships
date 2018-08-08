@@ -18,6 +18,7 @@ import { NewGameComponent } from './new-game/new-game.component';
 import { JoinGameComponent } from './join-game/join-game.component';
 import { FieldComponent } from './field/field.component';
 import { LogoutComponent } from './logout/logout.component';
+import { GameResultComponent } from './game-result/game-result.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { LogoutComponent } from './logout/logout.component';
     JoinGameComponent,
     GameDashboardComponent,
     FieldComponent,
-    LogoutComponent
+    LogoutComponent,
+    GameResultComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,7 @@ import { LogoutComponent } from './logout/logout.component';
       {path : '', component: StartGameComponent},
       {path : 'login', component: StartGameComponent},
       {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
+      {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]},
     ]),
     OAuthModule.forRoot()
   ],
