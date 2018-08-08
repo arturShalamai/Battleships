@@ -21,14 +21,14 @@ export class GameService {
     //   console.log(Date.now().toLocaleString(), msg);
     // });
 
-    signalRSvc.gamesConnection.on('onHit', res => {
+    signalRSvc.gamesConnection.on("onHit", res => {
       console.log("Hited : ", res);
     });
 
-    signalRSvc.gamesConnection.on('onGameEnd', res => {
+    signalRSvc.gamesConnection.on("onGameEnd", res => {
       console.log("Game End", res);
     });
-    
+
     signalRSvc.gamesConnection.on("onPlayerJoined", res => {
       console.log(`Joined player : ${res.Id} ${res.FirstName}`);
     });
@@ -36,12 +36,11 @@ export class GameService {
     signalRSvc.gamesConnection.on("onPlayerReady", res => {
       console.log(Date.now().toLocaleString(), "Second player ready.");
     });
-    
 
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
 
-  closeConn(){
+  closeConn() {
     this.signalRSvc.gamesConnection.stop();
   }
 
@@ -52,6 +51,14 @@ export class GameService {
   //     { headers: { Authorization: `Bearer ${token}` } }
   //   );
   // }
+
+  getGameInfo(gameId: string): Observable<GameInfoModel> {
+    let token = localStorage.getItem("access_token");
+    return this.http
+      .get<GameInfoModel>(`https://localhost:44310/api/Game/${gameId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  }
 
   createGame(): Observable<CreateGameResponse> {
     var token = localStorage.getItem("access_token");
@@ -97,12 +104,11 @@ export class GameService {
 
   checkParticipation(gameId: string): Observable<boolean> {
     let token = localStorage.getItem("access_token");
-    return this.http
-      .get<boolean>(
-        `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+    return this.http.get<boolean>(
+      `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
   }
 }

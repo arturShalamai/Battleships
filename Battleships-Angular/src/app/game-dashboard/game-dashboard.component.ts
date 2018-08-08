@@ -1,3 +1,4 @@
+import { GameInfoModel } from "./../Models/GameInfoModel";
 import { HttpClient } from "@angular/common/http";
 import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
@@ -21,6 +22,8 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   showMenu: boolean = true;
 
+  gameInfo: GameInfoModel;
+
   userField = " ".repeat(42);
   enemyFieldString = "█ █   █     █ █████        ██  ████       ";
   enemyField: boolean[][] = [
@@ -38,44 +41,29 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private client: HttpClient
-  ) {
-    // this.route.params.subscribe(param => {
-    //   this.checkForParticipation();
-    // });
-  }
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       debugger;
       let idParam = params["id"];
       if (idParam != undefined) {
-        this.gameSvc.checkParticipation(idParam).subscribe(
-          suc => {
-            debugger;
-            if (suc) {
-              this.showMenu = false;
-              this.gameId = idParam;
-            }
+        this.gameSvc.checkParticipation(idParam).subscribe(suc => {
+          debugger;
+          if (suc) {
+            this.showMenu = false;
+            this.gameId = idParam;
+            this.loadCurrGame();
           }
-        );
+        });
       }
     });
   }
 
-  getGame() {
-    debugger;
-    let token = localStorage.getItem("access_token");
-    this.client
-      .get(
-        "https://localhost:44310/api/values/84616006-81e5-4f1d-9506-00d2ceabc4e1",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          responseType: "text"
-        }
-      )
-      .subscribe(res => {});
+  loadCurrGame() {
+    this.gameSvc.getGameInfo(this.gameId).subscribe(res => {
+      this.gameInfo = res;
+    });
   }
 
   numbOfRows: number = 7;

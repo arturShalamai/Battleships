@@ -41,4 +41,11 @@
   </div>
 </div>
 
-<button mat-raised-button color="primary" class="button-register" (click)='getGame()'>Get Game</button>
+<div class="curr-game-info">
+   <p>{{gameInfo.Id}}</p>
+   <p>{{gameInfo.playerField}}</p>
+   <p>{{gameInfo.playerReady}}</p>
+   <p>{{gameInfo.enemyField}}</p>
+   <p>{{gameInfo.enemyReady}}</p>
+   <p>{{gameInfo.turn}}</p>
+</div>
