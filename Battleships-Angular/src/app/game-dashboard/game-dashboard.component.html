@@ -19,6 +19,7 @@
   <div class="Boards">
 
     <div class="board board-player">
+      <h2>Ships left : {{shipsLeft}} </h2>
       <table>
         <tr *ngFor='let row of enemyField; let i = index;'>
           <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
@@ -30,7 +31,7 @@
     </div>
 
     <div class="board board-enemy">
-
+      <h2>Enemy board</h2>
       <table >
         <tr *ngFor='let row of enemyField; let i = index;'>
           <td *ngFor='let item of row; let j = index;' (click)="fire(i*numbOfCols+j)">
@@ -38,8 +39,7 @@
           </td>
         </tr>
       </table>
-
-      <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
+      
     </div>
   </div>
 

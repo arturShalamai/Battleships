@@ -21,7 +21,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   gameId: string;
 
   showMenu: boolean = false;
-
+  shipsLeft = 16;
   gameInfo: GameInfoModel;
 
   userField = " ".repeat(42);
@@ -87,9 +87,12 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   placeShip(index: number) {
-    this.userField = replaceAt(this.userField, index, "█");
-    console.log("Ship placed : ", index);
-    console.log(this.userField);
+    if (this.shipsLeft > 0) {
+      this.userField = replaceAt(this.userField, index, "█");
+      console.log("Ship placed : ", index);
+      console.log(this.userField);
+      this.shipsLeft--;
+    }
   }
 
   onGameStarted(gameId: string) {
@@ -107,11 +110,10 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     console.log("Joined  game ", gameId);
   }
 
-  onLoggedOut(){
+  onLoggedOut() {
     debugger;
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
-
 }
 
 function replaceAt(s, n, t) {

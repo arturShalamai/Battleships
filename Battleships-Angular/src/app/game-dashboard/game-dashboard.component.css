@@ -71,6 +71,11 @@
 .board{
   display: flex;
   flex-direction: column;
+  text-align: center;
+}
+
+.board h2{
+  color: white;
 }
 
 /* .Boards {
