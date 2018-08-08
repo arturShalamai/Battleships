@@ -1,55 +1,80 @@
 <div class="game-dasboard">
-<app-logout (loggedOut)='onLoggedOut()'></app-logout>
+  <app-logout (loggedOut)='onLoggedOut()'></app-logout>
 
-<mat-card class="gameControls-card" *ngIf='showMenu'>
-  <mat-card-header>
-    <h4>Start Play</h4>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="gameControls">
-      <app-new-game class="newgame-component"
-      (gameStarted)='onGameStarted($event)'></app-new-game>
-      <p class="span-or">or</p>
-      <app-join-game class="joinGame-component" 
-      (gameJoined)='onGameJoined($event)'></app-join-game>
+  <mat-card class="gameControls-card" *ngIf='showMenu'>
+    <mat-card-header>
+      <h4>Start Play</h4>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="gameControls">
+        <app-new-game class="newgame-component" (gameStarted)='onGameStarted($event)'></app-new-game>
+        <p class="span-or">or</p>
+        <app-join-game class="joinGame-component" (gameJoined)='onGameJoined($event)'></app-join-game>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="black" *ngIf='showMenu'></div>
+
+  <div class="Boards">
+
+    <div class="board board-player">
+      <table>
+        <tr *ngFor='let row of enemyField; let i = index;'>
+          <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
+            <span>{{userField[i*numbOfCols+j]=='█'? '⛵' : ' ' }}</span>
+          </td>
+        </tr>
+      </table>
+      <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
     </div>
-  </mat-card-content>
-</mat-card>
 
-<div class="black" *ngIf='showMenu'></div>
+    <div class="board board-enemy">
 
-<hr />
-<div class="Boards">
-  <div class="playerBoard">
-    <table class="board">
-      <div></div>  
-      <tr *ngFor='let row of enemyField; let i = index;'>
-        <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
-          <span>{{userField[i*numbOfCols+j]}}</span>
-        </td>
-      </tr>
-    </table>
-    <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
-  </div>
-
-  <div class="enemyBoard">
-    <table class="board">
-      <div></div>
-      <tr *ngFor='let row of enemyField; let i = index;'>
+      <table >
+        <tr *ngFor='let row of enemyField; let i = index;'>
           <td *ngFor='let item of row; let j = index;' (click)="fire(i*numbOfCols+j)">
-          <span>{{enemyFieldString[i*numbOfCols+j] == 'x' ? '🔥' : enemyFieldString[i*numbOfCols+j] == '0' ? '🗙' : ''}}</span>
-        </td>
-      </tr>
-    </table>
+            <span>{{enemyFieldString[i*numbOfCols+j] == 'x' ? '🔥' : enemyFieldString[i*numbOfCols+j] == '0' ? '🗙' : ''}}</span>
+          </td>
+        </tr>
+      </table>
+
+      <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
+    </div>
   </div>
+
+  <!-- <div class="playerBoard">
+  <table class="board">
+    <div></div>  
+    <tr *ngFor='let row of enemyField; let i = index;'>
+      <td *ngFor='let item of row; let j = index;' (click)="placeShip(i*numbOfCols+j)">
+        <span>{{userField[i*numbOfCols+j]=='█'? '⛵' : ' ' }}</span>
+      </td>
+    </tr>
+  </table>
+  <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
 </div>
 
-<div class="curr-game-info">
-   <p>{{gameInfo.Id}}</p>
-   <p>{{gameInfo.playerField}}</p>
-   <p>{{gameInfo.playerReady}}</p>
-   <p>{{gameInfo.enemyField}}</p>
-   <p>{{gameInfo.enemyReady}}</p>
-   <p>{{gameInfo.turn}}</p>
-</div>
-</div>
+<div class="enemyBoard">
+  <table class="board">
+    <div></div>
+    <tr *ngFor='let row of enemyField; let i = index;'>
+        <td *ngFor='let item of row; let j = index;' (click)="fire(i*numbOfCols+j)">
+        <span>{{enemyFieldString[i*numbOfCols+j] == 'x' ? '🔥' : enemyFieldString[i*numbOfCols+j] == '0' ? '🗙' : ''}}</span>
+      </td>
+    </tr>
+  </table>
+</div> -->
+
+  <div class="Boards">
+  </div>
+
+  <div class="curr-game-info">
+    <p>{{gameInfo.Id}}</p>
+    <p>{{gameInfo.playerField}}</p>
+    <p>{{gameInfo.playerReady}}</p>
+    <p>{{gameInfo.enemyField}}</p>
+    <p>{{gameInfo.enemyReady}}</p>
+    <p>{{gameInfo.turn}}</p>
+  </div>
+  <!-- </div> -->

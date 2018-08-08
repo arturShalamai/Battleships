@@ -45,11 +45,9 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      debugger;
       let idParam = params["id"];
       if (idParam != undefined) {
         this.gameSvc.checkParticipation(idParam).subscribe(suc => {
-          debugger;
           if (suc) {
             this.showMenu = false;
             this.gameId = idParam;

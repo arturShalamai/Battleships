@@ -1,8 +1,9 @@
-.game-dasboard{
+.game-dasboard {
   position: absolute;
   width: 100%;
   height: 100%;
   background-image: url('https://image.freepik.com/free-photo/desk-texture_23-2147731363.jpg');
+  background-size: cover;
 }
 
 .gameControls-card {
@@ -20,14 +21,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-    /* position: absolute; */
+  /* position: absolute; */
   /* top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); */
   z-index: 12;
 }
 
-.joinGame-component input{
+.joinGame-component input {
   margin-right: 10px;
 }
 
@@ -43,7 +44,7 @@
   align-items: center;
 }
 
-.newgame-component .button-register{
+.newgame-component .button-register {
   margin-left: 15px;
 }
 
@@ -61,25 +62,47 @@
   width: 100%;
 }
 
-.Boards {
+.Boards{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.board{
+  display: flex;
+  flex-direction: column;
+}
+
+/* .Boards {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
+} */
 
-.Boards>div {
+/* .Boards>div {
   width: 45%;
-}
+} */
 
-table td, table th {
+/* table {
+  background-image: url('/assets/images/water.jpg');
+  background-size: cover;
+} */
+
+/* table td{
+  border: 1px solid #eee;
+  height: 50px;
+  width: 50xp;
+} */
+
+/* table td, table th {
   border: 1px solid #dbdbdb;
   padding: 0.5em 0.75em;
   vertical-align: middle;
   height: 50px;
   text-align: center;
-}
+} */
 
-table {
+/* table {
   margin: 0 auto;
   border: 1px solid #eee;
 }
@@ -90,4 +113,48 @@ table tr:hover {
 
 .battleship-tile:hover {
   cursor: pointer;
+} */
+
+table {
+  font-family: 'Arial';
+  margin: 25px auto;
+  border-collapse: collapse;
+  background-color: white;
+  border: 1px solid #eee;
+  border-top: 2px solid #00cccc;
+  border-bottom: 2px solid #00cccc;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
+}
+
+table td{
+  width: 25px;
+  max-width:  25px;
+  min-width : 25px;
+  font-size: 25px;
+  line-height: 25px;
+      height: 25px;
+  max-height: 25px;
+  min-height: 25px;
+}
+
+table td:hover {
+  cursor: pointer;
+  background: #f4f4f4;
+  color: #555;
+}
+
+table th, table td {
+  color: #999;
+  border: 1px solid #eee;
+  padding: 20px 20px;
+  border-collapse: collapse;
+}
+table th {
+  background: #00cccc;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+table th.last {
+  border-right: none;
 }
