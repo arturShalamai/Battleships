@@ -73,13 +73,13 @@ namespace Battleships.Api.Controllers
         public async Task<IActionResult> JoinGame(Guid id)
         {
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
-            var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
 
             await _gamesSvc.JoinAsync(id, userId.ToString());
 
             await AddConnectionToGameAsync(userId, id);
 
             var secondDuserProxy = await GetSecondUserConnection(userId, id);
+            var player = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
             await secondDuserProxy.SendAsync("onPlayerJoined", _mapper.Map<PlayerJoinedInfoModel>(player));
 
             return Ok();
@@ -118,6 +118,19 @@ namespace Battleships.Api.Controllers
             var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
             var res = await _gamesSvc.Shot(gameId, userId, number);
 
+            if (res == ShotResult.Win)
+            {
+                await _gameHub.Clients.Group(gameId.ToString()).SendAsync("onGameEnd", new
+                {
+                    GameId = gameId,
+                    Winner = userId
+                });
+
+                await StopGameConnections(gameId);
+
+                return Ok(new { Result = res.ToString() });
+            }
+
             var secondUserProxy = await GetSecondUserConnection(userId, gameId);
 
             var shotResultModel = new GameShotResultModel()
@@ -136,8 +149,19 @@ namespace Battleships.Api.Controllers
         [Route("{gameId}/surrender")]
         public async Task<IActionResult> Surrender(Guid gameId)
         {
-            var userId = GetUserClaim(ClaimTypes.NameIdentifier);
-            await _gamesSvc.Surrender(gameId, Guid.Parse(userId));
+            var userId = Guid.Parse(GetUserClaim(ClaimTypes.NameIdentifier));
+            await _gamesSvc.Surrender(gameId, userId);
+
+            var game = await _unit.GameRepo.SingleAsync(g => g.Id == gameId, g => g.PlayersInfo);
+            var winnerId = game.PlayersInfo[0].PlayerId == userId ? game.PlayersInfo[1].PlayerId : game.PlayersInfo[0].PlayerId;
+
+            await _gameHub.Clients.Group(gameId.ToString()).SendAsync("onGameEnd", new
+            {
+                GameId = gameId,
+                Winner = winnerId
+            });
+
+            await StopGameConnections(gameId);
 
             return Ok();
         }
@@ -198,9 +222,15 @@ namespace Battleships.Api.Controllers
                 };
 
                 await _unit.GameConnections.AddAsync(gameConn);
+
+                await AddUserToGroup(gameId, playerConnections);
+
                 _unit.Save();
             }
         }
+
+        private async Task StopGameConnections(Guid gameId) =>
+            await _unit.GameConnections.DeleteManyAsync(g => g.GameId == gameId);
 
         private async Task<List<string>> GetUsersGameConnections(Guid userId, Guid gameId)
         {

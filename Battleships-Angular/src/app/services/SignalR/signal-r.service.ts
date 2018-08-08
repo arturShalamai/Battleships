@@ -28,11 +28,11 @@ export class SignalRService {
       .start()
       .then(() => {
         this.gamesConnection.on("onPlayerJoined", res => {
-          console.log(Date.now().toLocaleString(), "Joined player : ", res);
+          console.log(`Joined player : ${res.Id} ${res.FirstName}`);
         });
 
         this.gamesConnection.on("onPlayerReady", res => {
-          console.log(Date.now().toLocaleString(), "Second player ready.", res);
+          console.log(Date.now().toLocaleString(), "Second player ready.");
         });
 
         console.log("Connection Success");

@@ -12,20 +12,31 @@ import { Injectable } from "@angular/core";
 })
 export class GameService {
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
-    signalRSvc.gamesConnection.on("getGame", res => {
-      // debugger;
-      // console.log("Got game with id ", 25);
-    });
+    // signalRSvc.gamesConnection.on("getGame", res => {
+    //   // debugger;
+    //   // console.log("Got game with id ", 25);
+    // });
 
-    signalRSvc.gamesConnection.on('onGameCrated', msg => {
-      console.log(Date.now().toLocaleString(), msg);
-    });
+    // signalRSvc.gamesConnection.on('onGameCrated', msg => {
+    //   console.log(Date.now().toLocaleString(), msg);
+    // });
 
     signalRSvc.gamesConnection.on('onHit', res => {
-      console.log(Date.now().toLocaleString(), res);
+      console.log("Hited : ", res);
     });
 
+    signalRSvc.gamesConnection.on('onGameEnd', res => {
+      console.log("Game End", res);
+    });
+    
+    signalRSvc.gamesConnection.on("onPlayerJoined", res => {
+      console.log(`Joined player : ${res.Id} ${res.FirstName}`);
+    });
 
+    signalRSvc.gamesConnection.on("onPlayerReady", res => {
+      console.log(Date.now().toLocaleString(), "Second player ready.");
+    });
+    
 
     // signalRSvc.gamesConnection.invoke('GetConnId').then(res => {console.log('Connection Id ', res)})
   }
