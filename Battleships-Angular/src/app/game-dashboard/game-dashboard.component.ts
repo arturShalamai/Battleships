@@ -22,7 +22,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   showMenu: boolean = true;
 
   userField = " ".repeat(42);
-  enemyFieldString = '█ █   █     █ █████        ██  ████       ';
+  enemyFieldString = "█ █   █     █ █████        ██  ████       ";
   enemyField: boolean[][] = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
@@ -45,17 +45,21 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    var gameId = this.route.snapshot.params["id"];
-    if (gameId != undefined) {
-      this.gameId = gameId;
-      // checkForParticipation(this.gameId);
-    }
-    // this.gameSvc.getGameInfo(gameId).subscribe(res => {
-    //   debugger;
-    //   this.enemyFieldString = res.enemyField;
-    //   this.userField = res.playerField;
-    //   console.log(res);
-    // });
+    this.route.params.subscribe(params => {
+      debugger;
+      let idParam = params["id"];
+      if (idParam != undefined) {
+        this.gameSvc.checkParticipation(idParam).subscribe(
+          suc => {
+            debugger;
+            if (suc) {
+              this.showMenu = false;
+              this.gameId = idParam;
+            }
+          }
+        );
+      }
+    });
   }
 
   getGame() {
@@ -76,16 +80,6 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   numbOfRows: number = 7;
   numbOfCols: number = 6;
-
-  private checkForParticipation(gameId : string) {
-    this.gameSvc.checkParticipation(gameId).then(res => {
-      if (res == true) {
-        this.gameId = gameId;
-        this.showMenu = false;
-        console.log("Game id : ", gameId);
-      }
-    });
-  }
 
   fire(index: number) {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
@@ -118,12 +112,11 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     console.log("Game Id was chnged to ", game);
   }
 
-  gameJoined(gameId: string){
+  gameJoined(gameId: string) {
     this.showMenu = false;
     this.gameId = gameId;
     // this.checkForParticipation();
   }
-
 }
 
 function replaceAt(s, n, t) {

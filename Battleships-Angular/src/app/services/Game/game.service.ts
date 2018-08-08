@@ -4,7 +4,7 @@ import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
 import { SignalRService } from "./../SignalR/signal-r.service";
 import { CreateGameResponse } from "./CreateGameResponse";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, Subscribable } from "rxjs";
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -95,7 +95,7 @@ export class GameService {
     );
   }
 
-  checkParticipation(gameId: string): Promise<boolean> {
+  checkParticipation(gameId: string): Observable<boolean> {
     let token = localStorage.getItem("access_token");
     return this.http
       .get<boolean>(
@@ -103,7 +103,6 @@ export class GameService {
         {
           headers: { Authorization: `Bearer ${token}` }
         }
-      )
-      .toPromise();
+      );
   }
 }
