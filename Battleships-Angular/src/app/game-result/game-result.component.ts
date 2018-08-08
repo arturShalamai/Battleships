@@ -16,7 +16,7 @@ export class GameResultComponent implements OnInit {
   ngOnInit() {
   }
 
-  goBack(){
+  returnToMenu(){
     this.router.navigate(['/game']);
   }
 

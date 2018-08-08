@@ -108,6 +108,12 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     this.loadCurrGame();
     console.log("Joined  game ", gameId);
   }
+
+  onLoggedOut(){
+    debugger;
+    this.router.navigate(['/login']);
+  }
+
 }
 
 function replaceAt(s, n, t) {
