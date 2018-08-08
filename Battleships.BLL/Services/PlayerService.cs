@@ -45,9 +45,9 @@ namespace Battleships.BLL.Services
         {
 
             var checkUser = await _unit.PlayerRepo.SingleAsync(p => String.Equals(p.Email, newPlayer.Email, StringComparison.OrdinalIgnoreCase) ||
-                                                             String.Equals(p.NickName, newPlayer.NickName, StringComparison.OrdinalIgnoreCase));
+                                                                    String.Equals(p.NickName, newPlayer.NickName, StringComparison.OrdinalIgnoreCase));
 
-            if (checkUser == null) { throw new Exception("There already user with such email or login"); }
+            if (checkUser != null) { throw new Exception("There already user with such email or login"); }
 
             var hashedPassword = _hasher.HashPassword(newPlayer, newPlayer.Password);
             newPlayer.Password = hashedPassword;

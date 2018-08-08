@@ -24,10 +24,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
-  submitSuccess() {
-
-  }
-
   login(): void {
     debugger;
     this.authSvc.login(this.email, this.password).subscribe(

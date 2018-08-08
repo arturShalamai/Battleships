@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs';
-import { AuthService } from './../services/Auth/auth.service';
-import { UsersService } from "./../services/UsersService/users.service";
+import { debug } from 'util';
+import { PlayerRegisterModel } from './PlayerRegisterModel';
+import { Observable } from "rxjs";
+import { AuthService } from "./../services/Auth/auth.service";
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { OAuthService } from "angular-oauth2-oidc";
-import { PlayerregisterModel } from "./PlayerRegisterModel";
 
 @Component({
   selector: "app-register-user",
@@ -11,13 +11,15 @@ import { PlayerregisterModel } from "./PlayerRegisterModel";
   styleUrls: ["./register-user.component.css"]
 })
 export class RegisterUserComponent implements OnInit {
+  @Output() public successfullRegister = new EventEmitter<any>();
   @Output() public login = new EventEmitter<any>();
-  public registerModel: PlayerregisterModel;
+
+  public registerModel: PlayerRegisterModel;
 
   constructor(private authSvc: AuthService) {}
 
   ngOnInit() {
-    this.registerModel = new PlayerregisterModel(
+    this.registerModel = new PlayerRegisterModel(
       "Ivan@mail.com",
       "Ivan",
       "Petrenko",
@@ -27,12 +29,22 @@ export class RegisterUserComponent implements OnInit {
     );
   }
 
-  goToLogin() {
-    this.login.emit(null);
+ Register() {
+    debugger;
+    this.authSvc.register(this.registerModel).subscribe(
+      suc => {
+        debugger;
+        this.successfullRegister.emit(null);
+      },
+      err => {
+        debugger;
+        this.registerModel = new PlayerRegisterModel('', '', '', '', '', '');
+      }
+    );
   }
 
-  Register(){
-    debugger;
-    this.authSvc.register(this.registerModel).subscribe(res => this.goToLogin());
+
+  public goToLogin(){
+    this.login.emit(null);
   }
 }

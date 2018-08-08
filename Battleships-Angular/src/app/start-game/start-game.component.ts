@@ -57,11 +57,11 @@ export class StartGameComponent implements OnInit, AfterViewInit {
     });
   }
 
-  register(): void {
+  showRegister(): void {
     this.isSignUp = true;
   }
 
-  login() {
+  showLogin() {
     this.isSignUp = false;
   }
 

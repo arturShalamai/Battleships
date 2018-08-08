@@ -18,10 +18,11 @@
   </p> -->
 
  <app-login *ngIf='!isSignUp'
- (register)='register()'
+ (register)='showRegister()'
  (loginSuccess)='redirectToDashboard()'></app-login>
 
   <app-register-user *ngIf="isSignUp"
-  (login)='login()'></app-register-user>
+  (successfullRegister)='showLogin()'
+  (login)='showLogin()'></app-register-user>
 
 </div>
