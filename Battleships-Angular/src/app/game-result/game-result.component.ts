@@ -17,7 +17,7 @@ export class GameResultComponent implements OnInit {
   }
 
   returnToMenu(){
-    this.router.navigate(['/game']);
+    this.router.navigate(['/login']);
   }
 
   setState(state: string){

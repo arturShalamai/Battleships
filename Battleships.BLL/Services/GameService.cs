@@ -131,7 +131,7 @@ namespace Battleships.BLL.Services
                 {
                     sb[number] = 'x';
                     res = ShotResult.Hit;
-                    if (!field.Any(x => x == '█'))
+                    if (!sb.ToString().Any(x => x == '█'))
                     {
                         SetWinner(game, userId);
                         res = ShotResult.Win;

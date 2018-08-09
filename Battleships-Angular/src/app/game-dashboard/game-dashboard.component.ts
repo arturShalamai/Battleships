@@ -1,4 +1,4 @@
-import { TurnResult } from './TurnResult';
+import { TurnResult } from "./TurnResult";
 import { SignalRService } from "./../services/SignalR/signal-r.service";
 import { GameInfoModel } from "./../Models/GameInfoModel";
 import { HttpClient } from "@angular/common/http";
@@ -19,17 +19,19 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   gameInfo: GameInfoModel;
   showMenu: boolean = true;
 
+  urlVisible = true;
+
   shipsLeft = 16;
 
-  newGameId = '';
-  
+  newGameId = "";
+
   userField = " ".repeat(42);
   secondUserFieldString = " ".repeat(42);
   usersReady = 0;
   numbOfRows = Array(7).fill(1);
   numbOfCols = Array(6).fill(1);
 
-  userId : string;
+  userId: string;
 
   gameEnd = false;
   victory = false;
@@ -61,11 +63,9 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     });
 
     this.subscribeToSignalREvents();
-
   }
 
   subscribeToSignalREvents() {
-    
     this.signalRSvc.gamesConnection.on("onGameCrated", res => {
       this.newGameId = res;
     });
@@ -79,7 +79,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     this.signalRSvc.gamesConnection.on("onGameEnd", res => {
       debugger;
       this.gameEnd = true;
-      this.victory = res.winner == this.userId ? true : false; 
+      this.victory = res.winner == this.userId ? true : false;
       console.log("Game End", res);
     });
 
@@ -101,12 +101,18 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   fire(index: number) {
-    this.gameSvc.fire(this.gameId, index).subscribe(res => {
-      debugger;
-      var sym = res.result == "Hit" ? "x" : "0";
-      this.secondUserFieldString = replaceAt(this.secondUserFieldString, index, sym);
-      console.log(`Successfully fired to ${this.gameId} at ${res.result}`);
-    });
+    if (this.secondUserFieldString[index] == ' ') {
+      this.gameSvc.fire(this.gameId, index).subscribe(res => {
+        debugger;
+        var sym = res.result == "Hit" ? "x" : "0";
+        this.secondUserFieldString = replaceAt(
+          this.secondUserFieldString,
+          index,
+          sym
+        );
+        console.log(`Successfully fired to ${this.gameId} at ${res.result}`);
+      });
+    }
   }
 
   confirmShips() {
@@ -120,7 +126,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   placeShip(index: number) {
-    if (this.shipsLeft > 0) {
+    if (this.shipsLeft > 0 && this.userField[index] != "█") {
       this.userField = replaceAt(this.userField, index, "█");
       console.log("Ship placed : ", index);
       console.log(this.userField);
@@ -129,6 +135,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   onGameStarted(gameId: string) {
+    this.shipsLeft = 16;
     this.gameId = gameId;
     this.showMenu = false;
     this.loadCurrGame();
@@ -138,9 +145,10 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   onGameJoined(gameId: string) {
     debugger;
     this.showMenu = false;
-    this.secondPlayerStatus = '#64dd17'
+    this.secondPlayerStatus = "#64dd17";
     this.gameId = gameId;
     this.loadCurrGame();
+    this.urlVisible = false;
     console.log("Joined  game ", gameId);
   }
 
@@ -153,9 +161,14 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     this.secondPlayerStatus = "#64dd17";
   }
 
-  onHit(turnRes: TurnResult){
+  onHit(turnRes: TurnResult) {
     debugger;
-    this.userField = replaceAt(this.userField, turnRes.position, turnRes.result == 'Hit'? 'x' : '0');
+    if (turnRes.result == "Hit") {
+      this.shipsLeft--;
+      this.userField = replaceAt(this.userField, turnRes.position, "x");
+    } else {
+      this.userField = replaceAt(this.userField, turnRes.position, "0");
+    }
   }
 
   ngOnDestroy(): void {

@@ -49,10 +49,10 @@ import { GameSurrenderComponent } from './game-surrender/game-surrender.componen
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
       {path : 'login', component: StartGameComponent},
-      {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService]},
+      {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService], },
       {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
       {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]}
-    ]),
+    ], {onSameUrlNavigation: `reload`}),
     OAuthModule.forRoot()
   ],
   providers: [],

@@ -129,7 +129,7 @@ namespace Battleships.Api.Controllers
                 await _unit.PlayerRepo.UpdateOneAsync(player);
                 _unit.Save();
 
-                await _scoreService.SendScores(player.Id, player.Score);
+                //await _scoreService.SendScores(player.Id, player.Score);
 
                 await _gameHub.Clients.Group(gameId.ToString()).SendAsync("onGameEnd", new
                 {
