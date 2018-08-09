@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '../../../node_modules/@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { Router } from '../../../node_modules/@angular/router';
 })
 export class GameResultComponent implements OnInit {
 
-  public victory = false;
+  @Input() public victory = false;
   public backgroundColor = this.victory ? '#64dd17' : '#f44336' ;
 
   constructor(private router:Router) { }

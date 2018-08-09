@@ -1,5 +1,5 @@
 <div class="game-result-div">
-  <div class="result" [style.background-color]='backgroundColor'>
+  <div class="result" [style.background-color]=" victory ? '#64dd17' : '#f44336' ">
     <div class="result-win" *ngIf='victory'>
       <h1>Congratulations !!!</h1>
       <h2>You have won. You have gained 10 points;</h2>

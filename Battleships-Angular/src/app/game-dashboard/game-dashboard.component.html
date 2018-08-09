@@ -1,4 +1,7 @@
 <div class="game-dasboard">
+    <app-game-result *ngIf='gameEnd' [victory]='victory'>
+
+      </app-game-result>
   <app-logout (loggedOut)='onLoggedOut()'></app-logout>
 
   <mat-card class="gameControls-card" *ngIf='showMenu'>
@@ -51,7 +54,6 @@
       </div>
     </div>
   </div>
-
   {{newGameId}}
 
   <!-- <div class="playerBoard">

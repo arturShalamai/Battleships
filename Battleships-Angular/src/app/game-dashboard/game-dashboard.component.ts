@@ -5,7 +5,6 @@ import { HttpClient } from "@angular/common/http";
 import { GameService } from "./../services/Game/game.service";
 import { GameDashboardService } from "./../services/GameDashboard/game-dashboard.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
-// import { HubConnectionBuilder } from "@aspnet/signalr";
 import { ActivatedRoute, Router } from "../../../node_modules/@angular/router";
 import { ShipsFieldModel } from "../Models/ShipsFieldModel";
 import { debug } from "util";
@@ -23,12 +22,15 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   shipsLeft = 16;
 
   newGameId = '';
-
+  
   userField = " ".repeat(42);
   secondUserFieldString = " ".repeat(42);
   usersReady = 0;
   numbOfRows = Array(7).fill(1);
   numbOfCols = Array(6).fill(1);
+
+  gameEnd = false;
+  victory = false;
 
   secondPlayerStatus = "#eee";
 
