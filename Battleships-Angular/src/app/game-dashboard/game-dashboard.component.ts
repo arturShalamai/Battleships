@@ -1,3 +1,4 @@
+import { TurnResult } from './TurnResult';
 import { SignalRService } from "./../services/SignalR/signal-r.service";
 import { GameInfoModel } from "./../Models/GameInfoModel";
 import { HttpClient } from "@angular/common/http";
@@ -21,8 +22,10 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   shipsLeft = 16;
 
+  newGameId = '';
+
   userField = " ".repeat(42);
-  enemyFieldString = "█ █   █     █ █████        ██  ████       ";
+  secondUserFieldString = " ".repeat(42);
 
   numbOfRows = Array(7).fill(1);
   numbOfCols = Array(6).fill(1);
@@ -56,8 +59,15 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   }
 
   subscribeToSignalREvents() {
+    
+    this.signalRSvc.gamesConnection.on("onGameCrated", res => {
+      this.newGameId = res;
+    });
+
     this.signalRSvc.gamesConnection.on("onHit", res => {
+      let turnRes = res as TurnResult;
       console.log("Hited : ", res);
+      this.onHit(turnRes);
     });
 
     this.signalRSvc.gamesConnection.on("onGameEnd", res => {
@@ -84,7 +94,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     this.gameSvc.fire(this.gameId, index).subscribe(res => {
       debugger;
       var sym = res.result == "Hit" ? "x" : "0";
-      this.enemyFieldString = replaceAt(this.enemyFieldString, index, sym);
+      this.secondUserFieldString = replaceAt(this.secondUserFieldString, index, sym);
       console.log(`Successfully fired to ${this.gameId} at ${res.result}`);
     });
   }
@@ -130,6 +140,11 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   onPlayerJoined() {
     this.secondPlayerStatus = "#64dd17";
+  }
+
+  onHit(turnRes: TurnResult){
+    debugger;
+    this.userField = replaceAt(this.userField, turnRes.position, turnRes.result == 'Hit'? 'x' : '0');
   }
 
   ngOnDestroy(): void {

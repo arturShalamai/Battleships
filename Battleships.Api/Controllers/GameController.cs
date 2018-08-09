@@ -66,7 +66,7 @@ namespace Battleships.Api.Controllers
             await AddConnectionToGameAsync(userId, game.Id);
             await AddUserToGroup(userId, game.Id.ToString());
 
-            await _gameHub.Clients.Group(game.Id.ToString()).SendAsync("onGameCrated", "Game created");
+            await _gameHub.Clients.Group(game.Id.ToString()).SendAsync("onGameCrated", game.Id);
 
             return Ok(game.Id);
         }
@@ -148,7 +148,7 @@ namespace Battleships.Api.Controllers
             {
                 GameId = gameId,
                 Position = number,
-                Result = res
+                Result = res.ToString()
             };
 
             await secondUserProxy.SendAsync("onHit", shotResultModel);

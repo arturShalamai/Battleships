@@ -10,6 +10,6 @@ namespace Battleships.Api.Models
     {
         public Guid GameId { get; set; }
         public int Position { get; set; }
-        public ShotResult Result { get; set; }
+        public string Result { get; set; }
     }
 }

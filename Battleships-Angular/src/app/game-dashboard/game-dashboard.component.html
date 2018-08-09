@@ -16,6 +16,10 @@
 
   <div class="black" *ngIf='showMenu'></div>
 
+  <div class="crossed_swords">
+    <img src="../../assets/images/crossesd_swords.png" alt="">
+  </div>
+
   <div class="Boards">
 
     <div class="board board-player">
@@ -23,11 +27,11 @@
       <table>
         <tr *ngFor='let row of numbOfRows; let i = index;'>
           <td *ngFor='let item of numbOfCols; let j = index;' (click)="placeShip(i*numbOfCols.length+j)">
-            <span>{{userField[i*numbOfCols.length+j]=='█'? '⛵' : ' ' }}</span>
+            <span>{{userField[i*numbOfCols.length+j] == '█'? '⛵' : userField[i*numbOfCols.length+j] == 'x'? '🔥' : userField[i*numbOfCols.length+j] == '0'? '🗙' : '' }}</span>
           </td>
         </tr>
       </table>
-    
+
       <button mat-raised-button color="primary" class="button-register" (click)='confirmShips()'>Place Ships</button>
     </div>
 
@@ -36,17 +40,19 @@
       <table>
         <tr *ngFor='let row of numbOfRows; let i = index;'>
           <td *ngFor='let item of numbOfCols; let j = index;' (click)="fire(i*numbOfCols.length+j)">
-            <span>{{enemyFieldString[i*numbOfCols.length+j] == '█' ? '🔥' : enemyFieldString[i*numbOfCols.length+j] == '0' ? '🗙'
-              : ''}}</span>
+            <span>{{secondUserFieldString[i*numbOfCols.length+j] == 'x' ? '🔥' : secondUserFieldString[i*numbOfCols.length+j] ==
+              '0' ? '🗙' : ''}}</span>
           </td>
         </tr>
       </table>
       <div class="status">
-          <div class="display" [style.background-color]='secondPlayerStatus'></div>
-          <p> Status</p>
-        </div>
+        <div class="display" [style.background-color]='secondPlayerStatus'></div>
+        <p> Status</p>
+      </div>
     </div>
   </div>
+
+  {{newGameId}}
 
   <!-- <div class="playerBoard">
   <table class="board">
