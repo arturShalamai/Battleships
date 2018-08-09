@@ -73,6 +73,9 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     });
 
     this.signalRSvc.gamesConnection.on("onGameEnd", res => {
+      debugger;
+      this.gameEnd = true;
+      // this.victory = res.victory == true ? 
       console.log("Game End", res);
     });
 

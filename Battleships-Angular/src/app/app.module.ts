@@ -18,6 +18,7 @@ import { JoinGameComponent } from './join-game/join-game.component';
 import { FieldComponent } from './field/field.component';
 import { LogoutComponent } from './logout/logout.component';
 import { GameResultComponent } from './game-result/game-result.component';
+import { GameSurrenderComponent } from './game-surrender/game-surrender.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { GameResultComponent } from './game-result/game-result.component';
     GameDashboardComponent,
     FieldComponent,
     LogoutComponent,
-    GameResultComponent
+    GameResultComponent,
+    GameSurrenderComponent
   ],
   imports: [
     BrowserModule,

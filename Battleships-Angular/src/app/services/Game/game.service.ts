@@ -12,11 +12,9 @@ import { HubConnection } from "../../../../node_modules/@aspnet/signalr";
   providedIn: "root"
 })
 export class GameService {
-
   public gamesConnection: HubConnection | undefined;
 
   constructor(private http: HttpClient, private signalRSvc: SignalRService) {
-    
     this.gamesConnection = signalRSvc.gamesConnection;
   }
 
@@ -26,10 +24,12 @@ export class GameService {
 
   getGameInfo(gameId: string): Observable<GameInfoModel> {
     let token = localStorage.getItem("access_token");
-    return this.http
-      .get<GameInfoModel>(`https://localhost:44310/api/Game/${gameId}`, {
+    return this.http.get<GameInfoModel>(
+      `https://localhost:44310/api/Game/${gameId}`,
+      {
         headers: { Authorization: `Bearer ${token}` }
-      });
+      }
+    );
   }
 
   createGame(): Observable<string> {
@@ -78,6 +78,17 @@ export class GameService {
     let token = localStorage.getItem("access_token");
     return this.http.get<boolean>(
       `https://localhost:44310/api/Game/${gameId}/checkParticipant`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+  }
+
+  surrender(gameId: string): Observable<any> {
+    let token = localStorage.getItem("access_token");
+    return this.http.post<any>(
+      `https://localhost:44310/api/Game/${gameId}/surrender`,
+      {},
       {
         headers: { Authorization: `Bearer ${token}` }
       }
