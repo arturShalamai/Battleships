@@ -80,7 +80,6 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     });
 
     this.signalRSvc.gamesConnection.on("onPlayerReady", res => {
-      debugger;
       this.usersReady++;
       console.log(Date.now().toLocaleString(), "Second player ready.");
     });
@@ -106,7 +105,6 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     shipsModel.GameId = this.gameId;
     shipsModel.Field = this.userField;
     this.gameSvc.submitShips(shipsModel).subscribe(res => {
-      debugger;
       console.log("Ships position accepted");
       this.usersReady++;
     });
@@ -155,11 +153,8 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     debugger;
     this.gameSvc.closeConn();
   }
-
 }
 
 function replaceAt(s, n, t) {
   return s.substring(0, n) + t + s.substring(n + 1);
 }
-
-
