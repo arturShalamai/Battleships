@@ -48,6 +48,12 @@ export class AuthService {
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
+
+  getTokenInfo(): any{
+    return jwt_decode(localStorage.getItem("access_token"));
+  }
+
+
 }
 
 class TokenResponse {
