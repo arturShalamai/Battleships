@@ -180,3 +180,20 @@ table th {
 table th.last {
   border-right: none;
 }
+
+
+.crossed_swords{
+  position:  absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crossed_swords img{
+  width: 250px;
+  filter: grayscale(1);
+}
+
+.crossed_swords-active img{
+  filter: grayscale(0);
+}

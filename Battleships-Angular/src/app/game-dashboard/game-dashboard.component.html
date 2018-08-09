@@ -16,7 +16,7 @@
 
   <div class="black" *ngIf='showMenu'></div>
 
-  <div class="crossed_swords">
+  <div class="crossed_swords" [class.crossed_swords-active] = 'usersReady == 2'>
     <img src="../../assets/images/crossesd_swords.png" alt="">
   </div>
 
