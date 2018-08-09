@@ -29,6 +29,8 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
   numbOfRows = Array(7).fill(1);
   numbOfCols = Array(6).fill(1);
 
+  userId : string;
+
   gameEnd = false;
   victory = false;
 
@@ -44,7 +46,9 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      debugger;
       let idParam = params["id"];
+      this.userId = this.gameSvc.getUserId();
       if (idParam != undefined) {
         this.gameSvc.checkParticipation(idParam).subscribe(suc => {
           if (suc) {
@@ -75,7 +79,7 @@ export class GameDashboardComponent implements OnInit, OnDestroy {
     this.signalRSvc.gamesConnection.on("onGameEnd", res => {
       debugger;
       this.gameEnd = true;
-      // this.victory = res.victory == true ? 
+      this.victory = res.winner == this.userId ? true : false; 
       console.log("Game End", res);
     });
 

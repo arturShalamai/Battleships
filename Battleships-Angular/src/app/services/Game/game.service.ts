@@ -1,3 +1,4 @@
+import { AuthService } from './../Auth/auth.service';
 import { GameInfoModel } from "./../../Models/GameInfoModel";
 import { ShotResult } from "./ShotResult";
 import { ShipsFieldModel } from "./../../Models/ShipsFieldModel";
@@ -14,7 +15,7 @@ import { HubConnection } from "../../../../node_modules/@aspnet/signalr";
 export class GameService {
   public gamesConnection: HubConnection | undefined;
 
-  constructor(private http: HttpClient, private signalRSvc: SignalRService) {
+  constructor(private http: HttpClient, private authSvc:AuthService, private signalRSvc: SignalRService) {
     this.gamesConnection = signalRSvc.gamesConnection;
   }
 
@@ -94,4 +95,10 @@ export class GameService {
       }
     );
   }
+
+  getUserId():string{
+    let token = this.authSvc.getTokenInfo();
+    return token.sub as string;
+  }
+
 }
