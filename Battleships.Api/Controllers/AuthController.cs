@@ -83,32 +83,6 @@ namespace Battleships.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        [Route("signin-platform")]
-        [Authorize(AuthenticationSchemes = "IdentityServer")]
-        public async Task<IActionResult> SigninPlatform()
-        {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = Guid.Parse(claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            var user = await _unit.PlayerRepo.SingleAsync(p => p.Id == userId);
-            if (user != null) { return Ok(); }
-
-            var player = new Player()
-            {
-                Id = userId,
-                Email = GetUserClaim(ClaimTypes.NameIdentifier),
-                FirstName = GetUserClaim("FirstName"),
-                LastName = GetUserClaim("LastName"),
-                NickName = GetUserClaim("NickName"),
-                isExternal = true
-            };
-
-            await _unit.PlayerRepo.AddAsync(player);
-            _unit.Save();
-
-            return Ok();
-        }
-
         private string GetUserClaim(string type)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
