@@ -19,6 +19,7 @@ import { FieldComponent } from './field/field.component';
 import { LogoutComponent } from './logout/logout.component';
 import { GameResultComponent } from './game-result/game-result.component';
 import { GameSurrenderComponent } from './game-surrender/game-surrender.component';
+import { SigninPlatformComponent } from './signin-platform/signin-platform.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { GameSurrenderComponent } from './game-surrender/game-surrender.componen
     FieldComponent,
     LogoutComponent,
     GameResultComponent,
-    GameSurrenderComponent
+    GameSurrenderComponent,
+    SigninPlatformComponent
   ],
   imports: [
     BrowserModule,
@@ -49,9 +51,10 @@ import { GameSurrenderComponent } from './game-surrender/game-surrender.componen
       {path : '*', component: StartGameComponent},
       {path : '', component: StartGameComponent},
       {path : 'login', component: StartGameComponent},
+      {path : 'signin-platform', component: SigninPlatformComponent},
       {path : 'game', component: GameDashboardComponent, canActivate: [AuthGuardService], },
       {path : 'game/:id', component: GameDashboardComponent, canActivate: [AuthGuardService]},
-      {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]}
+      {path : 'game-res', component: GameResultComponent, canActivate: [AuthGuardService]},
     ], {onSameUrlNavigation: `reload`}),
     OAuthModule.forRoot()
   ],

@@ -49,11 +49,17 @@ export class AuthService {
     );
   }
 
-  getTokenInfo(): any{
+  getTokenInfo(): any {
     return jwt_decode(localStorage.getItem("access_token"));
   }
 
-
+  signinPlatform(token: string): Observable<any> {
+    return this.http.post(
+      "https://localhost:44310/signin-platform",
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
 }
 
 class TokenResponse {
