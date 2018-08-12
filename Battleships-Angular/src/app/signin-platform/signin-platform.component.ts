@@ -18,7 +18,7 @@ export class SigninPlatformComponent implements OnInit {
     let access_token = '';
 
     let fragment = this.route.fragment.subscribe(fragment => {
-      access_token =fragment.substring(fragment.indexOf('access_token='), fragment.indexOf('access_toke')+938).slice(13); 
+      access_token =fragment.substring(fragment.indexOf('access_token='), fragment.indexOf('&token_type')).slice(13); 
         console.log(access_token);
     });
 
@@ -29,10 +29,10 @@ export class SigninPlatformComponent implements OnInit {
 
     if (access_token != null) {
       this.authSvc.signinPlatform(access_token).subscribe(suc => {
-        localStorage.setItem("id_token", access_token);
+        localStorage.setItem("access_token", access_token);
       });
     }
-    this.router.navigate["/login"];
+    this.router.navigate(["/login"]);
   }
 }
 
