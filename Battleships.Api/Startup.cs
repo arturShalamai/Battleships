@@ -70,7 +70,9 @@ namespace Battleships.Api
             });
 
             var disco = DiscoveryClient.GetAsync("https://localhost:44362").Result;            
-            var tokenClient = new TokenClient(disco.TokenEndpoint, clientId: "client-$bfe28474-8297-4638-bcc9-14a7f3a9a7d3",  clientSecret: "secret-cb60ba17-c78f-436e-b9bd-20cda037befe"); 
+            var tokenClient = new TokenClient(disco.TokenEndpoint, clientId: Configuration["Platform:ClientId"], clientSecret: Configuration["Platform:ClientSecret"]);
+            // client-$bfe28474-8297-4638-bcc9-14a7f3a9a7d3
+            // secret-cb60ba17-c78f-436e-b9bd-20cda037befe
             var tokenResponse = tokenClient.RequestClientCredentialsAsync("Platform.ProfileService").Result;
 
             API.AccessToken = tokenResponse.AccessToken;

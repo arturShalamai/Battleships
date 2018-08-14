@@ -21,7 +21,7 @@ namespace Battleships.BLL.Services
         public async Task SendScores(Guid userId, double scores)
         {
             _client.SetBearerToken(API.AccessToken);
-            var resp = await _client.PostAsJsonAsync(API.Scores.SendScore("https://localhost:44364"), new UserScorePostModel(userId, scores));
+            var resp = await _client.PostAsJsonAsync(API.Scores.SendScore("https://localhost:44350"), new UserScorePostModel(userId, scores));
         }
     }
 }

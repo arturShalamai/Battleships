@@ -12,7 +12,7 @@ namespace Battleships.Api
 
         public static class Scores
         {
-            public static string SendScore(string baseUri) => $"{baseUri}/api/Scores/SendScore";
+            public static string SendScore(string baseUri) => $"{baseUri}/api/Scores";
         }
     }
 }

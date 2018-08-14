@@ -29,9 +29,9 @@ export class StartGameComponent implements OnInit {
   ngOnInit() {
     let access_token = localStorage.getItem('access_token');
     
-    this.authSvc.validateUser().subscribe(res => { this.redirectToDashboard(); })
-
     setInterval(() => { this.bgImage = this.getRandomImage();}, 15000);
+
+    this.authSvc.validateUser().subscribe(res => { this.redirectToDashboard(); })
   }
 
   showRegister(): void {
